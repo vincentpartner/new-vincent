@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Webdesign — Vincent & Partner</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/swiss.css">
+<link rel="stylesheet" href="assets/aura.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
+    <nav class="nav-links">
+      <a href="About.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">About</a>
+      <a href="Referenzen.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 400; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">Work</a>
+      <a href="Webdesign.html" class="active" style="font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; letter-spacing: 0.5px">Web</a>
+      <a href="Onlineshops.html" style="color: rgb(144, 144, 144); font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; letter-spacing: 0.5px">Shops</a>
+      <a href="SEA.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Online Marketing</a>
+      <a href="KI-Automation.html" style="font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">KI &amp; Automation</a>
+    </nav>
+    <a class="nav-cta" href="Kontakt.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 900; font-size: 14px">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="above">
+
+  <!-- Header -->
+  <section class="ablock first awrap" data-screen-label="Webdesign Hero">
+    <div class="crumbs">
+      <a href="Leistungen.html"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7 7l-7-7l7-7"/></svg> Leistungen</a>
+      <span class="sep">/</span>
+      <h1 class="here">Webdesign Zürich</h1>
+    </div>
+    <p class="ptitle">Visuelle<br>Websysteme.</p>
+    <div class="meta" style="margin-top:clamp(28px,4vh,52px)">
+      <div><span class="lab">Disziplin</span><span class="v">Webdesign &amp; Branding</span></div>
+      <div><span class="lab">Fokus</span><span class="v">Marke, UX &amp; UI</span></div>
+      <div><span class="lab">Technik</span><span class="v">Pixel-Perfect Frontend</span></div>
+    </div>
+  </section>
+
+  <!-- Approach timeline -->
+  <section class="ablock awrap" style="padding-top:0">
+    <h2 class="ptitle" style="font-size:clamp(36px,5vw,76px);margin-bottom:clamp(28px,4vh,52px)">Vorgehen.</h2>
+    <div class="tl">
+      <div class="tlrow"><div class="yr">01</div><div class="c"><h3>Verstehen</h3><p>Bevor wir gestalten, hören wir zu. Wir tauchen in Ihr Business ein, schärfen Ziele und finden die wirklich relevanten Hebel — nicht die offensichtlichen.</p></div></div>
+      <div class="tlrow"><div class="yr">02</div><div class="c"><h3>Konzipieren</h3><p>Strategie und Konzept aus einer Hand. Wir entwickeln einen klaren Plan für Design, Inhalt und Technik — mit Fokus auf das, was Wirkung zeigt.</p></div></div>
+      <div class="tlrow"><div class="yr">03</div><div class="c"><h3>Umsetzen</h3><p>Pixelgenau und sauber im Code. Vom ersten Entwurf bis zum Go-Live behalten wir Qualität, Performance und Termine im Blick.</p></div></div>
+      <div class="tlrow"><div class="yr">04</div><div class="c"><h3>Wachsen</h3><p>Nach dem Launch ist vor dem Launch. Mit SEO, Marketing und Automation entwickeln wir Ihren Auftritt kontinuierlich weiter — messbar.</p></div></div>
+    </div>
+  </section>
+
+  <!-- Reference slider -->
+  <section class="ablock awrap" data-screen-label="Referenzen Slider">
+    <div class="refslider">
+      <div class="refslider-head">
+        <div>
+          <div class="mono" style="margin-bottom:14px">Referenzen</div>
+          <h2>Ausgewählte Arbeiten.</h2>
+        </div>
+        <div class="refslider-nav">
+          <button class="rsbtn" data-rs-prev aria-label="Zurück"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7 7l-7-7l7-7"/></svg></button>
+          <button class="rsbtn" data-rs-next aria-label="Weiter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></button>
+        </div>
+      </div>
+      <div class="refslider-track" data-rs-track data-rs-source="Referenzen.html" data-rs-group="Webseiten">
+        <a class="refc" href="Referenz-flexpep.html"><div class="m"><image-slot data-mirror="referenzen" id="o-flexpep" placeholder="Flexpep" shape="rect" alt="Flexpep — Webdesign Referenz" src="assets/img/refs/o-flexpep.webp"></image-slot></div><span class="t">Webdesign</span><h3>Flexpep</h3></a>
+        <a class="refc" href="Referenz-bulgaria.html"><div class="m"><image-slot data-mirror="referenzen" id="o-bulgaria" placeholder="bulgariadirect" shape="rect" alt="bulgariadirect — Webdesign Versicherung" src="assets/refs/bulgaria-hero.webp"></image-slot></div><span class="t">Webdesign · Versicherung</span><h3>bulgariadirect</h3></a>
+        <a class="refc" href="Referenz-Batinu.html"><div class="m"><image-slot data-mirror="referenzen" id="o-batinu" placeholder="Batinu Bauingenieure" shape="rect" alt="Batinu Bauingenieure — Webdesign Referenz" src="assets/img/refs/o-batinu.webp"></image-slot></div><span class="t">Webdesign · SEO</span><h3>Batinu</h3></a>
+        <a class="refc" href="Referenz-prodorso.html"><div class="m"><image-slot data-mirror="referenzen" id="o-prodorso" placeholder="prodorso" shape="rect" alt="prodorso — Webdesign Wirbelsäulenmedizin" src="assets/refs/prodorso-hero.webp"></image-slot></div><span class="t">Webdesign · Wirbelsäulenmedizin</span><h3>prodorso</h3></a>
+        <a class="refc" href="Referenz-alpfrieden.html"><div class="m"><image-slot data-mirror="referenzen" id="o-alpfrieden" placeholder="Alpfrieden" shape="rect" alt="Berghotel Alpfrieden Bettmeralp — Webdesign Hotel Referenz" src="assets/img/refs/o-alpfrieden.webp"></image-slot></div><span class="t">Webdesign · Gastgewerbe</span><h3>Alpfrieden</h3></a>
+        <a class="refc" href="Referenz-wdvs.html"><div class="m"><image-slot data-mirror="referenzen" id="o-wdvs" placeholder="WDVS-Expert" shape="rect" alt="WDVS-Expert — Webdesign Referenz"></image-slot></div><span class="t">Webdesign · Bau</span><h3>WDVS-Expert</h3></a>
+        <a class="refc" href="Referenz-myshop.html"><div class="m"><image-slot data-mirror="referenzen" id="o-myshop" placeholder="My-Onlineshop" shape="rect" alt="My-Onlineshop — Webdesign E-Commerce" src="assets/refs/myshop-hero.webp"></image-slot></div><span class="t">Webdesign · E-Commerce</span><h3>My-Onlineshop</h3></a>
+        <a class="refc" href="Referenz-baukonstrukt.html"><div class="m"><image-slot data-mirror="referenzen" id="o-bau" placeholder="Baukonstrukt AG" shape="rect" alt="Baukonstrukt AG — Webdesign Referenz"></image-slot></div><span class="t">Webdesign · SEO · SEA</span><h3>Baukonstrukt</h3></a>
+        <a class="refc" href="Referenz-metzgerei-steiner.html"><div class="m"><image-slot data-mirror="referenzen" id="o-metzg" placeholder="Metzgerei Steiner" shape="rect" alt="Metzgerei Steiner — Webdesign Referenz"></image-slot></div><span class="t">Webdesign · Gewerbe</span><h3>Metzgerei Steiner</h3></a>
+        <a class="refc" href="Referenz-rueckenpraxis.html"><div class="m"><image-slot data-mirror="referenzen" id="o-ruecken" placeholder="Rückenpraxis Seefeld" shape="rect" alt="Rückenpraxis Seefeld — Webdesign Referenz"></image-slot></div><span class="t">Webdesign · Praxis</span><h3>Rückenpraxis Seefeld</h3></a>
+        <a class="refc" href="Referenz-Jobmaps.html"><div class="m"><image-slot data-mirror="referenzen" id="o-jobmaps" placeholder="Jobmaps" shape="rect" alt="Jobmaps — Webdesign Jobplattform Referenz"></image-slot></div><span class="t">Webdesign · Plattform</span><h3>Jobmaps</h3></a>
+        <a class="refc" href="Referenz-Reklamationszentrale.html"><div class="m"><image-slot data-mirror="referenzen" id="o-reklam" placeholder="Reklamationszentrale AG" shape="rect" alt="Reklamationszentrale AG — Webdesign Plattform" src="assets/img/screencapture-reklam.png"></image-slot></div><span class="t">Webdesign · Plattform</span><h3>Reklamationszentrale</h3></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cost calculator -->
+  <section class="ablock awrap" data-screen-label="Kalkulator">
+    <div class="calc" data-calc>
+      <script type="application/json" class="calc-config">{"title":"Projekt<br>Schätzung.","sliderLabel":"Seitenanzahl","sliderHint":"Jede Seite ist eine eigene Unterseite mit eigenem Layout, eigenem Inhalt und eigener SEO-Struktur.","maxLabel":"Umfangreiche Website","min":1,"max":25,"step":1,"default":8,"unit":"Seiten","base":2400,"perUnit":450,"pmPct":0.15,"totalLabel":"Geschätzte Investition","discountNote":"Einmalig, inkl. 15% Projektmanagement (Exkl. MwSt.)","monthlyBase":20,"monthlyLabel":"Laufende Kosten","monthlyNote":"Hosting CHF 20 inkl., pro Monat (Exkl. MwSt.)","notesLabel":"Ihre Notiz (optional)","groups":[{"name":"Design & Prototyp","type":"slider","hint":"Wie aufwändig soll das Design werden — vom klaren Standard-Layout bis zum vollständig individuellen Auftritt.","min":0,"max":10,"step":1,"default":3,"perUnit":720,"maxLabel":"Maximales Design (5 Tage)","steps":{"0":"Einfaches Design (Standard)","10":"Maximales Design"}},{"name":"Inhalte","type":"choice","hint":"Inhalte wie Bild, Video und Text zum Unternehmen und dem Angebot.","items":[{"name":"Inhalte werden geliefert","price":0,"on":true},{"name":"Bestehende Inhalte überarbeiten","perPage":180},{"name":"Inhalte von uns erstellt","perPage":280}]},{"name":"SEO & KI-SEO","type":"choice","hint":"Damit Sie in Google und in KI-Suchen wie ChatGPT gefunden werden.","items":[{"name":"Keine","price":0},{"name":"SEO-Basis","price":720,"on":true},{"name":"Onpage & KI-Suche","price":2880},{"name":"SEO Pro inkl. Backlinks","price":3780}]},{"name":"Branding & Logo","type":"choice","hint":"Logo, Farben und Schriften — die visuelle Identität Ihres Unternehmens.","items":[{"name":"Vorhanden","price":0,"on":true},{"name":"Logo-Refresh","price":360},{"name":"Logo-Redesign & CD","price":2340},{"name":"Neues Branding inkl. Manual","price":3940}]},{"name":"Weitere Leistungen","type":"toggle","hint":"Ergänzungen, die je nach Projekt dazukommen.","items":[{"name":"Mehrsprachigkeit DE/FR/IT/EN","price":1530},{"name":"Fotoshooting (halber Tag)","price":3100},{"name":"Drittsystem-Integration","price":720},{"name":"Supportpaket","monthly":40}]}]}</script>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="ablock awrap">
+    <div style="border-top:var(--hair) solid var(--line);padding-top:16px;margin-bottom:clamp(24px,3.5vh,44px)">
+      <div class="mono" style="margin-bottom:14px">Häufige Fragen</div>
+      <h2 class="ptitle" style="font-size:clamp(30px,4.4vw,60px)">Das fragen unsere Kunden.</h2>
+    </div>
+    <div class="accgrid">
+      <div class="acc">
+        <details>
+          <summary>Was kostet eine professionelle Website?<span class="ic"></span></summary>
+          <div class="ans"><p>Das hängt vom Umfang ab. Eine fokussierte Landing Page startet bei rund CHF 2'400, eine Corporate-Website mit individuellem Design bewegt sich meist zwischen CHF 6'500 und 15'000. Mit der Projektschätzung oben erhalten Sie in 30 Sekunden eine realistische Hausnummer — inklusive Konzept und Design.</p></div>
+        </details>
+        <details>
+          <summary>Wie lange dauert es bis zum Go-Live?<span class="ic"></span></summary>
+          <div class="ans"><p>Ein professioneller One-Pager braucht ca. 2 Wochen. Umfangreiche Auftritte mit eigener Content-Strategie und individuellem Design benötigen 6 bis 10 Wochen. Den genauen Fahrplan legen wir gleich zu Beginn gemeinsam fest — inkl. verbindlicher Termine.</p></div>
+        </details>
+        <details>
+          <summary>Bringt die neue Website mehr Anfragen?<span class="ic"></span></summary>
+          <div class="ans"><p>Das ist der Sinn der Sache. Wir gestalten nicht nur schön, sondern entlang Ihrer Geschäftsziele: klare Nutzerführung, schnelle Ladezeiten, überzeugende Texte und messbare Conversion-Punkte. Auf Wunsch verknüpfen wir SEO und Tracking, damit Sie den Effekt schwarz auf weiss sehen.</p></div>
+        </details>
+        <details>
+          <summary>Können wir Inhalte später selbst pflegen?<span class="ic"></span></summary>
+          <div class="ans"><p>Wenn dies gewünscht ist, absolut. Wir setzen auf CMS wie Kirby, Tilda oder komplette Headless-Anbindungen, damit Sie und Ihr Team Texte, Bilder und News selbstständig und ganz ohne Programmierkenntnisse jederzeit anpassen können.</p></div>
+        </details>
+        <details>
+          <summary>Was müssen wir selbst liefern?<span class="ic"></span></summary>
+          <div class="ans"><p>So viel oder so wenig wie Sie möchten. Im Minimum brauchen wir Logo, grobe Inhalte und ein kurzes Briefing. Texte, Bildauswahl und Struktur übernehmen wir auf Wunsch komplett — damit der Aufwand auf Ihrer Seite überschaubar bleibt.</p></div>
+        </details>
+      </div>
+      <div class="acc">
+        <details>
+          <summary>Wie läuft die Zusammenarbeit ab?<span class="ic"></span></summary>
+          <div class="ans"><p>In vier klaren Schritten: Verstehen, Konzipieren, Umsetzen, Wachsen. Sie haben eine feste Ansprechperson, transparente Meilensteine und sehen Zwischenstände früh — ohne Überraschungen am Ende.</p></div>
+        </details>
+        <details>
+          <summary>Wer ist unsere Ansprechperson im Projekt?<span class="ic"></span></summary>
+          <div class="ans"><p>Sie arbeiten direkt mit den Menschen, die Ihr Projekt umsetzen — keine Weiterreichung an ein Callcenter. Kurze Wege, schnelle Antworten und ein Team, das Ihr Business versteht.</p></div>
+        </details>
+        <details>
+          <summary>Ist die Website auf dem Handy gut nutzbar?<span class="ic"></span></summary>
+          <div class="ans"><p>Selbstverständlich. Jede Seite wird «mobile first» gedacht und auf allen gängigen Geräten getestet. Der Grossteil Ihrer Besucher kommt über das Smartphone — entsprechend wichtig nehmen wir diese Erfahrung.</p></div>
+        </details>
+        <details>
+          <summary>Was passiert nach dem Launch?<span class="ic"></span></summary>
+          <div class="ans"><p>Wir lassen Sie nicht allein. Auf Wunsch übernehmen wir Wartung, Updates, Backups und laufende Weiterentwicklung mit SEO und Marketing. So bleibt Ihr Auftritt sicher, aktuell und wächst mit Ihrem Unternehmen.</p></div>
+        </details>
+        <details>
+          <summary>Können wir eine bestehende Website ablösen?<span class="ic"></span></summary>
+          <div class="ans"><p>Ja, das ist Routine. Wir migrieren Inhalte, sichern Ihre SEO-Rankings durch saubere Weiterleitungen und sorgen für einen reibungslosen Wechsel — meist ganz ohne spürbare Ausfallzeit.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="bigcta fluidcta" data-fluid="mono">
+    <a href="Kontakt.html" class="awrap" style="display:block">
+      <div class="row">
+        <div>
+          <div class="mono" style="margin-bottom:16px">Zusammenarbeit</div>
+          <h3>Website<br>planen.</h3>
+        </div>
+        <span class="go">Erstgespräch vereinbaren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+      </div>
+    </a>
+  </div>
+
+</main>
+
+<footer class="footer" data-site-footer></footer>
+
+<style>
+  .footer .ftl { display:block; color:#fff; font-size:15px; margin-bottom:9px; }
+  .footer .ftl:hover { color: var(--muted); }
+</style>
+
+<script src="assets/tweaks.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/image-slot.js"></script>
+<script src="assets/calc.js"></script>
+<script src="assets/fluid.js"></script>
+<script src="assets/media-edit.js"></script>
+<script src="assets/footer.js"></script>
+<script src="assets/refslider.js"></script>
+</body>
+</html>

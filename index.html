@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vincent & Partner — Agentur für Webdesign, Onlineshops, SEO & KI · Zürich</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/swiss.css">
+<link rel="stylesheet" href="assets/aura.css">
+<style>
+  /* ---------- Hero ---------- */
+  .hero { position: relative; overflow: hidden; padding-top: clamp(20px,4vh,52px); padding-bottom: clamp(28px,5vh,64px); }
+  .hero-dots { position: absolute; inset: 0; z-index: 0; }
+  .hero .wrap { position: relative; z-index: 2; }
+  .hero-label { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; font-weight: 400; }
+  .hero-stage { width: 100%; height: clamp(440px, 60vh, 720px); position: relative; cursor: grab; touch-action: pan-y; }
+  /* Mobile: mehr Fallhöhe nach unten für die VINCENT-Buchstaben */
+  @media (max-width: 640px){ .hero-stage { height: clamp(560px, 76vh, 780px); } }
+  .hero-static2 { padding: 18px 0 6px; }
+  .hero-static2 .h-giant { line-height: .82; }
+  .hero-foot { display: grid; grid-template-columns: 1fr auto; gap: clamp(24px,4vw,72px); align-items: end; margin-top: clamp(20px,3vh,40px); }
+  .hero-foot .lead { max-width: 34ch; font-size: clamp(16px,1.4vw,20px); color: var(--ink); line-height: 1.5; }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+  @media (max-width: 760px){ .hero-foot{ grid-template-columns:1fr; } }
+
+  /* ---------- Services marquee (two crossing bands) ---------- */
+  .svc-marquee .marquee-track span { -webkit-text-stroke: 0; color: var(--ink); padding-inline: .35em; }
+  .svc-marquee .marquee-track .sep { color: var(--accent); font-weight: 400; }
+  .marquee-x { position: relative; overflow: hidden; padding-block: clamp(60px,8vw,116px); z-index: 1; }
+  .marquee-x .band { width: 122%; margin-left: -11%; background: var(--bg); position: relative; }
+  .marquee-x .band-a { transform: rotate(-4.5deg); z-index: 2; }
+  .marquee-x .band-b { transform: rotate(4.5deg); margin-top: clamp(-72px,-5vw,-38px); z-index: 1; }
+  .marquee-x .marquee-track.rev { animation-direction: reverse; }
+  .marquee-x .marquee { padding-block: 9px; }
+  .marquee-x .marquee-track span { font-size: clamp(14px, 2.5vw, 38px); }
+  .marquee-x .band-b { margin-top: clamp(-40px,-2.6vw,-20px); }
+
+  /* ---------- Services 2x2 grid ---------- */
+  .svc2 { display: grid; grid-template-columns: 1fr 1fr; border-top: var(--hair) solid var(--line); border-left: var(--hair) solid var(--line); }
+  @media (max-width: 720px){ .svc2{ grid-template-columns: 1fr; } }
+  .scell { position: relative; padding: clamp(26px,3.4vw,52px) clamp(22px,2.6vw,44px) clamp(34px,4vw,64px);
+    border-right: var(--hair) solid var(--line); border-bottom: var(--hair) solid var(--line); color: var(--ink);
+    text-decoration: none; display: block; transition: background .2s ease; }
+  .scell:hover { background: var(--ink); color: var(--bg); }
+  .scell:hover h3 { color: var(--bg); }
+  .scell:hover p { color: color-mix(in srgb, var(--bg) 70%, transparent); }
+  .scell:hover .sn { color: color-mix(in srgb, var(--bg) 60%, transparent); }
+  .scell .sn { position: absolute; top: 16px; right: 18px; font-family: var(--font-head); font-weight: 700; font-size: 13px; color: var(--muted); }
+  .scell h3 { font-family: var(--font-head); font-weight: var(--weight-head, 700); text-transform: none; letter-spacing: -0.01em; font-size: clamp(25px,2.2vw,32px); line-height: 1.05; margin: 0 0 10px; }
+  .scell p { margin: 0; color: var(--body-ink, var(--muted)); font-size: 20px; line-height: 1.55; max-width: 38ch; }
+  .scell .more { display: inline-block; margin-top: 16px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+  .scell:hover .more { color: var(--bg); }
+
+  /* Echte h1: Text steht im Markup, sichtbar gemacht wird er vom Canvas-Hero. */
+  .hero-h1 { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+  [data-hero-static]:not([style*="none"]) ~ .hero-h1 { position: static; }
+
+  /* ---------- FOCUS ---------- */
+  .focus-head { display: flex; align-items: baseline; gap: 20px; border-bottom: var(--hair) solid var(--line); padding-bottom: 14px; margin-bottom: clamp(28px,4vh,52px); }
+  .focus-head h2 { font-family: var(--font-head); font-weight: var(--weight-head, 700); letter-spacing: var(--track-head); font-size: clamp(40px,6vw,84px); margin: 0; line-height: .9; }
+  .focus-head a { margin-left: auto; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .focus-head a:hover { color: var(--accent); }
+  .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px,2.6vw,44px) clamp(24px,3vw,56px); }
+  @media (max-width: 720px){ .fgrid{ grid-template-columns: 1fr; } }
+  .fcard { display: flex; flex-direction: column; gap: 14px; text-decoration: none; color: var(--ink); }
+  .fcard .fmedia { position: relative; overflow: hidden; background: var(--paper); border-radius: 3px; }
+  .fcard .fmedia image-slot { width: 100%; height: auto; aspect-ratio: 3/2; display: block; transition: transform .55s cubic-bezier(.2,.7,.3,1); }
+  .fcard:hover .fmedia image-slot { transform: scale(1.035); }
+  .fcard .play { position: absolute; left: 18px; bottom: 18px; width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.92); color: #111; display: flex; align-items: center; justify-content: center; font-size: 17px; padding-left: 3px; pointer-events: none; transition: transform .3s ease; box-shadow: 0 6px 24px rgba(0,0,0,.18); }
+  .fcard:hover .play { transform: scale(1.1); }
+  .fcard image-slot.yellow { background: #FFD400; }
+  .fcard .date { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .fcard h3 { font-family: var(--font-head); font-weight: var(--weight-head, 700); text-transform: none; letter-spacing: -0.01em; font-size: clamp(25px,2.4vw,34px); line-height: 1.05; margin: 0; }
+  .fcard p { margin: 0; color: var(--body-ink, var(--muted)); font-size: 20px; line-height: 1.55; max-width: 46ch; }
+  .fcard:hover h3 { color: var(--accent); }
+
+  /* ---------- Testimonials ---------- */
+  .voices { display: flex; gap: clamp(18px,2vw,28px); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: none; -ms-overflow-style: none; }
+  .voices::-webkit-scrollbar { display: none; }
+  /* Swipe hint */
+  .swipe-hint { display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; user-select: none; transition: opacity .45s ease; }
+  .swipe-hint.hide { opacity: 0; pointer-events: none; }
+  .swipe-hint .sh-ic { display: inline-flex; width: 28px; height: 16px; }
+  .swipe-hint .sh-ic svg { width: 100%; height: 100%; animation: swipeNudge 1.8s ease-in-out infinite; }
+  @keyframes swipeNudge { 0%,100% { transform: translateX(-4px); } 50% { transform: translateX(4px); } }
+  @media (prefers-reduced-motion: reduce) { .swipe-hint .sh-ic svg { animation: none; } }
+  .vcard { scroll-snap-align: start; flex: 0 0 clamp(280px, 31%, 380px); border: var(--hair) solid var(--line); padding: clamp(20px,2vw,30px); display: flex; flex-direction: column; gap: 16px; }
+  .vcard .vhead { display: flex; align-items: center; gap: 14px; }
+  .vcard image-slot { width: 52px; height: 52px; flex: 0 0 52px; }
+  .vcard .vn b { font-family: var(--font-head); font-weight: 700; font-size: 16px; display: block; }
+  .vcard .vn span { color: var(--muted); font-size: 13px; }
+  .vcard blockquote { margin: 0; font-size: 20px; line-height: 1.5; color: var(--ink); }
+  .vcard .ml { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: auto; }
+
+  /* ---------- Fluid band ---------- */
+  .fluid-band { position: relative; overflow: hidden; background: var(--ink); border: var(--hair) solid var(--line); min-height: clamp(440px, 72vh, 720px); display: flex; cursor: crosshair; }
+  .fluid-band canvas { position: absolute; inset: 0; }
+  .fluid-inner { position: relative; z-index: 2; margin: auto; text-align: center; padding: 40px; pointer-events: none; }
+  .fluid-title { font-family: var(--font-head); font-weight: var(--weight-head,600); letter-spacing: var(--track-head); line-height: .84; text-transform: uppercase; font-size: clamp(56px,11vw,150px); color: #fff; mix-blend-mode: difference; margin: 0; }
+
+  /* ---------- Quick contact form ---------- */
+  .qform-sec { background: var(--paper); }
+  .qform-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(28px,4vw,72px); align-items: start; }
+  @media (max-width: 820px){ .qform-grid{ grid-template-columns: 1fr; } }
+  .qform-grid h2 { margin: 0; }
+  .qform-grid .lead { margin-top: 16px; }
+  .qform { display: flex; flex-direction: column; gap: 22px; }
+  .qrow { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 560px){ .qrow{ grid-template-columns: 1fr; } }
+  .qform input[type=text], .qform input[type=email] {
+    width: 100%; font-family: var(--font-body); font-size: 16px; color: var(--ink);
+    background: transparent; border: 0; border-bottom: var(--hair) solid var(--line); padding: 11px 2px; outline: none; border-radius: 0;
+  }
+  .qform input:focus { border-color: var(--accent); }
+  .qchecks { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
+  @media (max-width: 560px){ .qchecks{ grid-template-columns: 1fr; } }
+  .qcheck { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 16px; user-select: none; }
+  .qcheck input { position: absolute; opacity: 0; pointer-events: none; }
+  .qcheck .box { width: 20px; height: 20px; border: var(--hair) solid var(--line); display: inline-flex; align-items: center; justify-content: center; flex: 0 0 20px; }
+  .qcheck input:checked + .box { background: var(--ink); }
+  .qcheck input:checked + .box::after { content: "✓"; color: #fff; font-size: 13px; }
+  .qcheck .lbl-t { letter-spacing: .04em; text-transform: uppercase; font-size: 13px; font-weight: 700; }
+  .qsubmit { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .qsubmit .ok { color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; display: none; }
+  .qsubmit.sent .ok { display: inline; }
+
+  /* ---------- Footer ---------- */
+  .footer .ftl { display:none; }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
+    <nav class="nav-links">
+      <a href="About.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">About</a>
+      <a href="Referenzen.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 400; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">Work</a>
+      <a href="Webdesign.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Web</a>
+      <a href="Onlineshops.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Shops</a>
+      <a href="SEA.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Online Marketing</a>
+      <a href="KI-Automation.html" style="font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">KI &amp; Automation</a>
+    </nav>
+    <a class="nav-cta" href="Kontakt.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 900; font-size: 14px">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<header class="hero" data-screen-label="Hero">
+  <div class="wrap">
+    <h1 class="hero-label">Agentur für Webdesign · Onlineshops · SEO · GEO · KI-Apps · Zürich</h1>
+    <p class="hero-h1">Digitale Kompetenz</p>
+
+    <!-- Variant A: physics letters -->
+    <div data-hero-letters>
+      <div class="hero-stage" data-falling-letters data-words="Digitale|Kompetenz" data-reset="#heroReset"></div>
+    </div>
+    <!-- Variant B: static type -->
+    <div data-hero-static class="hero-static2" style="display:none;">
+      <div class="h-giant">Digitale<br>Kompetenz</div>
+    </div>
+
+    <div class="hero-foot" style="margin: 42px 0px 0px">
+      <p class="lead" style="line-height: 1.3; font-size: 27px">Vincent sieht in jeder Herausforderung eine getarnte Möglichkeit und entwickelt innovative, digitale Lösungen, die Unternehmen nachhaltig weiterbringen.</p>
+      <div class="hero-cta">
+        <a class="btn" href="Referenzen.html" style="padding: 16px 26px; margin: 9px; border-width: 1px">Referenzen</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ SERVICES MARQUEE (two crossing bands) ============ -->
+<section class="marquee-x" aria-hidden="true">
+  <div class="marquee svc-marquee band band-a">
+    <div class="marquee-track">
+      <span>Webdesign</span><span class="sep">·</span><span>Onlineshops mit Bexio</span><span class="sep">·</span><span>SEO &amp; GEO</span><span class="sep">·</span><span>SEA</span><span class="sep">·</span><span>KI-Apps</span><span class="sep">·</span><span>Online Marketing</span><span class="sep">·</span><span>Video Ads</span><span class="sep">·</span><span>Google Ads</span><span class="sep">·</span>
+      <span>Webdesign</span><span class="sep">·</span><span>Onlineshops mit Bexio</span><span class="sep">·</span><span>SEO &amp; GEO</span><span class="sep">·</span><span>SEA</span><span class="sep">·</span><span>KI-Apps</span><span class="sep">·</span><span>Online Marketing</span><span class="sep">·</span><span>Video Ads</span><span class="sep">·</span><span>Google Ads</span><span class="sep">·</span>
+    </div>
+  </div>
+  <div class="marquee svc-marquee band band-b">
+    <div class="marquee-track rev">
+      <span>Das ganze Spektrum für digitalen Erfolg</span><span class="sep">·</span><span>Webdesign</span><span class="sep">·</span><span>SEO</span><span class="sep">·</span><span>SEA</span><span class="sep">·</span><span>Online Marketing</span><span class="sep">·</span><span>Video Ads</span><span class="sep">·</span><span>Google Ads</span><span class="sep">·</span>
+      <span>Das ganze Spektrum für digitalen Erfolg</span><span class="sep">·</span><span>Webdesign</span><span class="sep">·</span><span>SEO</span><span class="sep">·</span><span>SEA</span><span class="sep">·</span><span>Online Marketing</span><span class="sep">·</span><span>Video Ads</span><span class="sep">·</span><span>Google Ads</span><span class="sep">·</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES GRID ============ -->
+<section class="section tight" data-screen-label="Leistungen">
+  <div class="wrap">
+    <div class="svc2">
+      <a class="scell reveal" href="Webdesign.html">
+        <span class="sn">#1</span>
+        <h3>Webdesign</h3>
+        <p style="line-height: 1.3">Innovative Webauftritte von A bis Z. Wir verbinden Design und Technik perfekt.</p>
+        <span class="more">Mehr →</span>
+      </a>
+      <a class="scell reveal" href="SEO.html">
+        <span class="sn">#2</span>
+        <h3>SEO / SEA / GEO</h3>
+        <p style="line-height: 1.25">Nachhaltige Traffic-Steigerung und Sichtbarkeit auf Google.</p>
+        <span class="more">Mehr →</span>
+      </a>
+      <a class="scell reveal" href="Onlineshops.html">
+        <span class="sn">#3</span>
+        <h3>Onlineshops</h3>
+        <p style="line-height: 1.25">E-Commerce Lösungen mit Bexio-Anbindung für effiziente Prozesse.</p>
+        <span class="more">Mehr →</span>
+      </a>
+      <a class="scell reveal" href="KI.html">
+        <span class="sn">#4</span>
+        <h3>KI Apps</h3>
+        <p style="line-height: 1.3">ChatGPT und KI-Lösungen sofort umsetzbar für KMU.</p>
+        <span class="more">Mehr →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOCUS ============ -->
+<section class="section" data-screen-label="Focus">
+  <div class="wrap">
+    <div class="focus-head reveal">
+      <h2>Focus</h2>
+      <a href="Referenzen.html">Alle Referenzen →</a>
+    </div>
+    <div class="fgrid">
+      <a class="fcard reveal" href="Referenz-flexpep.html">
+        <div class="fmedia"><image-slot data-mirror="referenzen" id="o-flexpep" placeholder="Screenshot Flexpep" shape="rect" alt="Flexpep — Webdesign Personalplanung Software, Vincent & Partner Zürich" src="assets/img/refs/o-flexpep.webp"></image-slot></div>
+        <span class="date">Webdesign</span>
+        <h3>Webdesign für Flexpep</h3>
+        <p style="line-height: 1.3">Redesign der Website für die Schweizer Software für Personal- und Einsatzplanung, mit Preisrechner und Onlinekalender.</p>
+      </a>
+      <a class="fcard reveal" href="Referenz-video-alpfrieden.html">
+        <div class="fmedia"><image-slot data-mirror="referenzen" id="o-vid-alpfrieden" placeholder="Video Alpfrieden Sommeraktion" shape="rect" alt="Berghotel Alpfrieden Bettmeralp — Video und Landingpage Sommeraktion, Onlinemarketing"></image-slot><span class="play">▶</span></div>
+        <span class="date">Onlinemarketing</span>
+        <h3>Video und Landingpage Sommeraktion für Alpfrieden</h3>
+        <p style="line-height: 1.3">Kampagne für das Berghotel Alpfrieden auf der Bettmeralp: Video für Social Media und Landingpage für die Sommeraktion.</p>
+      </a>
+      <a class="fcard reveal" href="Referenz-prodorso.html">
+        <div class="fmedia"><image-slot data-mirror="referenzen" id="o-prodorso" placeholder="Screenshot prodorso" shape="rect" alt="prodorso — Webdesign Praxis Wirbelsäulenmedizin Zürich" src="assets/refs/prodorso-hero.webp"></image-slot></div>
+        <span class="date">Webdesign</span>
+        <h3>Webdesign für prodorso</h3>
+        <p style="line-height: 1.3">Die neue Website für die Praxis für Wirbelsäulenmedizin in Zürich.</p>
+      </a>
+      <a class="fcard reveal" href="Referenz-Batinu.html">
+        <div class="fmedia"><image-slot data-mirror="referenzen" id="o-batinu" placeholder="Screenshot Batinu" shape="rect" alt="Batinu Bauingenieure — Webdesign, Vincent & Partner Zürich" src="assets/img/refs/o-batinu.webp"></image-slot></div>
+        <span class="date">Webdesign</span>
+        <h3>Webdesign für Batinu Bauingenieure</h3>
+        <p style="line-height: 1.3">Die neue Webseite für Batinu Bauingenieure in Zürich Oerlikon.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STIMMEN ============ -->
+<section class="section tight" data-screen-label="Kundenstimmen">
+  <div class="wrap">
+    <div class="focus-head reveal" style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:clamp(24px,3vh,40px)">
+      <h2 style="font-size:clamp(28px,3.4vw,48px)">Kundenstimmen</h2>
+      <span class="swipe-hint" data-swipe-hint aria-hidden="true"><span class="sh-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M9 8l-4 4l4 4"/><path d="M15 8l4 4l-4 4"/></svg></span>Swipe</span>
+    </div>
+    <div class="voices">
+      <figure class="vcard reveal">
+        <div class="vhead"><image-slot id="v1" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Sören Honegger</b><span>Baukonstrukt AG</span></div></div>
+        <blockquote style="line-height: 1.35">Absolut geniale Dienstleistung und Betreuung. Unsere Webseiten sprechen Bände! Holzkonstrukt.ch und Baukonstrukt.ch.</blockquote>
+      </figure>
+      <figure class="vcard reveal">
+        <div class="vhead"><image-slot id="v2" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Nadine Hauser</b><span>weareconsultants</span></div></div>
+        <blockquote style="line-height: 1.35">Vincent & Partner ist der Partner unserer Wahl, wenn es um Webdesign und SEO geht. Eine inspirierende Reise — am Ende eine massgeschneiderte, persönliche Kreation.</blockquote>
+      </figure>
+      <figure class="vcard reveal">
+        <div class="vhead"><image-slot id="v3" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Michael à Porta</b><span>wetalkwithyou</span></div></div>
+        <blockquote style="line-height: 1.35">Ein Feuerwerk an innovativen Ideen — beeindruckend in Kreativität, Innovationskraft und Effizienz. Wir empfehlen Vincent & Partner jederzeit weiter.</blockquote>
+      </figure>
+      <figure class="vcard reveal">
+        <div class="vhead"><image-slot id="v4" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Valentina Scarascia</b><span>Praxis Scarascia</span></div></div>
+        <blockquote>Ich erhalte immer wieder Komplimente für meine Website und bin SEO-technisch stets auf dem aktuellen Stand. Sehr empfehlenswert.</blockquote>
+      </figure>
+      <figure class="vcard reveal">
+        <div class="vhead"><image-slot id="v5" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Florian Müller</b><span>Santewell Physiotherapie Basel</span></div></div>
+        <blockquote>Sehr zufrieden. Immer ansprechbar, die Webseite sieht viel ansprechender aus und im Ranking sind wir geklettert.</blockquote>
+      </figure>
+      <figure class="vcard reveal">
+        <div class="vhead"><image-slot id="v6" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Giuliano Stellini</b><span>dreamhair</span></div></div>
+        <blockquote>Äusserst zufrieden. Traffic erheblich gesteigert, professionelles Team, stets erreichbar. Wärmstens empfohlen.</blockquote>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<div class="bigcta fluidcta" data-fluid data-screen-label="CTA">
+  <a href="Kontakt.html" class="awrap" style="display:block">
+    <div class="row">
+      <div>
+        <div class="mono" style="margin-bottom:16px">Ehrlich gesagt</div>
+        <h3>Wir reden<br>gern.</h3>
+        <p class="lead" style="max-width:44ch;margin-top:18px;color:var(--muted);font-size:clamp(16px,1.4vw,20px)">5 Seiten lang erzählen wir hier Ihnen, was wir nicht alles können… Zeit, dass Sie zu Wort kommen.</p>
+      </div>
+      <span class="go">Jetzt sind Sie dran <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+    </div>
+  </a>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" data-site-footer></footer>
+
+<script src="assets/tweaks.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/image-slot.js"></script>
+<script src="assets/falling-letters-mobile.js"></script>
+<script src="assets/falling-letters.js"></script>
+<script>
+  (function(){
+    var f = document.getElementById('quickForm');
+    if (f) f.addEventListener('submit', function(e){ e.preventDefault();
+      var em = document.getElementById('q-email').value.trim();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { document.getElementById('q-email').focus(); return; }
+      document.getElementById('qsubmit').classList.add('sent');
+    });
+  })();
+</script>
+<script>
+  (function(){
+    var v = document.querySelector('.voices');
+    var hint = document.querySelector('[data-swipe-hint]');
+    if (!v || !hint) return;
+    var done = false;
+    function hide(){ if (done) return; done = true; hint.classList.add('hide'); }
+    v.addEventListener('scroll', function(){ if (v.scrollLeft > 12) hide(); }, { passive: true });
+  })();
+</script>
+<script src="assets/media-edit.js"></script>
+<script src="assets/fluid.js"></script>
+<script src="assets/footer.js"></script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chinzi-Hof — Referenz | Vincent &amp; Partner</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/swiss.css">
+<link rel="stylesheet" href="assets/aura.css">
+<style>
+.refpage .ptitle{font-size:clamp(44px,8.5vw,128px);margin:0}
+.rsec{padding-block:0 clamp(89px,9vw,144px)}
+.refpage .crumbs{flex-wrap:wrap;row-gap:6px;margin-bottom:clamp(34px,4.2vw,55px)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.vsec-head h2.mono{margin:0;font-weight:500;font-size:12px}
+.bigcta .display{font-family:var(--font-head);font-weight:var(--weight-head,600);letter-spacing:var(--track-head);line-height:.86;text-transform:none;font-size:clamp(40px,7vw,108px);margin:0}
+.work .display,.dsys .display{font-family:var(--font-head);font-weight:var(--weight-head,600);letter-spacing:var(--track-head);line-height:.92;font-size:clamp(36px,4.6vw,72px);margin:0;position:sticky;top:120px}
+.refhead{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(34px,4vw,89px);align-items:end;margin-top:clamp(55px,6vw,89px)}
+.refhead .lead{font-size:clamp(17px,1.35vw,22px);line-height:1.45;color:var(--ink);max-width:56ch;text-wrap:pretty;margin:0}
+.livebtn{display:inline-flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--bg);padding:16px 22px;border-radius:2px;text-decoration:none;transition:opacity .2s}
+.livebtn:hover{opacity:.82;color:var(--bg)}.livebtn svg{width:16px;height:16px}
+.refpage .meta{padding-block:clamp(24px,3vh,40px)}
+.refpage .meta .lab{font-size:13px;margin-bottom:10px}
+.refpage .meta .v{font-size:clamp(18px,1.5vw,24px);font-weight:600;line-height:1.25}
+.refhead .tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.refhead .tag{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);border:var(--hair) solid var(--line);padding:8px 12px}
+@media(max-width:1024px){.refhead{grid-template-columns:1fr;align-items:start}.refhead .tags{justify-content:flex-start}}
+.showcase{position:relative;display:grid;grid-template-columns:minmax(0,1fr) clamp(220px,22vw,320px);gap:clamp(40px,7vw,140px);align-items:center;justify-items:start;padding:clamp(24px,4vw,72px) clamp(8px,3vw,64px)}
+.shot{margin:0;background:var(--paper);border-radius:3px;position:relative;width:100%}
+.shot image-slot{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit}
+.shot-desktop{aspect-ratio:16/10;box-shadow:0 54px 90px -42px rgba(var(--shadow-rgb,0,0,0),.46),0 10px 26px -14px rgba(var(--shadow-rgb,0,0,0),.22)}
+.shot-mobile{aspect-ratio:9/19;border-radius:5px;box-shadow:0 54px 80px -38px rgba(var(--shadow-rgb,0,0,0),.52),0 10px 24px -14px rgba(var(--shadow-rgb,0,0,0),.28)}
+@media(max-width:820px){.showcase{grid-template-columns:1fr;justify-items:center;gap:clamp(40px,8vh,72px);padding-inline:0}.shot-desktop{width:100%}.shot-mobile{width:clamp(240px,70vw,318px)}}
+.show-cap{margin-top:clamp(21px,2.6vw,34px);color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.show-cap a{color:var(--ink)}.show-cap a:hover{color:var(--muted)}
+html[data-mode="Dunkel"] .shot{background:#1b1d21}html[data-mode="Dunkel"]{--shadow-rgb:255,255,255}
+.dsys{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(55px,6vw,144px);align-items:start}
+.dsys .cols{display:grid;gap:clamp(55px,6vw,89px)}
+.dsys .lab{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:21px}
+.logo-slot{border-radius:3px;background:var(--paper);border:var(--hair) solid var(--line);display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.logo-slot image-slot{display:block;aspect-ratio:16/9}
+.logo-slot .dark{background:#1b1d21}
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px}
+.sw{display:flex;flex-direction:column;gap:9px}
+.sw i{display:block;aspect-ratio:1/1;border-radius:3px;border:var(--hair) solid var(--line)}
+.sw b{font-size:14px;font-weight:600}.sw span{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.typo{display:grid;gap:20px;border-top:var(--hair) solid var(--line)}
+.typo div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:18px 0;border-bottom:var(--hair) solid var(--line)}
+.typo .t1{font-size:clamp(30px,3.4vw,52px);line-height:1;font-weight:600;letter-spacing:-.02em}
+.typo .t2{font-size:17px;line-height:1.5;max-width:44ch;color:var(--ink)}
+.typo span{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+@media(max-width:1024px){.dsys{grid-template-columns:1fr}.dsys .display{position:static;margin-bottom:8px}}
+@media(max-width:600px){.swatches{grid-template-columns:repeat(2,1fr)}.typo div{grid-template-columns:1fr}.logo-slot{grid-template-columns:1fr}}
+.vsec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-top:var(--hair) solid var(--line);padding-top:21px;margin-bottom:clamp(55px,6vw,89px)}
+.vsec-head .vsec-n{font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.work{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(55px,6vw,144px);align-items:start}
+.worklist{list-style:none;margin:0;padding:0;display:grid}
+.worklist li{display:grid;grid-template-columns:55px minmax(0,1fr);gap:21px;padding:clamp(21px,2.4vw,34px) 0;border-top:var(--hair) solid var(--line)}
+.worklist li:last-child{border-bottom:var(--hair) solid var(--line)}
+.worklist .n{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;color:var(--muted);padding-top:5px}
+.worklist h3{margin:0 0 8px;font-size:clamp(18px,1.5vw,24px);font-weight:600;letter-spacing:-.01em;line-height:1.05}
+.worklist p{margin:0;color:var(--muted);font-size:15px;line-height:1.5;max-width:60ch;text-wrap:pretty}
+@media(max-width:1024px){.work{grid-template-columns:1fr}.work .display{position:static;margin-bottom:8px}}
+@media(max-width:600px){.worklist li{grid-template-columns:36px minmax(0,1fr);gap:12px}}
+.view{margin:0;display:flex;flex-direction:column;gap:21px}
+.vmedia{position:relative;overflow:hidden;width:100%;border-radius:3px;background:var(--paper);box-shadow:0 40px 72px -38px rgba(var(--shadow-rgb,0,0,0),.44),0 8px 20px -12px rgba(var(--shadow-rgb,0,0,0),.2)}
+.vmedia img,.vmedia image-slot{display:block;width:100%;height:100%;object-fit:cover}
+.vcap{font-family:var(--font-mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.photogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,38px)}
+.photogrid .vmedia{aspect-ratio:4/5}
+.photogrid .wide{grid-column:span 2}.photogrid .wide .vmedia{aspect-ratio:8/5}
+@media(max-width:760px){.photogrid{grid-template-columns:1fr}.photogrid .wide{grid-column:auto}.photogrid .wide .vmedia{aspect-ratio:4/5}}
+.photogrid,.videowrap figure{padding-inline:clamp(0px,3vw,64px)}
+.videowrap .vmedia{aspect-ratio:16/9}
+.videowrap .vmedia img{position:absolute;inset:0;height:100%}
+.phoneviews{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(24px,4vw,72px);padding-inline:clamp(0px,4vw,80px)}
+.phoneviews .vmedia{aspect-ratio:9/19;border-radius:5px}
+.phoneviews .vmedia img,.phoneviews .vmedia image-slot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+@media(max-width:1024px){.phoneviews{grid-template-columns:repeat(2,1fr);padding-inline:0}}
+html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
+/* Eyebrows: dunkler + grösser für Lesbarkeit (--muted #9A9D9F auf Weiss ist nur ~2.5:1) */
+.refpage .crumbs a,.refpage .crumbs span,.refpage .crumbs h1,.meta .lab,.show-cap,.vsec-head .mono,.vsec-head .vsec-n,.worklist .n,.dsys .lab,.sw span,.typo span,.vcap,.refhead .tag{color:color-mix(in srgb,var(--ink) 72%,var(--bg))}
+.meta .lab,.show-cap,.vsec-head .vsec-n,.dsys .lab,.sw span,.typo span,.vcap{font-size:12px}
+.crumbs .here,.vsec-head .mono,.refhead .tag{color:var(--ink)}
+/* Mobile: Golden-Ratio-Skala (Basis 17px, φ=1.618) — Typo 11 · 13 · 17 · 27.5 · 44.5 · 72; Abstände 13 · 21 · 34 · 55 · 89 */
+@media(max-width:600px){
+  .refpage.ablock.first{padding-top:89px}
+  .refpage .ablock,.ablock{padding-block:55px}
+  .refpage .crumbs{margin-bottom:34px}.crumbs a,.crumbs span,.crumbs h1{font-size:13px}
+  .meta .lab,.show-cap,.vsec-head .mono,.vsec-head .vsec-n,.worklist .n,.dsys .lab,.sw span,.typo span,.vcap{font-size:13px;letter-spacing:.1em}
+  .refhead .tag{font-size:12px}
+  .refpage .ptitle{font-size:72px;line-height:.9}
+  .vsec-head h2.mono{font-size:12px;line-height:1.5}
+  .refhead{gap:21px;margin-top:55px}
+  .refhead .lead{font-size:17px;line-height:1.618}
+  .refhead .tags{gap:8px}.refhead .tag{font-size:11px;padding:8px 13px}
+  .meta{margin-top:55px!important;gap:21px 13px;padding-block:21px}
+  .meta .lab{font-size:11px;margin-bottom:8px}.meta .v{font-size:17px;line-height:1.3}
+  .meta .end{grid-column:1/-1;margin-top:13px}.livebtn{width:100%;justify-content:center;min-height:55px;font-size:15px;letter-spacing:.1em}
+  .showcase{gap:55px;padding-block:13px}
+  .show-cap{margin-top:21px;gap:13px;font-size:11px;line-height:1.618}
+  .vsec-head{padding-top:13px;margin-bottom:55px}
+  .rsec{padding-bottom:89px}
+  .vsec-head .vsec-n,.vsec-head .mono{font-size:11px}
+  .work,.dsys{gap:34px}
+  .work .display,.dsys .display{font-size:44.5px;line-height:.95;margin-bottom:0}
+  .worklist li{grid-template-columns:34px minmax(0,1fr);gap:13px;padding:21px 0}
+  .worklist .n{font-size:11px;padding-top:6px}
+  .worklist h3{font-size:27.5px;line-height:1.1;margin-bottom:8px;letter-spacing:-.02em}
+  .worklist p{font-size:17px;line-height:1.618}
+  .dsys .cols{gap:55px}.dsys .lab{font-size:11px;margin-bottom:13px}
+  .swatches{gap:21px 13px}.sw{gap:8px}.sw b{font-size:17px}.sw span{font-size:11px}
+  .typo{gap:0}.typo div{gap:8px;padding:21px 0}
+  .typo .t1{font-size:44.5px;line-height:.95}.typo .t2{font-size:17px;line-height:1.618}
+  .view{gap:13px}.vcap{font-size:11px}
+  .photogrid{gap:34px}.phoneviews{gap:34px 21px}
+  .photogrid,.videowrap figure{padding-inline:0}
+  .bigcta .mono{font-size:11px;margin-bottom:13px!important}
+  .bigcta h3,.bigcta .display{font-size:44.5px}
+  .bigcta .row{gap:21px;align-items:flex-start;flex-direction:column}
+  .bigcta .go{font-size:13px}
+}
+.footer .ftl{display:block;color:#fff;font-size:15px;margin-bottom:9px}.footer .ftl:hover{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
+    <nav class="nav-links">
+      <a href="About.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">About</a>
+      <a href="Referenzen.html" class="active" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 400; font-size: 16px; letter-spacing: 0.5px">Work</a>
+      <a href="Webdesign.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Web</a>
+      <a href="Onlineshops.html" style="color: rgb(144, 144, 144); font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; letter-spacing: 0.5px">Shops</a>
+      <a href="SEA.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Online Marketing</a>
+      <a href="KI-Automation.html" style="font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">KI &amp; Automation</a>
+    </nav>
+    <a class="nav-cta" href="Kontakt.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 900; font-size: 14px">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<main class="above">
+  <section class="ablock first awrap refpage" data-screen-label="Referenz Chinzi-Hof">
+    <div class="crumbs">
+      <a href="Referenzen.html"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7 7l-7-7l7-7"/></svg> Arbeiten</a>
+      <span class="sep">/</span>
+      <h1 class="here">Onlineshop Hofladen Chinzi-Hof</h1>
+    </div>
+    <p class="ptitle">chinzi-hof</p>
+    <div class="refhead">
+      <p class="lead">Onlineshop für den Chinzi-Hof: Hofladen-Webshop mit saisonalem Sortiment, einfacher Bestellung und Abholung, responsiv für Desktop und Mobile.</p>
+      <div class="tags"><span class="tag">Onlineshop</span><span class="tag">Webdesign</span></div>
+    </div>
+    <div class="meta" style="margin-top:clamp(55px,6vw,89px)">
+      <div><span class="lab">Kunde</span><span class="v">Chinzi-Hof</span></div>
+      <div><span class="lab">Bereich</span><span class="v">Hofladen</span></div>
+      <div><span class="lab">Jahr</span><span class="v">2024</span></div>
+      <div class="end"><a class="livebtn" href="https://www.chinzi-hof.ch" target="_blank" rel="noopener">Live ansehen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10M7 17L17 7"/></svg></a></div>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec">
+    <div class="showcase">
+      <figure class="shot shot-desktop" data-frame="chinzi-hero-desktop"><image-slot id="ref-chinzi-hero-desktop" shape="rounded" radius="3" src="assets/refs/chinzi-hero.webp" placeholder="Desktop-Screenshot" alt="Startseite Chinzi-Hof auf Desktop — Onlineshop Hofladen Chinzi-Hof"></image-slot></figure>
+      <figure class="shot shot-mobile" data-frame="chinzi-hero-mobile"><image-slot id="ref-chinzi-hero-mobile" shape="rounded" radius="5" src="assets/refs/chinzi-mobile.webp" placeholder="Mobile-Screenshot" alt="Startseite Chinzi-Hof auf dem Smartphone — responsives Onlineshop"></image-slot></figure>
+    </div>
+    <div class="show-cap"><span>Startseite — Desktop &amp; Mobile</span></div>
+  </section>
+
+  <section class="ablock awrap rsec">
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Leistungen: Onlineshop, Webdesign für Chinzi-Hof</h2></div>
+    <div class="work">
+      <p class="display">Vom Sortiment bis zum Checkout.</p>
+      <ol class="worklist">
+        <li><span class="n">01</span><div><h3>Konzept &amp; Sortimentsstruktur</h3><p>Kategorien, Produktseiten und Bestellprozess klar aufgebaut.</p></div></li>
+        <li><span class="n">02</span><div><h3>Onlineshop: Gestaltung &amp; Umsetzung</h3><p>Responsiver Webshop mit einfachem Checkout und Zahlungsanbindung.</p></div></li>
+        <li><span class="n">03</span><div><h3>SEO für Produktseiten</h3><p>Titel, Beschreibungen und Struktur für Kategorien und Produkte.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec">
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Designsystem Onlineshop Chinzi-Hof</h2></div>
+    <div class="dsys">
+      <p class="display">Ein System, das trägt.</p>
+      <div class="cols">
+        <div><span class="lab">Logo</span><div class="logo-slot"><image-slot id="ref-chinzi-logo-hell" shape="rect" fit="contain" placeholder="Logo auf Hell" alt="Logo Chinzi-Hof auf hellem Hintergrund"></image-slot><image-slot class="dark" id="ref-chinzi-logo-dunkel" shape="rect" fit="contain" placeholder="Logo auf Dunkel" alt="Logo Chinzi-Hof auf dunklem Hintergrund"></image-slot></div></div>
+        <div><span class="lab">Farben</span><div class="swatches" data-palette="chinzi" data-from="ref-chinzi-hero-desktop">
+          <div class="sw"><i style="background:#22252A"></i><b>Primär</b><span>#22252A</span></div>
+          <div class="sw"><i style="background:#6B7C8C"></i><b>Akzent</b><span>#6B7C8C</span></div>
+          <div class="sw"><i style="background:#EEF0F2"></i><b>Fläche</b><span>#EEF0F2</span></div>
+          <div class="sw"><i style="background:#1B1D21"></i><b>Text</b><span>#1B1D21</span></div>
+          <div class="sw"><i style="background:#FFFFFF"></i><b>Hintergrund</b><span>#FFFFFF</span></div>
+        </div></div>
+        <div><span class="lab">Typografie</span><div class="typo">
+          <div><p class="t1" style="margin:0">Chinzi-Hof</p><span>Headline · Schriftname</span></div>
+          <div><p class="t2" style="margin:0">Hofladen-Webshop mit saisonalem Sortiment, einfacher Bestellung und Abholung, responsiv für Desktop und Mobile.</p><span>Text · Schriftname</span></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec">
+    <h2 class="sr">Ansichten Chinzi-Hof</h2>
+    <div class="photogrid">
+      <figure class="view wide"><div class="vmedia" data-frame="chinzi-foto-1"><image-slot id="ref-chinzi-foto-1" shape="rect" placeholder="Bild 1 — Detail / Ansicht" alt="Chinzi-Hof — Detailansicht 1"></image-slot></div><figcaption class="vcap">Ansicht · Detail</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="chinzi-foto-2"><image-slot id="ref-chinzi-foto-2" shape="rect" placeholder="Bild 2 — Detail / Ansicht" alt="Chinzi-Hof — Detailansicht 2"></image-slot></div><figcaption class="vcap">Ansicht · Detail</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec">
+    <h2 class="sr">Mobile Onlineshop — Ansichten Chinzi-Hof</h2>
+    <div class="phoneviews">
+      <figure class="view"><div class="vmedia" data-frame="chinzi-m-1"><image-slot id="ref-chinzi-m-1" shape="rect" src="assets/refs/chinzi-mobile.webp" placeholder="Mobile 1" alt="Chinzi-Hof mobil — Ansicht 1"></image-slot></div></figure>
+      <figure class="view"><div class="vmedia" data-frame="chinzi-m-2"><image-slot id="ref-chinzi-m-2" shape="rect" placeholder="Mobile 2" alt="Chinzi-Hof mobil — Ansicht 2"></image-slot></div></figure>
+      <figure class="view"><div class="vmedia" data-frame="chinzi-m-3"><image-slot id="ref-chinzi-m-3" shape="rect" placeholder="Mobile 3" alt="Chinzi-Hof mobil — Ansicht 3"></image-slot></div></figure>
+      <figure class="view"><div class="vmedia" data-frame="chinzi-m-4"><image-slot id="ref-chinzi-m-4" shape="rect" placeholder="Mobile 4" alt="Chinzi-Hof mobil — Ansicht 4"></image-slot></div></figure>
+    </div>
+  </section>
+
+  <div class="bigcta"><a href="Referenz-art-of-fondue.html" class="awrap" style="display:block"><div class="row"><div><div class="mono" style="margin-bottom:16px">Nächstes Projekt · Onlineshop für Art of Fondue</div><p class="display">Art of Fondue.</p></div><span class="go">Weiter <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span></div></a></div>
+</main>
+<footer class="footer" data-site-footer></footer>
+<script src="assets/tweaks.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/image-slot.js"></script>
+<script src="assets/frame-resize.js"></script>
+<script src="assets/palette.js"></script>
+<script src="assets/media-edit.js"></script>
+<script src="assets/footer.js"></script>
+</body>
+</html>

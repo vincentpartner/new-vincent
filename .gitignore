@@ -1,0 +1,8 @@
+# Von VinWeb erzeugt – gesteuert über die Häkchen im Reiter "Was gehört wohin".
+
+.DS_Store
+Thumbs.db
+node_modules/
+
+# Nicht versioniert:
+kalender/config.php

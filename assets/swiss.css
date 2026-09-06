@@ -1,0 +1,368 @@
+/* ============================================================
+   VINCENT & PARTNER — Swiss / International Typographic Style
+   Mono-typographic (Arial/Helvetica), bold & expressive.
+   Tokens are tweakable via [data-* on :root] set by tweaks.js
+   ============================================================ */
+
+:root {
+  /* Palette — Anthrazit / Hellgrau / Weiss. Overridable by Tweaks. */
+  --bg:      #FFFFFF;
+  --paper:   #EFEFEC;   /* light gray section */
+  --ink:     #2A2D31;   /* anthracite (text, headlines) */
+  --muted:   #9A9D9F;   /* mid gray */
+  --line:    #DAD9D4;   /* light gray hairline */
+  --accent:  #1A33E0;   /* Klein-Blau — accent (must differ from --ink) */
+  --on-accent:#FFFFFF;
+
+  /* Type */
+  --font-head: "Arial Narrow", "Helvetica Neue Condensed", Arial, Helvetica, sans-serif;
+  --font-body: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --track-head: -0.03em;    /* tight tracking = "enger Schnitt" */
+  --head-scale: 1;          /* horizontal squeeze applied to giant heads */
+
+  /* Layout */
+  --maxw: 1500px;
+  --gutter: clamp(20px, 4vw, 64px);
+  --hair: 1.5px;
+
+  /* Variable-font weights (controlled by Tweaks) */
+  --weight-head: 600;
+  --weight-body: 400;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.55;
+  font-weight: var(--weight-body, 400);
+  letter-spacing: var(--track-body, -0.005em);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--accent); color: var(--on-accent); }
+
+/* ---------- Headlines ---------- */
+.h-giant, .h-1, .h-2, .h-3 {
+  font-family: var(--font-head);
+  font-weight: var(--weight-head, 700);
+  letter-spacing: var(--track-head);
+  line-height: 0.88;
+  text-transform: none;
+  margin: 0;
+  color: var(--ink-head, var(--ink));
+}
+.h-giant {
+  font-size: clamp(54px, 12.5vw, 220px);
+  line-height: 0.82;
+  letter-spacing: var(--track-head);
+}
+.h-1 { font-size: clamp(38px, 6.4vw, 96px); }
+.h-2 { font-size: clamp(30px, 4.2vw, 64px); }
+.h-3 { font-size: clamp(22px, 2.4vw, 34px); line-height: 0.95; }
+
+/* condensed feel even when Arial Narrow is unavailable */
+.squeeze { transform: scaleX(var(--head-scale)); transform-origin: left center; }
+
+.lead {
+  font-size: clamp(20px, 2.3vw, 30px);
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  max-width: 22ch;
+}
+
+.accent { color: var(--accent); }
+[data-accent-grad="1"] .accent,
+[data-accent-grad="1"] .brand .amp,
+[data-accent-grad="1"] .mono .b,
+[data-accent-grad="1"] .sec-head .idx,
+[data-accent-grad="1"] .accentline {
+  background: none;
+  background-image: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+  padding: 0.24em 0.16em 0.16em 0.04em;
+  margin: -0.24em -0.16em -0.16em -0.04em;
+}
+.rand-accent { color: var(--accent); }
+[data-accent-grad="1"] .rand-accent {
+  background: none;
+  background-image: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+  padding: 0.24em 0.16em 0.16em 0.04em;
+  margin: -0.24em -0.16em -0.16em -0.04em;
+}
+/* Logo letters are never tinted — only the & (.amp) follows the accent. */
+/* Brush paint — solid keeps a flat accent even if the global accent is a gradient */
+.vp-paint-solid { color: var(--accent) !important; -webkit-text-fill-color: var(--accent) !important; }
+/* Brush paint — gradient always uses the configured gradient colors */
+.vp-paint-grad {
+  background: none !important;
+  background-image: var(--brush-gradient, var(--accent-gradient)) !important;
+  -webkit-background-clip: text !important; background-clip: text !important;
+  -webkit-text-fill-color: transparent !important; color: transparent !important;
+  display: inline-block;
+  padding: 0.24em 0.16em 0.16em 0.04em;
+  margin: -0.24em -0.16em -0.16em -0.04em;
+}
+html.vp-brush, html.vp-brush *:not(.vptw):not(.vptw *):not(#vp-mode) { cursor: text; }
+html.vp-brush ::selection { background: var(--accent); color: #fff; }
+.vptw__brushhint { font-size: 11px; line-height: 1.4; color: #888; padding: 2px 0 2px; }
+.kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.mono-num {
+  font-family: var(--font-head);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Layout primitives ---------- */
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+.section { padding-block: clamp(100px, 14vh, 204px); position: relative; }
+.section.tight { padding-block: clamp(74px, 10.5vh, 148px); }
+.section.paper { background: var(--paper); }
+.section.ink { background: var(--ink); color: #fff; }
+.section.ink ::selection { background: var(--accent); color:#fff; }
+
+.rule { border: 0; border-top: var(--hair) solid var(--line); margin: 0; }
+.ink .rule { border-color: rgba(255,255,255,.4); }
+
+.grid { display: grid; gap: clamp(28px, 3.6vw, 62px); }
+.cols-12 { grid-template-columns: repeat(12, 1fr); }
+.cols-2  { grid-template-columns: repeat(2, 1fr); }
+.cols-3  { grid-template-columns: repeat(3, 1fr); }
+.cols-4  { grid-template-columns: repeat(4, 1fr); }
+
+/* section index label, e.g. "(01) Leistungen" */
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 28px;
+  margin-bottom: clamp(48px, 7.5vh, 96px);
+  border-top: var(--hair) solid var(--line);
+  padding-top: 20px;
+}
+.ink .sec-head { border-color: rgba(255,255,255,.4); }
+.sec-head .idx { font-family: var(--font-head); font-weight: 700; letter-spacing: -0.02em; color: var(--accent); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: clamp(15px, 1.3vw, 18px);
+  padding: 16px 26px;
+  border: var(--hair) solid var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+.btn .arr { transition: transform .25s cubic-bezier(.3,.7,.4,1); }
+.btn:hover { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn .arr { transition: transform .25s cubic-bezier(.3,.7,.4,1); }
+.btn:hover .arr { transform: translateX(6px); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.ghost:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.ink .btn.ghost { color:#fff; border-color:#fff; }
+.ink .btn.ghost:hover { background:#fff; color: var(--ink); }
+.btn.accent-fill { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.btn.accent-fill:hover { background: transparent; border-color: var(--ink); color: var(--ink); }
+.ink .btn.accent-fill:hover { background: transparent; border-color:#fff; color:#fff; }
+
+/* ---------- Top navigation ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  border-bottom: var(--hair) solid var(--line);
+}
+.nav-inner {
+  width: 100%;
+  padding: 0 var(--gutter);
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.brand {
+  font-family: var(--font-head);
+  font-weight: var(--weight-head, 700);
+  text-transform: none; /* Wortmarke folgt der Schreibweise im Dokument */
+  letter-spacing: -0.05em;
+  font-size: 32px;
+  line-height: 0.74;
+  display: inline-flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+/* "Vincent": bewusst eine Stufe kraeftiger als die h1-Titel (700 statt 600). */
+.brand b { font-weight: 700; display: block; color: var(--ink-head, var(--ink)); }
+/* "&Partner": halb so gross, linksbuendig unter "Vincent". */
+.brand .sub { font-size: 0.5em; font-weight: 400; letter-spacing: -0.02em; align-self: flex-start; color: var(--ink-head, var(--ink)); }
+/* Logo follows the TITLE colour (--ink-head) by default — including the &.
+   The accent & returns only when explicitly enabled in the editor (accent-logo
+   tweak or an accent gradient). */
+.brand .amp { color: var(--ink-head, var(--ink)); }
+[data-accent-logo-p="1"] .brand .amp { color: var(--accent); }
+/* Per-word logo casing (Tweaks): Versalien (default) or Normal */
+[data-logo-v="Normal"] .brand b { text-transform: none; }
+[data-logo-p="Normal"] .brand .sub { text-transform: none; }
+.nav-links { display: flex; align-items: center; gap: clamp(20px, 2.6vw, 42px); flex-wrap: nowrap; }
+.nav-links > a, .nav-drop-trigger {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 15px;
+  color: var(--muted);
+  padding: 6px 0;
+  position: relative;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color .2s;
+}
+.nav-links > a::after, .nav-drop-trigger::after {
+  content: ""; position: absolute; left: 0; bottom: -2px; height: 2px; width: 0;
+  background: var(--accent); transition: width .22s ease;
+}
+.nav-links > a:hover::after, .nav-links > a.active::after,
+.nav-drop:hover .nav-drop-trigger::after, .nav-drop-trigger.active::after { width: 100%; }
+.nav-links > a.active, .nav-drop-trigger.active { color: var(--ink); }
+
+/* ---------- Leistungen dropdown ---------- */
+.nav-drop { position: relative; }
+.nav-drop-trigger { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+.nav-drop-trigger .caret { font-size: 10px; transition: transform .25s ease; color: var(--accent); }
+.nav-drop:hover .nav-drop-trigger .caret { transform: rotate(45deg); }
+.nav-drop-menu {
+  position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(8px);
+  min-width: 280px; background: var(--bg); border: var(--hair) solid var(--line);
+  box-shadow: 0 18px 50px rgba(0,0,0,.12); padding: 8px;
+  opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 60;
+}
+.nav-drop::before { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 18px; }
+.nav-drop:hover .nav-drop-menu { opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+.nav-drop-menu a {
+  display: flex; align-items: center; gap: 14px; padding: 12px 14px;
+  font-family: var(--font-head); font-weight: var(--weight-head, 600); font-size: 17px; letter-spacing: -0.01em;
+  color: var(--ink); text-transform: none; transition: background .18s ease, color .18s ease;
+}
+.nav-drop-menu a .dn { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--accent); letter-spacing: .1em; }
+.nav-drop-menu a:hover { background: var(--ink); color: var(--bg); }
+.nav-drop-menu a:hover .dn { color: var(--bg); }
+.nav-cta {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+  background: var(--ink); color: var(--bg); padding: 12px 18px; display: inline-flex; align-items: center; gap: 9px;
+  transition: opacity .2s; white-space: nowrap;
+}
+.nav-cta:hover { opacity: .82; }
+.nav-cta svg { width: 14px; height: 14px; }
+.nav-cta { display: inline-flex; }
+.nav-burger { display: none; }
+
+.nav-inner .vp-mode { margin-right: -10px; }
+
+@media (max-width: 1180px) {
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .nav-burger {
+    display: inline-flex; flex-direction: column; gap: 5px; cursor: pointer;
+    background: none; border: 0; padding: 8px;
+  }
+  .nav-burger span { width: 26px; height: 2.5px; background: var(--ink); display: block; }
+  .nav.open .nav-links {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+    position: absolute; top: 76px; left: 0; right: 0; background: var(--bg);
+    border-bottom: var(--hair) solid var(--line); padding: 18px var(--gutter) 26px;
+  }
+  .nav.open .nav-links a { font-size: 24px; }
+  .nav.open .nav-drop { width: 100%; }
+  .nav.open .nav-drop-menu {
+    position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none;
+    box-shadow: none; border: 0; padding: 8px 0 0 14px; min-width: 0; background: transparent;
+  }
+  .nav.open .nav-drop-menu a { font-size: 18px; padding: 8px 0; }
+  .nav.open .nav-drop-trigger .caret { display: none; }
+  .nav.open .nav-cta { display: inline-flex; margin-top: 10px; }
+}
+
+/* ---------- Footer ---------- */
+/* Swirl (fluid) background — white in light mode, dark in dark mode. */
+:root { --swirl-bg: #FFFFFF; }
+html[data-mode="Dunkel"] { --swirl-bg: #1B1D20; }
+/* Footer is always the darkest block — same anthracite hue as the palette (never
+   pure #000, no blue cast). Light mode = --ink itself; dark mode one step below --bg. */
+.footer { background: #2A2D31; color: #fff; }
+html[data-mode="Dunkel"] .footer { background: #15171A; }
+.footer a:hover { color: var(--accent); }
+.footer .rule { border-color: rgba(255,255,255,.25); }
+
+/* ---------- Marquee ---------- */
+.marquee {
+  overflow: hidden; white-space: nowrap; border-block: var(--hair) solid var(--line);
+  padding-block: 18px;
+}
+.ink .marquee { border-color: rgba(255,255,255,.4); }
+.marquee-track {
+  display: inline-flex; gap: 0; will-change: transform;
+  animation: marquee 30s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-track span {
+  font-family: var(--font-head); font-weight: 700; text-transform: uppercase;
+  font-size: clamp(28px, 5vw, 76px); letter-spacing: -0.03em; padding-inline: 0.4em;
+}
+.marquee-track .sep { color: var(--accent); }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ---------- Reveal on scroll ---------- */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .marquee-track { animation: none; }
+}
+
+/* responsive grid collapse */
+@media (max-width: 980px) {
+  .cols-4 { grid-template-columns: repeat(2, 1fr); }
+  .cols-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 620px) {
+  .cols-4, .cols-3, .cols-2 { grid-template-columns: 1fr; }
+}

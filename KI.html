@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KI-Apps — Vincent & Partner</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/swiss.css">
+<link rel="stylesheet" href="assets/aura.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
+    <nav class="nav-links">
+      <a href="About.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">About</a>
+      <a href="Referenzen.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 400; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">Work</a>
+      <a href="Webdesign.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Web</a>
+      <a href="Onlineshops.html" style="color: rgb(144, 144, 144); font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; letter-spacing: 0.5px">Shops</a>
+      <a href="SEA.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Online Marketing</a>
+      <a href="KI-Automation.html" style="font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">KI &amp; Automation</a>
+    </nav>
+    <a class="nav-cta" href="Kontakt.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 900; font-size: 14px">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="above">
+
+  <!-- Header -->
+  <section class="ablock first awrap" data-screen-label="Webdesign Hero">
+    <div class="crumbs">
+      <a href="Leistungen.html"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7 7l-7-7l7-7"/></svg> Leistungen</a>
+      <span class="sep">/</span>
+      <h1 class="here">KI-Apps</h1>
+    </div>
+    <p class="ptitle">KI, die<br>arbeitet.</p>
+    <div class="meta" style="margin-top:clamp(28px,4vh,52px)">
+      <div><span class="lab">Disziplin</span><span class="v">KI-Apps &amp; Bots</span></div>
+      <div><span class="lab">Fokus</span><span class="v">Assistenten &amp; Agenten</span></div>
+      <div><span class="lab">Technik</span><span class="v">ChatGPT, Claude &amp; Co.</span></div>
+    </div>
+  </section>
+
+  <!-- Big visual -->
+  <section class="ablock awrap" style="padding-top:0">
+    <div class="visual r219 dotbg">
+      <image-slot id="ki-hero" placeholder="Großes Bild / Video — KI-Apps" shape="rect" alt="Großes Bild / Video — KI-Apps — KI-App Vincent & Partner"></image-slot>
+    </div>
+  </section>
+
+  <!-- Strategy -->
+  <section class="ablock awrap">
+    <div class="story">
+      <div>
+        <h2>Wie wir Ihren Alltag mit KI erleichtern.</h2>
+        <div class="tick"></div>
+        <p class="body">Innovative KI-Lösungen für Ihr Unternehmen: intelligente Chatbots für Webshops und Websites — oder individuelle Custom Bots für ganz spezifische Anwendungen.</p>
+      </div>
+      <div>
+        <p class="big">KI ist kein Hype, sondern Werkzeug. Sechs Wege, wie sie Ihrem KMU heute schon konkret Arbeit abnimmt — rund um die Uhr, ohne Mittagspause.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 KI use-cases -->
+  <section class="ablock awrap">
+    <div class="fbox-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="fbox">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <h3>Kundenservice-Bots</h3>
+        <p>Automatisieren Sie häufige Fragen, geben Sie personalisierte Empfehlungen und steigern Sie die Zufriedenheit — rund um die Uhr, unabhängig von Öffnungszeiten.</p>
+      </div>
+      <div class="fbox">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.7a2 2 0 002-1.6L23 6H6"/></svg></div>
+        <h3>Webshop-Chatbots</h3>
+        <p>Mehr Sales: Unsere Lösungen optimieren den Verkaufsprozess, fördern Cross-Selling und machen das Einkaufserlebnis Ihrer Kund:innen rundum besser.</p>
+      </div>
+      <div class="fbox">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+        <h3>Prompt-Engineering</h3>
+        <p>Prompts sind das Herzstück der Interaktion mit KI — die Befehle für das gewünschte Ergebnis. Je besser der Prompt, desto besser der Output. Wir wissen, worauf es ankommt.</p>
+      </div>
+      <div class="fbox">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></div>
+        <h3>Automatisierung</h3>
+        <p>Unsere Custom Bots übernehmen zeitintensive Routineaufgaben: mehr Effizienz, weniger Fehler, höhere Produktivität — und mehr Zeit für die interessanten Dinge.</p>
+      </div>
+      <div class="fbox">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+        <h3>Content-Erstellung</h3>
+        <p>Texte, Bilder, Videos: KI automatisiert Repetitives — vom Newsletter-Bot bis zu Social Media, Protokollen, PR-Artikeln und Stellenausschreibungen.</p>
+      </div>
+      <div class="fbox">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div>
+        <h3>Datenanalyse &amp; Prognosen</h3>
+        <p>Grosse Dokumente lesen, Trends ableiten, riesige Datenmengen auswerten und grafisch aufbereiten. Für KI ein Kinderspiel — für Sie ein Wettbewerbsvorteil.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Packages -->
+  <section class="ablock awrap">
+    <h2 class="ptitle" style="font-size:clamp(36px,5vw,76px);margin-bottom:clamp(28px,4vh,52px)">Pakete.</h2>
+    <div class="pkg">
+      <div class="pkg-row head">
+        <div class="cell">Umfang</div><div class="cell">Details</div><div class="cell">Technologie</div><div class="cell">Investition</div>
+      </div>
+      <div class="pkg-row">
+        <div class="cell"><h3>Quick-Win</h3><span class="sub">Sofort starten</span></div>
+        <div class="cell"><ul><li>Website-Chatbot</li><li>Auf Ihr Wissen trainiert</li><li>In Tagen live</li></ul></div>
+        <div class="cell"><span class="sub">GPT / Claude</span></div>
+        <div class="cell"><span class="price">ab CHF 1'500</span><span class="pnote">Setup</span></div>
+      </div>
+      <div class="pkg-row featured">
+        <span class="ptag">Empfohlen</span>
+        <div class="cell"><h3>KI-App</h3><span class="sub">Massgeschneidert</span></div>
+        <div class="cell"><ul><li>Individueller Use-Case</li><li>Daten-Integration</li><li>Sichere Bereitstellung</li></ul></div>
+        <div class="cell"><span class="sub">Custom Build</span></div>
+        <div class="cell"><span class="price">ab CHF 4'500</span><span class="pnote">Projektbasis</span></div>
+      </div>
+      <div class="pkg-row">
+        <div class="cell"><h3>Managed KI</h3><span class="sub">Mitwachsen</span></div>
+        <div class="cell"><ul><li>Betrieb &amp; Monitoring</li><li>Modell-Updates</li><li>Weiterentwicklung</li></ul></div>
+        <div class="cell"><span class="sub">Betrieb</span></div>
+        <div class="cell"><span class="price">auf Anfrage</span><span class="pnote">pro Monat</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="ablock awrap">
+    <div class="story" style="grid-template-columns:1fr 1fr">
+      <div class="faq">
+        <div class="mono" style="margin-bottom:24px">Prozess &amp; Technik</div>
+        <div class="item"><h4>Sind meine Daten sicher?</h4><p>Ja. Wir setzen auf datenschutz-konforme Architekturen — auf Wunsch mit europäischem Hosting oder lokalen Modellen. Ihre Daten bleiben Ihre Daten.</p></div>
+        <div class="item"><h4>Lohnt sich KI für mein KMU?</h4><p>Fast immer. Schon ein gut trainierter Chatbot spart täglich Stunden. Im Gespräch zeigen wir Ihnen konkrete, sofort umsetzbare Use-Cases.</p></div>
+      </div>
+      <div style="background:var(--paper);border:var(--hair) solid var(--line);padding:clamp(22px,2.4vw,34px)">
+        <div class="mono" style="margin-bottom:22px">Design &amp; Code Stack</div>
+        <div class="tags">
+          <span class="tag">OpenAI</span><span class="tag">Claude</span><span class="tag">RAG</span><span class="tag">LangChain</span><span class="tag">Pinecone</span><span class="tag">n8n</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="bigcta">
+    <a href="Kontakt.html" class="awrap" style="display:block">
+      <div class="row">
+        <div>
+          <div class="mono" style="margin-bottom:16px">Zusammenarbeit</div>
+          <h3>KI<br>einsetzen.</h3>
+        </div>
+        <span class="go">Erstgespräch vereinbaren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+      </div>
+    </a>
+  </div>
+
+</main>
+
+<footer class="footer" data-site-footer></footer>
+
+<style>
+  .footer .ftl { display:block; color:#fff; font-size:15px; margin-bottom:9px; }
+  .footer .ftl:hover { color: var(--muted); }
+</style>
+
+<script src="assets/tweaks.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/image-slot.js"></script>
+<script src="assets/media-edit.js"></script>
+<script src="assets/footer.js"></script>
+</body>
+</html>

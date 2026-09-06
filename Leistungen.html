@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leistungen — Vincent & Partner</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/swiss.css">
+<link rel="stylesheet" href="assets/aura.css">
+<style>
+  .svc-index { border-top: var(--hair) solid var(--line); }
+  .svc-item { display: grid; grid-template-columns: 90px 1fr auto; gap: clamp(16px,3vw,48px); align-items: center;
+    padding: clamp(26px,3.6vh,52px) 4px; border-bottom: var(--hair) solid var(--line); color: var(--ink); position: relative; }
+  @media (max-width: 720px){ .svc-item { grid-template-columns: 54px 1fr; } .svc-item .arr { display:none; } }
+  .svc-item .no { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .svc-item .ttl { display: block; font-family: var(--font-head); font-weight: var(--weight-head,600); letter-spacing: var(--track-head);
+    text-transform: uppercase; font-size: clamp(30px,4.6vw,68px); line-height: .92; transition: transform .3s ease; }
+  .svc-item .desc { display: block; color: var(--body-ink, var(--muted)); font-size: 20px; line-height: 1.55; margin-top: 10px; max-width: 52ch; }
+  .svc-item .arr { width: 44px; height: 44px; border: var(--hair) solid var(--line); border-radius: 50%; display:flex; align-items:center; justify-content:center; transition: background .25s, color .25s; }
+  .svc-item:hover .arr { background: var(--ink); color: var(--bg); }
+  .svc-item:hover .ttl { transform: translateX(14px); }
+  .svc-item .arr svg { width: 18px; height: 18px; }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
+    <nav class="nav-links">
+      <a href="About.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">About</a>
+      <a href="Referenzen.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 400; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">Work</a>
+      <a href="Webdesign.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Web</a>
+      <a href="Onlineshops.html" style="color: rgb(144, 144, 144); font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; letter-spacing: 0.5px">Shops</a>
+      <a href="SEA.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Online Marketing</a>
+      <a href="KI-Automation.html" style="font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">KI &amp; Automation</a>
+    </nav>
+    <a class="nav-cta" href="Kontakt.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 900; font-size: 14px">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="above">
+  <section class="ablock first awrap" data-screen-label="Leistungen Hero">
+    <div class="crumbs"><h1 class="here">Leistungen</h1></div>
+    <p class="ptitle">Fünf Wege<br>nach vorn.</p>
+    <p class="lead" style="max-width:46ch;margin-top:24px;color:var(--muted);font-size:clamp(16px,1.5vw,21px)">Strategie, Design und Technik aus einer Hand. Wählen Sie eine Disziplin — oder kombinieren Sie sie zum kompletten Auftritt.</p>
+  </section>
+
+  <section class="ablock awrap" style="padding-top:0">
+    <div class="svc-index">
+      <a class="svc-item" href="Webdesign.html">
+        <span class="no">(01)</span>
+        <span><span class="ttl">Webdesign</span><span class="desc">Massgeschneiderte Websites — Konzept, Design und Technik von A bis Z.</span></span>
+        <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+      </a>
+      <a class="svc-item" href="Onlineshops.html">
+        <span class="no">(02)</span>
+        <span><span class="ttl">Onlineshops</span><span class="desc">E-Commerce mit Bexio-Anbindung — Shops, die verkaufen und sauber abrechnen.</span></span>
+        <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+      </a>
+      <a class="svc-item" href="SEO.html">
+        <span class="no">(03)</span>
+        <span><span class="ttl">SEO &amp; GEO</span><span class="desc">Sichtbar bei Google und in der KI-Suche — nachhaltig statt Tricks.</span></span>
+        <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+      </a>
+      <a class="svc-item" href="SEA.html">
+        <span class="no">(04)</span>
+        <span><span class="ttl">SEA</span><span class="desc">Bezahlte Anzeigen bei Google &amp; Meta — sofort sichtbar, datengetrieben gesteuert.</span></span>
+        <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+      </a>
+      <a class="svc-item" href="KI.html">
+        <span class="no">(05)</span>
+        <span><span class="ttl">KI-Apps</span><span class="desc">ChatGPT, Chatbots und Custom Bots für KMU — sofort umsetzbar.</span></span>
+        <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <div class="bigcta">
+    <a href="Kontakt.html" class="awrap" style="display:block">
+      <div class="row">
+        <div>
+          <div class="mono" style="margin-bottom:16px">Noch unsicher?</div>
+          <h3>Reden wir<br>drüber.</h3>
+        </div>
+        <span class="go">Let's talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+      </div>
+    </a>
+  </div>
+</main>
+
+<footer class="footer" data-site-footer></footer>
+
+<style>
+  .footer .ftl { display:block; color:#fff; font-size:15px; margin-bottom:9px; }
+  .footer .ftl:hover { color: var(--muted); }
+</style>
+
+<script src="assets/tweaks.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/media-edit.js"></script>
+<script src="assets/footer.js"></script>
+</body>
+</html>

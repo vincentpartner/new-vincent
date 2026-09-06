@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Let's Talk — Vincent & Partner</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/swiss.css">
+<link rel="stylesheet" href="assets/aura.css">
+<style>
+  .k-wrap { display:grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(44px,6vw,108px); align-items:start; }
+  @media (max-width:920px){ .k-wrap{ grid-template-columns:1fr; gap:56px; } }
+
+  .k-left .h-giant { margin-top:22px; }
+  .k-left .lead { margin-top:30px; max-width:42ch; }
+  .k-channels { margin-top: clamp(44px,6vh,80px); border-top: var(--hair) solid var(--line); }
+  .k-ch { display:flex; align-items:baseline; gap:14px; padding:22px 2px; border-bottom: var(--hair) solid var(--line); }
+  .k-ch .lab { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); min-width:96px; font-weight:700; }
+  .k-ch a, .k-ch span.v { font-family:var(--font-head); font-weight:700; text-transform:uppercase; letter-spacing:-0.01em; font-size: clamp(18px,1.7vw,24px); }
+  .k-ch a:hover { color:var(--accent); }
+
+  /* Form card */
+  .k-form { border: var(--hair) solid var(--line); background: var(--bg); }
+  .k-form .fhd { padding: clamp(18px,2.4vw,26px) clamp(20px,2.6vw,30px); border-bottom: var(--hair) solid var(--line); }
+  .k-form .fhd p { margin:0; font-size:16px; color:var(--ink); }
+  .k-form .fhd p b { font-weight:700; }
+  .k-body2 { padding: clamp(20px,2.6vw,30px); display:flex; flex-direction:column; gap: clamp(20px,2.6vw,28px); }
+
+  .flabel { font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--ink); display:block; margin-bottom:10px; }
+  .flabel .opt { color:var(--muted); letter-spacing:.02em; }
+
+  .slots { display:grid; grid-template-columns: repeat(3,1fr); gap:10px; }
+  @media (max-width:520px){ .slots{ grid-template-columns: repeat(2,1fr);} }
+  .slot { appearance:none; cursor:pointer; text-align:center; background:var(--bg); color:var(--ink);
+    border: var(--hair) solid var(--line); padding:12px 6px; display:flex; flex-direction:column; gap:4px;
+    transition: background .15s, color .15s, transform .12s; font-family:var(--font-body); }
+  .slot .d { font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); transition:color .15s; }
+  .slot .t { font-family:var(--font-head); font-weight:700; font-size:20px; letter-spacing:-0.01em; }
+  .slot:hover { transform: translateY(-2px); }
+  .slot.sel { background:var(--ink); color:#fff; }
+  .slot.sel .d { color: rgba(255,255,255,.7); }
+  .slot.sel .t { color:#fff; }
+
+  /* Live/Fallback status badge */
+  .slotstatus { display:inline-flex; align-items:center; gap:7px; font-size:10px; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--muted); }
+  .slotstatus .dot { width:7px; height:7px; border-radius:50%; background:var(--muted); flex:none; }
+  .slotstatus[data-state="live"] { color:#1f8a5b; }
+  .slotstatus[data-state="live"] .dot { background:#1f8a5b; box-shadow:0 0 0 3px color-mix(in srgb,#1f8a5b 22%,transparent); }
+  .slotstatus[data-state="fallback"] { color:var(--accent); }
+  .slotstatus[data-state="fallback"] .dot { background:var(--accent); }
+  .slotstatus[data-state="loading"] .dot { animation: slotpulse 1s ease-in-out infinite; }
+  @keyframes slotpulse { 0%,100%{ opacity:.3; } 50%{ opacity:1; } }
+
+  .frow { display:grid; grid-template-columns: 1fr 1fr; gap: clamp(16px,2vw,22px); }
+  @media (max-width:560px){ .frow{ grid-template-columns:1fr; } }
+  .field { display:flex; flex-direction:column; }
+  .field input, .field select, .field textarea {
+    appearance:none; width:100%; font-family:var(--font-body); font-size:16px; color:var(--ink);
+    background:var(--bg); border:0; border-bottom: var(--hair) solid var(--line); padding:11px 2px; outline:none;
+    transition: border-color .15s; border-radius:0;
+  }
+  .field textarea { resize:vertical; min-height:84px; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
+  .field input::placeholder, .field textarea::placeholder { color: color-mix(in srgb, var(--muted) 85%, transparent); }
+  .field select { background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'><path fill='%23999' d='M0 0h12L6 7z'/></svg>"); background-repeat:no-repeat; background-position:right 2px center; padding-right:22px; }
+  .field.err input, .field.err select { border-color: var(--accent); }
+  .field .msg { color: var(--accent); font-size:12px; margin-top:6px; display:none; font-weight:700; }
+  .field.err .msg { display:block; }
+
+  .fsubmit { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .fsubmit .note { font-size:12px; color:var(--muted); max-width:30ch; }
+  .btn.block { width:auto; }
+
+  /* success */
+  .k-done { display:none; padding: clamp(28px,4vw,48px); text-align:left; }
+  .k-done.show { display:block; }
+  .k-form.done .k-body2, .k-form.done .fhd { display:none; }
+  .k-done .tick { width:54px; height:54px; border:var(--hair) solid var(--accent); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:20px; }
+  .k-done h3 { margin:0 0 12px; }
+  .k-done p { margin:0; color:var(--muted); max-width:46ch; }
+  .k-done .recap { margin-top:22px; border-top:var(--hair) solid var(--line); padding-top:16px; font-family:var(--font-head); font-weight:700; text-transform:uppercase; letter-spacing:-0.01em; font-size:20px; }
+  .k-done .recap a { text-decoration:underline; }
+  .bookmsg { display:none; color:var(--accent); font-size:13px; font-weight:700; }
+  .bookmsg.show { display:block; }
+  .btn.loading { opacity:.6; pointer-events:none; }
+
+  /* ── Standort / Karte ── */
+  .mapband { position: relative; width: 100%; background: var(--paper); }
+  .vpmap { position: relative; width: 100%; height: clamp(504px, 70vh, 744px); background: var(--paper); overflow: hidden; }
+  .vpmap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; filter: grayscale(1) contrast(1.04); }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
+    <nav class="nav-links">
+      <a href="About.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">About</a>
+      <a href="Referenzen.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 400; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">Work</a>
+      <a href="Webdesign.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Web</a>
+      <a href="Onlineshops.html" style="color: rgb(144, 144, 144); font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; letter-spacing: 0.5px">Shops</a>
+      <a href="SEA.html" style="font-family: &quot;Hanken Grotesk&quot;; color: rgb(144, 144, 144); font-size: 16px; letter-spacing: 0.5px">Online Marketing</a>
+      <a href="KI-Automation.html" style="font-family: &quot;Hanken Grotesk&quot;; font-size: 16px; color: rgb(144, 144, 144); letter-spacing: 0.5px">KI &amp; Automation</a>
+    </nav>
+    <a class="nav-cta" href="Kontakt.html" style="font-family: &quot;Hanken Grotesk&quot;; font-weight: 900; font-size: 14px">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<section class="section" data-screen-label="Kontakt">
+  <div class="wrap k-wrap">
+
+    <!-- LEFT -->
+    <div class="k-left">
+      <h1 class="kicker reveal"><span class="accent">(Let's Talk)</span> — Telefon oder Videocall</h1>
+      <p class="h-giant reveal">Reden<br>wir.</p>
+      <p class="lead reveal">Wählen Sie direkt einen freien Termin im Kalender von Reto Puma für ein unverbindliches Telefonat oder einen Videocall. Ihre Angaben werden automatisch übernommen.</p>
+
+      <div class="k-channels reveal">
+        <div class="k-ch"><span class="lab">Telefon</span><a href="tel:+41445346560">044 534 65 60</a></div>
+        <div class="k-ch"><span class="lab">E-Mail</span><a href="mailto:info@vincent-partner.ch">info@vincent-partner.ch</a></div>
+        <div class="k-ch"><span class="lab">Adresse</span><span class="v">Räffelstrasse 24<br>8045 Zürich</span></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: booking form -->
+    <div class="k-form reveal" id="form">
+      <div class="fhd">
+        <p>Kurz Ihre Angaben — dann öffnet sich der <b>Live-Kalender</b> mit allen freien Terminen.</p>
+      </div>
+
+      <form class="k-body2" id="bookForm" novalidate>
+        <div>
+          <label class="flabel" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <span>Nächste freie Termine</span>
+            <span class="slotstatus" id="slotStatus" data-state="loading"><span class="dot"></span><span class="txt">Kalender wird geladen…</span></span>
+          </label>
+          <div class="slots" id="slots"></div>
+          <div class="msg" id="slotMsg" style="color:var(--accent);font-size:12px;margin-top:8px;font-weight:700;display:none;">Bitte wählen Sie einen Termin.</div>
+        </div>
+
+        <div class="frow">
+          <div class="field" id="f-name">
+            <label class="flabel" for="i-name">Name</label>
+            <input id="i-name" type="text" placeholder="Vor- &amp; Nachname" autocomplete="name">
+            <span class="msg">Bitte Namen angeben.</span>
+          </div>
+          <div class="field" id="f-func">
+            <label class="flabel" for="i-func">Funktion</label>
+            <select id="i-func">
+              <option value="">Bitte wählen</option>
+              <option>Geschäftsführung / Inhaber:in</option>
+              <option>Marketing / Kommunikation</option>
+              <option>IT / Technik</option>
+              <option>Vertrieb / Sales</option>
+              <option>Andere</option>
+            </select>
+            <span class="msg">Bitte Funktion wählen.</span>
+          </div>
+        </div>
+
+        <div class="frow">
+          <div class="field" id="f-company">
+            <label class="flabel" for="i-company">Unternehmen</label>
+            <input id="i-company" type="text" placeholder="Firmenname" autocomplete="organization">
+            <span class="msg">Bitte Unternehmen angeben.</span>
+          </div>
+          <div class="field" id="f-email">
+            <label class="flabel" for="i-email">E-Mail</label>
+            <input id="i-email" type="email" placeholder="name@unternehmen.ch" autocomplete="email">
+            <span class="msg">Bitte gültige E-Mail angeben.</span>
+          </div>
+        </div>
+
+        <div class="field" id="f-msg">
+          <label class="flabel" for="i-msg">Ihr Anliegen <span class="opt" id="msgOpt">(optional)</span></label>
+          <textarea id="i-msg" placeholder="Kurz zu Ihrer Ausgangslage…"></textarea>
+        </div>
+
+        <div class="fsubmit">
+          <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <span class="note">Mit dem Bestätigen wird Ihr Termin direkt eingetragen — Sie und Reto Puma erhalten eine Kalendereinladung inkl. Google-Meet-Link.</span>
+          <span class="bookmsg" id="bookMsg"></span>
+          <button class="btn accent-fill block" type="submit">Termin bestätigen <span class="arr">→</span></button>
+        </div>
+      </form>
+
+      <div class="k-done" id="done">
+        <div class="tick">✓</div>
+        <h3 class="h-2" id="doneTitle">Termin gebucht!</h3>
+        <p id="doneText">Ihr Termin mit Reto Puma ist im Kalender eingetragen. Sie erhalten die Bestätigung mit allen Details per E-Mail.</p>
+        <div class="recap" id="recap"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Standort / Karte -->
+<section class="mapband" aria-label="Standort auf der Karte">
+  <div class="vpmap">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3216.2246662366665!2d8.5129903!3d47.3636813!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479009f44754984b%3A0xdaf1306ab0682c4e!2sVincent%20%26%20Partner!5e0!3m2!1sde!2sch!4v1780866217284!5m2!1sde!2sch" title="Standort Vincent &amp; Partner" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+  </div>
+</section>
+
+<footer class="footer" data-site-footer></footer>
+
+<script src="assets/tweaks.js"></script>
+<script src="assets/site.js"></script>
+<!--
+  ════════ TERMINBUCHUNG ÜBER EIGENEN GOOGLE-KALENDER ════════
+  availability.php liefert freie 1,5-h-Slots, book.php legt den Termin an und
+  lädt beide Seiten ein (inkl. Google-Meet-Link). Beides liegt auf Hostpoint im
+  Ordner /kalender/ (Token/Refresh-Token bleiben serverseitig geheim).
+  Pfade relativ (same-origin), siehe CONFIG unten.
+-->
+<script>
+(function(){
+  const CONFIG = {
+    // Eigenes Kalender-Backend, same-origin auf Hostpoint (kein CORS)
+    availUrl: '/kalender/availability.php',
+    bookUrl:  '/kalender/book.php'
+  };
+  const FORM_T0 = Date.now(); // Ladezeitpunkt – Server weist Absenden in < 3 s still ab (Bot-Schutz)
+  const DAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const TIMES = ['09:00','10:30','14:00','16:00'];
+  const pad = n => String(n).padStart(2,'0');
+  const wrap = document.getElementById('slots');
+  const statusEl = document.getElementById('slotStatus');
+  let selected = null, live = false;
+
+  function setStatus(state, text){
+    if (!statusEl) return;
+    statusEl.dataset.state = state;
+    statusEl.querySelector('.txt').textContent = text;
+  }
+
+  function fmtSlotFromDate(dt, fallbackTime){
+    const d = new Date(dt.getTime());
+    if (fallbackTime){ const p = fallbackTime.split(':'); d.setHours(+p[0], +p[1], 0, 0); }
+    const t = pad(d.getHours())+':'+pad(d.getMinutes());
+    return {
+      day: DAYS[d.getDay()],
+      label: d.getDate()+'.'+(d.getMonth()+1)+'.',
+      time: t,
+      iso: d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),
+      month: d.getFullYear()+'-'+pad(d.getMonth()+1),
+      startISO: d.toISOString(),
+      url: null
+    };
+  }
+
+  function generatedSlots(){
+    const out = [];
+    let d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+1);
+    let ti = 0;
+    while (out.length < 6) {
+      const dow = d.getDay();
+      if (dow !== 0 && dow !== 6) { out.push(fmtSlotFromDate(new Date(d), TIMES[ti % TIMES.length])); ti++; }
+      d = new Date(d.getTime() + 86400000);
+    }
+    return out;
+  }
+
+  function render(slots){
+    wrap.innerHTML = '';
+    slots.forEach((s) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'slot';
+      b.innerHTML = '<span class="d">'+s.day+' '+s.label+'</span><span class="t">'+s.time+'</span>';
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.slot').forEach(x => x.classList.remove('sel'));
+        b.classList.add('sel'); selected = s;
+        document.getElementById('slotMsg').style.display = 'none';
+      });
+      wrap.appendChild(b);
+    });
+  }
+
+  // Echte freie Zeiten aus dem Google-Kalender laden; sonst Fallback anzeigen.
+  async function loadSlots(){
+    setStatus('loading', 'Kalender wird geladen…');
+    try {
+      const r = await fetch(CONFIG.availUrl, { headers: { 'Accept':'application/json' } });
+      if (r.ok) {
+        const data = await r.json();
+        const coll = (data && data.collection) || [];
+        const avail = coll.filter(x => !x.status || x.status === 'available').slice(0, 6);
+        if (avail.length) {
+          live = true;
+          setStatus('live', 'Live-Kalender');
+          render(avail.map(x => {
+            const s = fmtSlotFromDate(new Date(x.start_time));
+            s.startISO = x.start_time;
+            return s;
+          }));
+          return;
+        }
+      }
+    } catch (e) { /* fällt auf generierte Slots zurück */ }
+    live = false;
+    setStatus('fallback', 'Vorschläge · Live-Kalender nicht erreichbar');
+    render(generatedSlots());
+  }
+  loadSlots();
+
+  const form = document.getElementById('bookForm');
+  const gv = id => document.getElementById(id).value.trim();
+  function setErr(id, on){ document.getElementById(id).classList.toggle('err', on); }
+  function bookMsg(text){ const m=document.getElementById('bookMsg'); m.textContent=text; m.classList.toggle('show', !!text); }
+
+  function showDone(name, data){
+    const dt = new Date(data.start);
+    const when = dt.toLocaleDateString('de-CH', { weekday:'long', day:'2-digit', month:'long' })
+               + ', ' + dt.toLocaleTimeString('de-CH', { hour:'2-digit', minute:'2-digit' }) + ' Uhr';
+    const title = document.getElementById('doneTitle');
+    const text  = document.getElementById('doneText');
+    if (data.fallback) {
+      title.textContent = 'Anfrage eingegangen!';
+      text.textContent  = 'Vielen Dank! Wir haben Ihre Terminanfrage erhalten und bestätigen sie in Kürze persönlich per E-Mail.';
+    } else {
+      title.textContent = 'Termin gebucht!';
+      text.textContent  = 'Ihr Termin mit Reto Puma ist im Kalender eingetragen. Sie erhalten die Einladung mit allen Details per E-Mail.';
+    }
+    let html = (name ? ((data.fallback ? 'Anfrage von ' : 'Gebucht für ') + name + ' · ') : '') + when;
+    if (data.meet) html += '<br><a href="' + data.meet + '" target="_blank" rel="noopener">Google-Meet-Link öffnen</a>';
+    document.getElementById('recap').innerHTML = html;
+    document.querySelector('.k-form').classList.add('done');
+    document.getElementById('done').classList.add('show');
+    const el = document.getElementById('form');
+    const y = el.getBoundingClientRect().top + window.scrollY - 120;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+
+  // Konfiguration aus dem Preisrechner übernehmen (von Webdesign.html / SEA.html)
+  let calcSummary = '';
+  try {
+    const raw = localStorage.getItem('vp:calc-request');
+    if (raw) {
+      const d = JSON.parse(raw);
+      if (d && d.summary && Date.now() - (d.ts || 0) < 864e5) {
+        calcSummary = d.summary;
+        const msg = document.getElementById('i-msg');
+        if (msg) {
+          msg.value = msg.value.trim() ? msg.value.trim() + '\n\n' + d.summary : d.summary;
+          msg.rows = 12;
+          msg.style.minHeight = '240px';
+        }
+        const opt = document.getElementById('msgOpt');
+        if (opt) opt.textContent = '(aus dem Preisrechner übernommen)';
+      }
+      localStorage.removeItem('vp:calc-request');
+    }
+  } catch (e) {}
+
+  async function submitBooking(){
+    bookMsg('');
+    const btn = form.querySelector('button[type=submit]');
+    btn.classList.add('loading');
+    const payload = {
+      name: gv('i-name'), email: gv('i-email'), company: gv('i-company'),
+      func: document.getElementById('i-func').value, message: gv('i-msg'),
+      start: selected ? selected.startISO : '', website: gv('hp-website'),
+      t: FORM_T0,
+      calc: calcSummary
+    };
+    try {
+      const r = await fetch(CONFIG.bookUrl, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
+      });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.ok) { showDone(payload.name, data); return; }
+      if (r.status === 409) { bookMsg('Dieser Termin wurde gerade vergeben — bitte wählen Sie einen anderen.'); loadSlots(); }
+      else if (r.status === 429) { bookMsg('Zu viele Anfragen. Bitte versuchen Sie es später erneut.'); }
+      else { bookMsg('Buchung fehlgeschlagen. Bitte rufen Sie an (044 534 65 60) oder schreiben Sie uns.'); }
+    } catch (e) {
+      bookMsg('Verbindung fehlgeschlagen. Bitte rufen Sie an (044 534 65 60) oder schreiben Sie uns.');
+    } finally {
+      btn.classList.remove('loading');
+    }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let ok = true;
+    if (!selected) { document.getElementById('slotMsg').style.display='block'; ok = false; }
+    const name = gv('i-name');
+    const func = document.getElementById('i-func').value;
+    const comp = gv('i-company');
+    const email = gv('i-email');
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setErr('f-name', !name); if(!name) ok=false;
+    setErr('f-func', !func); if(!func) ok=false;
+    setErr('f-company', !comp); if(!comp) ok=false;
+    setErr('f-email', !emailOk); if(!emailOk) ok=false;
+    if (!ok) return;
+    submitBooking();
+  });
+})();
+</script>
+<script src="assets/media-edit.js"></script>
+<script src="assets/footer.js"></script>
+</body>
+</html>
