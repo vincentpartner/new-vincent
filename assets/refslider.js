@@ -41,18 +41,18 @@
     update();
 
     // Drag / swipe with pointer
-    var down=false, startX=0, startScroll=0, moved=0;
+    var down=false, startX=0, startScroll=0, moved=0, dragged=false;
     track.addEventListener('pointerdown', function(e){
       if(e.pointerType==='mouse' && e.button!==0) return;
       stopAnim();
-      down=true; moved=0; startX=e.clientX; startScroll=track.scrollLeft;
-      track.classList.add('dragging');
+      down=true; moved=0; dragged=false; startX=e.clientX; startScroll=track.scrollLeft;
     });
     track.addEventListener('pointermove', function(e){
       if(!down) return;
       var dx = e.clientX - startX;
       moved = Math.max(moved, Math.abs(dx));
-      track.scrollLeft = startScroll - dx;
+      if(moved > 6 && !dragged){ dragged = true; track.classList.add('dragging'); }
+      if(dragged) track.scrollLeft = startScroll - dx;
     });
     function end(){
       if(!down) return;
@@ -63,9 +63,9 @@
     track.addEventListener('pointerup', end);
     track.addEventListener('pointercancel', end);
     track.addEventListener('pointerleave', end);
-    // Suppress click after a real drag
+    // Nur ein echter Drag unterdrückt den Klick — und nur einmal.
     track.addEventListener('click', function(e){
-      if(moved > 6){ e.preventDefault(); e.stopPropagation(); }
+      if(dragged){ e.preventDefault(); e.stopPropagation(); dragged=false; moved=0; }
     }, true);
   }
 
@@ -87,7 +87,13 @@
       }
       if(!grid) grid = doc.querySelector('.refs');
       if(!grid) return;
-      var cards = grid.querySelectorAll('.refc');
+      var cards = Array.prototype.slice.call(grid.querySelectorAll('.refc'));
+      // data-rs-extra="Referenz-x.html,…": zusätzliche Kacheln aus anderen Gruppen anhängen
+      var extra = (track.getAttribute('data-rs-extra')||'').split(',').map(function(s){return s.trim();}).filter(Boolean);
+      extra.forEach(function(href){
+        var c = doc.querySelector('.refc[href="'+href+'"]');
+        if(c && cards.indexOf(c) === -1) cards.push(c);
+      });
       if(!cards.length) return;
       var frag = document.createDocumentFragment();
       for(var j=0;j<cards.length;j++){

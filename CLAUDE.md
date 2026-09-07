@@ -83,7 +83,7 @@ Die Buchung läuft über ein **selbst gehostetes Google-Kalender-Backend** im Or
 - Deploy: kein separater export/-Ordner mehr. Sidecars in-place materialisieren (siehe To-dos),
   dann Projekt-Root + kalender/ auf Hostpoint hochladen.
 - Seiten: index, About, Leistungen, Webdesign, Onlineshops, SEO, SEA, KI, KI-Automation,
-  Referenzen, Referenz-* (21 Detailseiten: 12 Webseiten, 4 Onlineshops, 5 Onlinemarketing), Kontakt.
+  Referenzen, Referenz-* (20 Detailseiten: 12 Webseiten, 4 Onlineshops, 4 Onlinemarketing), Kontakt.
   Alte Tilda-Referenzseiten (allvisa, en111, pkbasf, pkkfmv, eldur, rigaflex, Brawand) sind gelöscht.
 - Slider auf Webdesign/Onlineshops/SEA und Focus auf index ziehen Kacheln, Bild und Zuschnitt live aus
   Referenzen.html (refslider.js `data-rs-source/-group`, image-slot `data-mirror="referenzen"`,

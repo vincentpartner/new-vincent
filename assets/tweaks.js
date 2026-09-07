@@ -375,7 +375,7 @@
   let panel, openState = false, ui = {};
 
   const MODE_CSS = `
-  .vp-mode{appearance:none;-webkit-appearance:none;border:0;background:none;padding:2px 8px;cursor:pointer;
+  .vp-mode{appearance:none;-webkit-appearance:none;border:0;background:none;padding:2px 8px;cursor:pointer;margin-right:-8px;
     flex:0 0 auto;display:inline-flex;align-items:center;color:var(--ink);transition:opacity .2s;}
   .vp-mode:hover{opacity:.6;}
   .vp-mode .sw{width:52px;height:26px;display:block;}

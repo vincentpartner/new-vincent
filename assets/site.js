@@ -3,6 +3,23 @@
   function ready(fn) { document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn(); }
 
   ready(function () {
+    // Soft page exit: fade body out (120 ms) before following an internal link; restore on bfcache return.
+    if (matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+      document.addEventListener('click', function (e) {
+        const a = e.target.closest('a[href]');
+        if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (a.target && a.target !== '_self') return;
+        if (a.hasAttribute('download') || /^(mailto|tel|javascript):/.test(a.getAttribute('href'))) return;
+        const url = new URL(a.href, location.href);
+        if (url.origin !== location.origin) return;
+        if (url.pathname === location.pathname && url.hash) return;
+        e.preventDefault();
+        document.documentElement.setAttribute('data-leaving', '');
+        setTimeout(() => { location.href = url.href; }, 120);
+      });
+      window.addEventListener('pageshow', () => document.documentElement.removeAttribute('data-leaving'));
+    }
+
     // Mobile nav
     const nav = document.querySelector('.nav');
     const burger = document.querySelector('.nav-burger');

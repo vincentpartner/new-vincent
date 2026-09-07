@@ -425,6 +425,7 @@
       // Shadow-DOM listeners live with the shadow DOM — bound once here so
       // disconnect/reconnect (e.g. React remount) doesn't stack handlers.
       this._empty.addEventListener('click', (e) => {
+        if (!this.hasAttribute('data-editable')) return; // read-only (Spiegel/Host): Link normal
         e.preventDefault(); e.stopPropagation();
         // Two distinct affordances in the empty state: "Bild-URL" opens the
         // URL field, anything else opens the file picker.
@@ -889,7 +890,9 @@
 
       // Controls and reframe entry gate on this so share links stay read-only.
       const mirror = this.getAttribute('data-mirror');
-      const shared = mirror && mirror === STORE_NAME; // Store zeigt bereits auf die Quelle → normal editierbar
+      // Nur auf der Quellseite selbst editierbar (Dateiname = Store) — auf Slider-/
+      // Focus-Seiten bleiben gespiegelte Kacheln reine Links.
+      const shared = mirror && mirror === STORE_NAME && PAGE.replace(/\.html?$/, '') === mirror;
       if (mirror && !shared && !this._mirrorReq) { this._mirrorReq = true; loadMirror(mirror); }
       const editable = (!mirror || shared) && !!(window.omelette && window.omelette.writeFile);
       this.toggleAttribute('data-editable', editable);
