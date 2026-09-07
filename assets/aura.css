@@ -316,7 +316,10 @@ html[data-mode="Dunkel"] .bigcta.fluidcta[data-fluid="coffee"] canvas { filter: 
 
 /* ---------- Shared site footer (injected by footer.js) ---------- */
 .footer .wrap { width: 100%; }
-.ft-grid { display: grid; grid-template-columns: 1.4fr 0.8fr 1fr; gap: clamp(34px,3vw,55px); padding-block: clamp(55px,8vh,89px); align-items: start; }
+/* Vier Spalten: Let's talk · Leistungen · Aktuell · Kontakt */
+.ft-grid { display: grid; grid-template-columns: 1.4fr 0.8fr 0.8fr 1fr; gap: clamp(34px,3vw,55px); padding-block: clamp(55px,8vh,89px); align-items: start; }
+/* Tablet: Let's talk über die volle Breite, darunter die drei Linkspalten */
+@media (max-width: 1000px){ .ft-grid { grid-template-columns: 1fr 1fr 1fr; } .ft-grid > div:first-child { grid-column: 1 / -1; } }
 @media (max-width: 760px){ .ft-grid { grid-template-columns: 1fr; gap: 40px; } }
 .lets-talk { font-family: var(--font-head); font-weight: var(--weight-head, 700); letter-spacing: var(--track-head); font-size: clamp(64px,10vw,150px); line-height: .82; color: #F4F4F2; }
 .ft-col h4 { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(244,244,242,.55); margin: 0 0 18px; font-weight: 700; }
