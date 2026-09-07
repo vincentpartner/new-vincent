@@ -5,16 +5,41 @@
    - Gyro-Steuerung: Neigt man das Gerät, fallen die Buchstaben in diese Richtung.
      (iOS fragt die Berechtigung beim ersten Antippen der Fläche an.)
    Wird von falling-letters.js über window.__flMobileSetup() aufgerufen,
-   sobald der Container schmaler als 640px ist. */
+   sobald der Container schmaler als 640px ist.
+   Jede Instanz besitzt einen destroy()-Pfad; der Resize-Handler wird nur
+   einmal pro Container registriert (kein Leak, keine Duplikate beim Rebuild). */
 (function () {
   function hexFromVar(el, name, fallback) {
     const v = getComputedStyle(el).getPropertyValue(name).trim();
     return v || fallback;
   }
 
+  // Resize-Handler genau EINMAL pro Container (gleiche Sperre wie in
+  // falling-letters.js: container.__flResize). Räumt die aktive Instanz ab
+  // und baut über den Router genau eine neue auf.
+  function ensureResize(container) {
+    if (container.__flResize) return;
+    let rT;
+    const onResize = () => {
+      clearTimeout(rT);
+      rT = setTimeout(() => {
+        const inst = container.__flInstance;
+        if (!inst) return;
+        const w = container.clientWidth;
+        if (Math.abs(w - inst.width) < 40) return;
+        inst.destroy();
+        // Über den Router neu aufbauen (wählt Mobile- oder Desktop-Variante)
+        (window.__flSetupAny || window.__flMobileSetup)(container);
+      }, 250);
+    };
+    window.addEventListener('resize', onResize);
+    container.__flResize = onResize;
+  }
+
   window.__flMobileSetup = function setup(container) {
     if (container.__fl) return;
     container.__fl = true;
+    ensureResize(container);
 
     const { Engine, Render, Bodies, Composite, Body, MouseConstraint, Mouse, Events } = Matter;
 
@@ -53,6 +78,14 @@
     // Boden leicht oberhalb der Unterkante (= leicht oberhalb des ersten Textes darunter).
     const FLOOR_LIFT = 14;
     const floorY = height - FLOOR_LIFT;
+
+    // Alle Timer dieser Instanz merken, damit destroy() sie abräumen kann.
+    const timers = new Set();
+    function later(fn, ms) {
+      const id = setTimeout(() => { timers.delete(id); fn(); }, ms);
+      timers.add(id);
+      return id;
+    }
 
     // Die grössten Buchstaben: jeder Buchstabe nimmt gut 60% der Breite ein.
     // Das Wort muss nicht quer Platz haben — die Buchstaben stapeln sich.
@@ -104,7 +137,7 @@
     }
 
     function spawnWord(word, color, delay) {
-      setTimeout(() => {
+      later(() => {
         const c = document.createElement('canvas');
         const cx = c.getContext('2d');
         cx.font = fontStyle;
@@ -119,7 +152,7 @@
           const jitter = (Math.random() - 0.5) * width * 0.06;
           let xCenter = width * slots[index % slots.length] + jitter;
           xCenter = Math.max(min, Math.min(max, xCenter));
-          setTimeout(() => {
+          later(() => {
             Composite.add(engine.world, makeLetter(char, xCenter, dropHeight, color));
           }, index * 420);
         });
@@ -133,6 +166,10 @@
       words.forEach((w, i) => {
         spawnWord(w, inkCol, i * 2500); // erstes Wort sofort
       });
+    }
+
+    function clearLetters() {
+      Composite.allBodies(engine.world).forEach(b => { if (b.render.text) Composite.remove(engine.world, b); });
     }
 
     Events.on(render, 'afterRender', () => {
@@ -184,7 +221,7 @@
           typeof DeviceOrientationEvent.requestPermission === 'function') {
         // iOS: Berechtigung braucht eine Nutzer-Geste
         DeviceOrientationEvent.requestPermission()
-          .then(s => { if (s === 'granted') window.addEventListener('deviceorientation', onOrient); })
+          .then(s => { if (s === 'granted' && !destroyed) window.addEventListener('deviceorientation', onOrient); })
           .catch(() => {});
       }
     }
@@ -205,19 +242,23 @@
     render.canvas.style.zIndex = '1';
 
     let paused = false;
+    let destroyed = false;
+    let rafId = 0;
     let last = performance.now();
-    (function tick(now) {
+    function tick(now) {
+      if (destroyed) return;
       const dt = Math.min(32, (now || performance.now()) - last);
       last = now || performance.now();
       if (!paused) Engine.update(engine, dt);
-      requestAnimationFrame(tick);
-    })(performance.now());
+      rafId = requestAnimationFrame(tick);
+    }
+    tick(performance.now());
 
     startSpawns();
 
     // Tweaks: Schrift/Case-Wechsel -> neu aufbauen
     let lastCase = caseMode();
-    document.addEventListener('tweaks:apply', () => {
+    function onTweaks() {
       const fam = headFamily();
       const cs = caseMode();
       if (fam === fontFamily && cs === lastCase) return;
@@ -225,10 +266,11 @@
       lastCase = cs;
       words = applyCase(rawWords);
       fitFont();
-      Composite.allBodies(engine.world).forEach(b => { if (b.render.text) Composite.remove(engine.world, b); });
+      clearLetters();
       startedSpawn = false;
       startSpawns();
-    });
+    }
+    document.addEventListener('tweaks:apply', onTweaks);
 
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
@@ -239,25 +281,40 @@
     io.observe(container);
 
     const resetBtn = document.querySelector(container.dataset.reset || '');
-    if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
-        Composite.allBodies(engine.world).forEach(b => { if (b.render.text) Composite.remove(engine.world, b); });
-        startedSpawn = false;
-        startSpawns();
-      });
+    function onReset() {
+      clearLetters();
+      startedSpawn = false;
+      startSpawns();
+    }
+    if (resetBtn) resetBtn.addEventListener('click', onReset);
+
+    // Vollständiger Abbau dieser Instanz: Tick-Schleife, Observer, Listener
+    // (inkl. Gyro/Touch), offene Timer, Canvas und Engine.
+    function destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      paused = true;
+      cancelAnimationFrame(rafId);
+      timers.forEach(clearTimeout);
+      timers.clear();
+      io.disconnect();
+      document.removeEventListener('tweaks:apply', onTweaks);
+      if (resetBtn) resetBtn.removeEventListener('click', onReset);
+      window.removeEventListener('deviceorientation', onOrient);
+      container.removeEventListener('touchend', tryEnableGyro);
+      Events.off(mc);
+      Events.off(render);
+      Render.stop(render);
+      render.canvas.remove();
+      Composite.clear(engine.world, false, true);
+      Engine.clear(engine);
+      if (container.__engine === engine) container.__engine = null;
+      if (container.__render === render) container.__render = null;
+      if (container.__flInstance === inst) container.__flInstance = null;
+      container.__fl = false;
     }
 
-    let rT;
-    window.addEventListener('resize', () => {
-      clearTimeout(rT);
-      rT = setTimeout(() => {
-        const w = container.clientWidth;
-        if (Math.abs(w - width) < 40) return;
-        Render.stop(render); paused = true;
-        render.canvas.remove(); container.__fl = false;
-        // Über den Router neu aufbauen (wählt Mobile- oder Desktop-Variante)
-        (window.__flSetupAny || setup)(container);
-      }, 250);
-    });
+    const inst = { width, destroy };
+    container.__flInstance = inst;
   };
 })();
