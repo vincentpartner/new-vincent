@@ -2,12 +2,13 @@
 <html lang="de">
 <head>
 <script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
-(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Let's Talk — Vincent & Partner</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/swiss.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <style>
   .k-wrap { display:grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(44px,6vw,108px); align-items:start; }
@@ -39,9 +40,13 @@
   .slot .d { font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); transition:color .15s; }
   .slot .t { font-family:var(--font-head); font-weight:700; font-size:20px; letter-spacing:-0.01em; }
   .slot:hover { transform: translateY(-2px); }
-  .slot.sel { background:var(--ink); color:#fff; }
-  .slot.sel .d { color: rgba(255,255,255,.7); }
-  .slot.sel .t { color:#fff; }
+  .slot.sel { background:var(--ink); color:var(--bg); }
+  .slot.sel .d { color: color-mix(in srgb, var(--bg) 78%, transparent); }
+  .slot.sel .t { color:var(--bg); }
+  .slot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .slot[aria-pressed="true"] .d { font-weight:700; }
+  .slots-empty { grid-column:1/-1; font-size:14px; color:var(--muted); padding:14px 0; }
+  .slots-empty a { text-decoration:underline; }
 
   /* Live/Fallback status badge */
   .slotstatus { display:inline-flex; align-items:center; gap:7px; font-size:10px; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--muted); }
@@ -84,19 +89,20 @@
   .k-done .recap a { text-decoration:underline; }
   .bookmsg { display:none; color:var(--accent); font-size:13px; font-weight:700; }
   .bookmsg.show { display:block; }
-  .btn.loading { opacity:.6; pointer-events:none; }
+  .btn.loading, .btn:disabled { opacity:.6; pointer-events:none; }
 
   /* ── Standort / Karte ── */
   .mapband { position: relative; width: 100%; background: var(--paper); }
   .vpmap { position: relative; width: 100%; height: clamp(504px, 70vh, 744px); background: var(--paper); overflow: hidden; }
   .vpmap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; filter: grayscale(1) contrast(1.04); }
 </style>
+<link rel="stylesheet" href="assets/mobile.css">
 </head>
 <body>
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="site-nav-links">
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
@@ -106,7 +112,7 @@
       <a href="KI-Automation.html">KI</a>
     </nav>
     <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
-    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+    <button class="nav-burger" aria-label="Menü" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
 
@@ -129,28 +135,28 @@
     <!-- RIGHT: booking form -->
     <div class="k-form reveal" id="form">
       <div class="fhd">
-        <p>Kurz Ihre Angaben — dann öffnet sich der <b>Live-Kalender</b> mit allen freien Terminen.</p>
+        <p id="fhdText">Kurz Ihre Angaben — dann öffnet sich der <b>Live-Kalender</b> mit allen freien Terminen. Zeiten in Schweizer Zeit (Zürich).</p>
       </div>
 
       <form class="k-body2" id="bookForm" novalidate>
         <div>
-          <label class="flabel" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+          <div class="flabel" id="slotsLabel" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
             <span>Nächste freie Termine</span>
-            <span class="slotstatus" id="slotStatus" data-state="loading"><span class="dot"></span><span class="txt">Kalender wird geladen…</span></span>
-          </label>
-          <div class="slots" id="slots"></div>
-          <div class="msg" id="slotMsg" style="color:var(--accent);font-size:12px;margin-top:8px;font-weight:700;display:none;">Bitte wählen Sie einen Termin.</div>
+            <span class="slotstatus" id="slotStatus" data-state="loading" role="status" aria-live="polite"><span class="dot"></span><span class="txt">Kalender wird geladen…</span></span>
+          </div>
+          <div class="slots" id="slots" role="group" aria-labelledby="slotsLabel" aria-describedby="slotMsg"></div>
+          <div class="msg" id="slotMsg" role="alert" style="color:var(--accent);font-size:12px;margin-top:8px;font-weight:700;display:none;">Bitte wählen Sie einen Termin.</div>
         </div>
 
         <div class="frow">
           <div class="field" id="f-name">
             <label class="flabel" for="i-name">Name</label>
-            <input id="i-name" type="text" placeholder="Vor- &amp; Nachname" autocomplete="name">
-            <span class="msg">Bitte Namen angeben.</span>
+            <input id="i-name" type="text" placeholder="Vor- &amp; Nachname" autocomplete="name" required aria-required="true" aria-describedby="e-name">
+            <span class="msg" id="e-name">Bitte Namen angeben.</span>
           </div>
           <div class="field" id="f-func">
             <label class="flabel" for="i-func">Funktion</label>
-            <select id="i-func">
+            <select id="i-func" required aria-required="true" aria-describedby="e-func">
               <option value="">Bitte wählen</option>
               <option>Geschäftsführung / Inhaber:in</option>
               <option>Marketing / Kommunikation</option>
@@ -158,37 +164,38 @@
               <option>Vertrieb / Sales</option>
               <option>Andere</option>
             </select>
-            <span class="msg">Bitte Funktion wählen.</span>
+            <span class="msg" id="e-func">Bitte Funktion wählen.</span>
           </div>
         </div>
 
         <div class="frow">
           <div class="field" id="f-company">
             <label class="flabel" for="i-company">Unternehmen</label>
-            <input id="i-company" type="text" placeholder="Firmenname" autocomplete="organization">
-            <span class="msg">Bitte Unternehmen angeben.</span>
+            <input id="i-company" type="text" placeholder="Firmenname" autocomplete="organization" required aria-required="true" aria-describedby="e-company">
+            <span class="msg" id="e-company">Bitte Unternehmen angeben.</span>
           </div>
           <div class="field" id="f-email">
             <label class="flabel" for="i-email">E-Mail</label>
-            <input id="i-email" type="email" placeholder="name@unternehmen.ch" autocomplete="email">
-            <span class="msg">Bitte gültige E-Mail angeben.</span>
+            <input id="i-email" type="email" placeholder="name@unternehmen.ch" autocomplete="email" required aria-required="true" aria-describedby="e-email">
+            <span class="msg" id="e-email">Bitte gültige E-Mail angeben.</span>
           </div>
         </div>
 
         <div class="field" id="f-msg">
           <label class="flabel" for="i-msg">Ihr Anliegen <span class="opt" id="msgOpt">(optional)</span></label>
           <textarea id="i-msg" placeholder="Kurz zu Ihrer Ausgangslage…"></textarea>
+          <span class="note" id="calcNote" style="display:none;font-size:12px;color:var(--muted);margin-top:8px;">Die Angaben aus dem Preisrechner stehen oben im Anliegen und werden mit dem Formular an uns übermittelt. Sie können sie vor dem Absenden bearbeiten oder löschen.</span>
         </div>
 
         <div class="fsubmit">
           <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-          <span class="note">Mit dem Bestätigen wird Ihr Termin direkt eingetragen — Sie und Reto Puma erhalten eine Kalendereinladung inkl. Google-Meet-Link.</span>
-          <span class="bookmsg" id="bookMsg"></span>
-          <button class="btn accent-fill block" type="submit">Termin bestätigen <span class="arr">→</span></button>
+          <span class="note" id="submitNote">Mit dem Bestätigen wird Ihr Termin direkt eingetragen — Sie und Reto Puma erhalten eine Kalendereinladung inkl. Google-Meet-Link. <a href="Datenschutz.html" style="text-decoration:underline">Datenschutz</a></span>
+          <span class="bookmsg" id="bookMsg" role="alert" aria-live="assertive"></span>
+          <button class="btn accent-fill block" type="submit" id="submitBtn">Termin bestätigen <span class="arr">→</span></button>
         </div>
       </form>
 
-      <div class="k-done" id="done">
+      <div class="k-done" id="done" role="status" aria-live="polite">
         <div class="tick">✓</div>
         <h3 class="h-2" id="doneTitle">Termin gebucht!</h3>
         <p id="doneText">Ihr Termin mit Reto Puma ist im Kalender eingetragen. Sie erhalten die Bestätigung mit allen Details per E-Mail.</p>
@@ -219,184 +226,224 @@
 -->
 <script>
 (function(){
-  const CONFIG = {
-    // Eigenes Kalender-Backend, same-origin auf Hostpoint (kein CORS)
-    availUrl: 'https://api.vincent-partner.ch/availability.php',
-    bookUrl:  'https://api.vincent-partner.ch/book.php'
-  };
-  const FORM_T0 = Date.now(); // Ladezeitpunkt – Server weist Absenden in < 3 s still ab (Bot-Schutz)
+  const CONFIG = { availUrl: '/kalender/availability.php', bookUrl: '/kalender/book.php' };
+  const TZ = 'Europe/Zurich';
+  const FORM_T0 = Date.now(); // Server weist Absenden in < 3 s als too_fast ab
+  const RID = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + '-' + Math.random().toString(36).slice(2)); // Vorgangs-ID (Idempotenz)
   const DAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
   const TIMES = ['09:00','10:30','14:00','16:00'];
+  const MIN_NOTICE_H = 24, SLOT_MIN = 90, WORK_END = '17:30';
   const pad = n => String(n).padStart(2,'0');
   const wrap = document.getElementById('slots');
   const statusEl = document.getElementById('slotStatus');
-  let selected = null, live = false;
+  const slotMsg = document.getElementById('slotMsg');
+  let selected = null, mode = 'loading', loadSeq = 0, submitting = false;
 
-  function setStatus(state, text){
-    if (!statusEl) return;
-    statusEl.dataset.state = state;
-    statusEl.querySelector('.txt').textContent = text;
+  // Zürcher Wandzeit eines Zeitpunkts (unabhängig von der Browserzeitzone)
+  const partsFmt = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hourCycle:'h23', weekday:'short' });
+  function zh(date){
+    const p = {}; partsFmt.formatToParts(date).forEach(x => p[x.type] = x.value);
+    return { y:+p.year, m:+p.month, d:+p.day, h:+p.hour, mi:+p.minute, dow:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(p.weekday) };
+  }
+  // Offset Zürich↔UTC in Minuten für einen Zeitpunkt
+  function zhOffset(date){ const z = zh(date); const asUtc = Date.UTC(z.y, z.m-1, z.d, z.h, z.mi); return Math.round((asUtc - date.getTime())/60000); }
+  // Zeitpunkt aus Zürcher Wandzeit bauen
+  function fromZh(y,m,d,h,mi){ const wall = Date.UTC(y,m-1,d,h,mi); let t = wall - zhOffset(new Date(wall))*60000; t = wall - zhOffset(new Date(t))*60000; return new Date(t); }
+
+  function setStatus(state, text){ statusEl.dataset.state = state; statusEl.querySelector('.txt').textContent = text; }
+
+  function slotFromDate(dt){
+    const z = zh(dt);
+    return { day: DAYS[z.dow], label: z.d+'.'+z.m+'.', time: pad(z.h)+':'+pad(z.mi), startISO: dt.toISOString() };
   }
 
-  function fmtSlotFromDate(dt, fallbackTime){
-    const d = new Date(dt.getTime());
-    if (fallbackTime){ const p = fallbackTime.split(':'); d.setHours(+p[0], +p[1], 0, 0); }
-    const t = pad(d.getHours())+':'+pad(d.getMinutes());
-    return {
-      day: DAYS[d.getDay()],
-      label: d.getDate()+'.'+(d.getMonth()+1)+'.',
-      time: t,
-      iso: d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),
-      month: d.getFullYear()+'-'+pad(d.getMonth()+1),
-      startISO: d.toISOString(),
-      url: null
-    };
-  }
-
+  // Wunschtermine (nur wenn der Kalender nicht erreichbar ist): Vorlauf, Werktage, Arbeitszeit, Raster wie im Backend
   function generatedSlots(){
     const out = [];
-    let d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+1);
-    let ti = 0;
-    while (out.length < 6) {
-      const dow = d.getDay();
-      if (dow !== 0 && dow !== 6) { out.push(fmtSlotFromDate(new Date(d), TIMES[ti % TIMES.length])); ti++; }
-      d = new Date(d.getTime() + 86400000);
+    const earliest = new Date(Date.now() + MIN_NOTICE_H*3600e3);
+    let z = zh(earliest);
+    let day = fromZh(z.y, z.m, z.d, 0, 0);
+    const [weH, weM] = WORK_END.split(':').map(Number);
+    let ti = 0, guard = 0;
+    while (out.length < 6 && guard++ < 40) {
+      const dz = zh(new Date(day.getTime() + 12*3600e3));
+      if (dz.dow !== 0 && dz.dow !== 6) {
+        const [hh, mm] = TIMES[ti % TIMES.length].split(':').map(Number);
+        const dt = fromZh(dz.y, dz.m, dz.d, hh, mm);
+        if (dt.getTime() >= earliest.getTime() && (hh*60+mm+SLOT_MIN) <= weH*60+weM) { out.push(slotFromDate(dt)); ti++; }
+        else if (dt.getTime() < earliest.getTime()) { ti++; continue; }
+      }
+      day = new Date(day.getTime() + 86400e3);
     }
     return out;
   }
 
+  function clearSelection(){ selected = null; wrap.querySelectorAll('.slot').forEach(x => { x.classList.remove('sel'); x.setAttribute('aria-pressed','false'); }); }
+
   function render(slots){
-    wrap.innerHTML = '';
+    wrap.textContent = '';
+    clearSelection();
     slots.forEach((s) => {
       const b = document.createElement('button');
-      b.type = 'button'; b.className = 'slot';
-      b.innerHTML = '<span class="d">'+s.day+' '+s.label+'</span><span class="t">'+s.time+'</span>';
+      b.type = 'button'; b.className = 'slot'; b.setAttribute('aria-pressed','false');
+      const d = document.createElement('span'); d.className = 'd'; d.textContent = s.day+' '+s.label;
+      const t = document.createElement('span'); t.className = 't'; t.textContent = s.time;
+      b.append(d, t);
+      b.setAttribute('aria-label', s.day+' '+s.label+' '+s.time+' Uhr (Zürich)');
       b.addEventListener('click', () => {
-        document.querySelectorAll('.slot').forEach(x => x.classList.remove('sel'));
-        b.classList.add('sel'); selected = s;
-        document.getElementById('slotMsg').style.display = 'none';
+        clearSelection();
+        b.classList.add('sel'); b.setAttribute('aria-pressed','true'); selected = s;
+        slotMsg.style.display = 'none';
       });
       wrap.appendChild(b);
     });
   }
+  function renderEmpty(){
+    wrap.textContent = ''; clearSelection();
+    const p = document.createElement('p'); p.className = 'slots-empty';
+    p.innerHTML = 'Aktuell sind in den nächsten drei Wochen keine freien Termine buchbar. Bitte melden Sie sich per <a href="mailto:info@vincent-partner.ch">E-Mail</a> oder <a href="tel:+41445346560">Telefon 044 534 65 60</a>.';
+    wrap.appendChild(p);
+  }
+  function setMode(m){
+    mode = m;
+    const note = document.getElementById('submitNote');
+    const hd = document.getElementById('fhdText');
+    const btn = document.getElementById('submitBtn');
+    if (m === 'fallback') {
+      note.firstChild.textContent = 'Der Live-Kalender ist gerade nicht erreichbar. Ihr Wunschtermin geht als Anfrage an uns und wird persönlich per E-Mail bestätigt. ';
+      hd.innerHTML = 'Kurz Ihre Angaben und ein <b>Wunschtermin</b> — wir bestätigen ihn persönlich. Zeiten in Schweizer Zeit (Zürich).';
+      btn.firstChild.textContent = 'Wunschtermin anfragen ';
+    } else {
+      note.firstChild.textContent = 'Mit dem Bestätigen wird Ihr Termin direkt eingetragen — Sie und Reto Puma erhalten eine Kalendereinladung inkl. Google-Meet-Link. ';
+      hd.innerHTML = 'Kurz Ihre Angaben — dann öffnet sich der <b>Live-Kalender</b> mit allen freien Terminen. Zeiten in Schweizer Zeit (Zürich).';
+      btn.firstChild.textContent = 'Termin bestätigen ';
+    }
+    btn.disabled = (m === 'empty');
+  }
 
-  // Echte freie Zeiten aus dem Google-Kalender laden; sonst Fallback anzeigen.
+  // Drei Zustände: live (Slots) · empty (ausgebucht) · fallback (Kalender nicht erreichbar → Wunschtermin)
   async function loadSlots(){
+    const seq = ++loadSeq;
     setStatus('loading', 'Kalender wird geladen…');
+    let state = 'fallback', slots = [];
     try {
-      const r = await fetch(CONFIG.availUrl, { headers: { 'Accept':'application/json' } });
-      if (r.ok) {
-        const data = await r.json();
-        const coll = (data && data.collection) || [];
-        const avail = coll.filter(x => !x.status || x.status === 'available').slice(0, 6);
-        if (avail.length) {
-          live = true;
-          setStatus('live', 'Live-Kalender');
-          render(avail.map(x => {
-            const s = fmtSlotFromDate(new Date(x.start_time));
-            s.startISO = x.start_time;
-            return s;
-          }));
-          return;
-        }
+      const r = await fetch(CONFIG.availUrl, { headers: { 'Accept':'application/json' }, credentials:'same-origin' });
+      const data = await r.json().catch(() => null);
+      if (r.ok && data && data.ok === true && Array.isArray(data.collection)) {
+        slots = data.collection.filter(x => !x.status || x.status === 'available').slice(0, 6)
+          .map(x => { const s = slotFromDate(new Date(x.start_time)); s.startISO = x.start_time; return s; });
+        state = slots.length ? 'live' : 'empty';
       }
-    } catch (e) { /* fällt auf generierte Slots zurück */ }
-    live = false;
-    setStatus('fallback', 'Vorschläge · Live-Kalender nicht erreichbar');
-    render(generatedSlots());
+    } catch (e) { state = 'fallback'; }
+    if (seq !== loadSeq) return; // veraltete Antwort
+    if (state === 'live') { setStatus('live', 'Live-Kalender · Zeiten Zürich'); render(slots); }
+    else if (state === 'empty') { setStatus('fallback', 'Aktuell keine freien Termine'); renderEmpty(); }
+    else { setStatus('fallback', 'Wunschtermin · wird manuell bestätigt'); render(generatedSlots()); }
+    setMode(state);
   }
   loadSlots();
 
   const form = document.getElementById('bookForm');
   const gv = id => document.getElementById(id).value.trim();
-  function setErr(id, on){ document.getElementById(id).classList.toggle('err', on); }
+  function setErr(id, on){
+    const f = document.getElementById(id); f.classList.toggle('err', on);
+    const ctl = f.querySelector('input,select'); if (ctl) ctl.setAttribute('aria-invalid', on ? 'true' : 'false');
+  }
   function bookMsg(text){ const m=document.getElementById('bookMsg'); m.textContent=text; m.classList.toggle('show', !!text); }
 
   function showDone(name, data){
     const dt = new Date(data.start);
-    const when = dt.toLocaleDateString('de-CH', { weekday:'long', day:'2-digit', month:'long' })
-               + ', ' + dt.toLocaleTimeString('de-CH', { hour:'2-digit', minute:'2-digit' }) + ' Uhr';
+    const when = dt.toLocaleDateString('de-CH', { timeZone: TZ, weekday:'long', day:'2-digit', month:'long' })
+               + ', ' + dt.toLocaleTimeString('de-CH', { timeZone: TZ, hour:'2-digit', minute:'2-digit' }) + ' Uhr (Zürich)';
     const title = document.getElementById('doneTitle');
     const text  = document.getElementById('doneText');
-    if (data.fallback) {
-      title.textContent = 'Anfrage eingegangen!';
-      text.textContent  = 'Vielen Dank! Wir haben Ihre Terminanfrage erhalten und bestätigen sie in Kürze persönlich per E-Mail.';
-    } else {
-      title.textContent = 'Termin gebucht!';
-      text.textContent  = 'Ihr Termin mit Reto Puma ist im Kalender eingetragen. Sie erhalten die Einladung mit allen Details per E-Mail.';
-    }
-    let html = (name ? ((data.fallback ? 'Anfrage von ' : 'Gebucht für ') + name + ' · ') : '') + when;
-    if (data.meet) html += '<br><a href="' + data.meet + '" target="_blank" rel="noopener">Google-Meet-Link öffnen</a>';
-    document.getElementById('recap').innerHTML = html;
+    const requested = data.state === 'requested';
+    title.textContent = requested ? 'Anfrage eingegangen!' : 'Termin gebucht!';
+    text.textContent  = requested
+      ? 'Vielen Dank! Wir haben Ihre Terminanfrage erhalten und bestätigen sie in Kürze persönlich per E-Mail.'
+      : 'Ihr Termin mit Reto Puma ist im Kalender eingetragen. Sie erhalten die Einladung mit allen Details per E-Mail.';
+    const recap = document.getElementById('recap'); recap.textContent = '';
+    recap.appendChild(document.createTextNode((name ? ((requested ? 'Anfrage von ' : 'Gebucht für ') + name + ' · ') : '') + when));
+    try {
+      const u = new URL(data.meet || '');
+      if (u.protocol === 'https:' && u.hostname === 'meet.google.com') {
+        const a = document.createElement('a'); a.href = u.href; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Google-Meet-Link öffnen';
+        recap.appendChild(document.createElement('br')); recap.appendChild(a);
+      }
+    } catch (e) {}
     document.querySelector('.k-form').classList.add('done');
     document.getElementById('done').classList.add('show');
     const el = document.getElementById('form');
-    const y = el.getBoundingClientRect().top + window.scrollY - 120;
-    window.scrollTo({ top: y, behavior: 'smooth' });
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
   }
 
-  // Konfiguration aus dem Preisrechner übernehmen (von Webdesign.html / SEA.html)
-  let calcSummary = '';
+  // Konfiguration aus dem Preisrechner übernehmen (Webdesign/Onlineshops/SEA); wird beim Absenden im Anliegen mitgeschickt
   try {
     const raw = localStorage.getItem('vp:calc-request');
     if (raw) {
       const d = JSON.parse(raw);
       if (d && d.summary && Date.now() - (d.ts || 0) < 864e5) {
-        calcSummary = d.summary;
         const msg = document.getElementById('i-msg');
-        if (msg) {
-          msg.value = msg.value.trim() ? msg.value.trim() + '\n\n' + d.summary : d.summary;
-          msg.rows = 12;
-          msg.style.minHeight = '240px';
-        }
-        const opt = document.getElementById('msgOpt');
-        if (opt) opt.textContent = '(aus dem Preisrechner übernommen)';
+        msg.value = msg.value.trim() ? msg.value.trim() + '\n\n' + d.summary : d.summary;
+        msg.rows = 12; msg.style.minHeight = '240px';
+        document.getElementById('msgOpt').textContent = '(aus dem Preisrechner übernommen)';
+        document.getElementById('calcNote').style.display = 'block';
       }
       localStorage.removeItem('vp:calc-request');
     }
   } catch (e) {}
 
+  const ERR = {
+    taken: 'Dieser Termin wurde gerade vergeben — bitte wählen Sie einen anderen.',
+    rate: 'Zu viele Anfragen von Ihrer Verbindung. Bitte versuchen Sie es später erneut oder rufen Sie an (044 534 65 60).',
+    too_fast: 'Das ging sehr schnell — bitte prüfen Sie Ihre Angaben und senden Sie das Formular noch einmal.',
+    time: 'Dieser Termin ist nicht mehr buchbar. Bitte wählen Sie einen anderen.',
+    invalid: 'Bitte prüfen Sie Ihre Angaben (Name, E-Mail, Unternehmen, Funktion, Termin).',
+    storage: 'Die Buchung ist vorübergehend nicht möglich. Bitte rufen Sie an (044 534 65 60) oder schreiben Sie uns.',
+    no_channel: 'Die Anfrage konnte nicht übermittelt werden. Bitte rufen Sie an (044 534 65 60) oder schreiben Sie uns.'
+  };
+  const validStart = s => typeof s === 'string' && !isNaN(new Date(s).getTime());
+
   async function submitBooking(){
+    if (submitting) return;
+    submitting = true;
     bookMsg('');
-    const btn = form.querySelector('button[type=submit]');
-    btn.classList.add('loading');
+    const btn = document.getElementById('submitBtn');
+    btn.classList.add('loading'); btn.disabled = true; btn.setAttribute('aria-busy','true');
     const payload = {
-      name: gv('i-name'), email: gv('i-email'), company: gv('i-company'),
+      rid: RID, name: gv('i-name'), email: gv('i-email'), company: gv('i-company'),
       func: document.getElementById('i-func').value, message: gv('i-msg'),
-      start: selected ? selected.startISO : '', website: gv('hp-website'),
-      t: FORM_T0,
-      calc: calcSummary
+      start: selected ? selected.startISO : '', website: gv('hp-website'), t: FORM_T0
     };
     try {
-      const r = await fetch(CONFIG.bookUrl, {
-        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
-      });
+      const r = await fetch(CONFIG.bookUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload), credentials:'same-origin' });
       const data = await r.json().catch(() => ({}));
-      if (r.ok && data.ok) { showDone(payload.name, data); return; }
-      if (r.status === 409) { bookMsg('Dieser Termin wurde gerade vergeben — bitte wählen Sie einen anderen.'); loadSlots(); }
-      else if (r.status === 429) { bookMsg('Zu viele Anfragen. Bitte versuchen Sie es später erneut.'); }
-      else { bookMsg('Buchung fehlgeschlagen. Bitte rufen Sie an (044 534 65 60) oder schreiben Sie uns.'); }
+      if (r.ok && data.ok === true && (data.state === 'booked' || data.state === 'requested') && validStart(data.start)) { showDone(payload.name, data); return; }
+      const err = data && data.error;
+      bookMsg(ERR[err] || 'Buchung fehlgeschlagen. Bitte rufen Sie an (044 534 65 60) oder schreiben Sie uns.');
+      if (err === 'taken' || err === 'time') loadSlots();
     } catch (e) {
       bookMsg('Verbindung fehlgeschlagen. Bitte rufen Sie an (044 534 65 60) oder schreiben Sie uns.');
     } finally {
-      btn.classList.remove('loading');
+      submitting = false;
+      btn.classList.remove('loading'); btn.disabled = (mode === 'empty'); btn.removeAttribute('aria-busy');
     }
   }
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    let ok = true;
-    if (!selected) { document.getElementById('slotMsg').style.display='block'; ok = false; }
-    const name = gv('i-name');
-    const func = document.getElementById('i-func').value;
-    const comp = gv('i-company');
-    const email = gv('i-email');
+    if (submitting) return;
+    let ok = true, first = null;
+    // Auswahl muss zu den aktuell angezeigten Terminen gehören
+    const shown = Array.from(wrap.querySelectorAll('.slot.sel')).length === 1;
+    if (!selected || !shown) { selected = null; slotMsg.style.display='block'; ok = false; first = first || wrap.querySelector('.slot'); }
+    const name = gv('i-name'), func = document.getElementById('i-func').value, comp = gv('i-company'), email = gv('i-email');
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    setErr('f-name', !name); if(!name) ok=false;
-    setErr('f-func', !func); if(!func) ok=false;
-    setErr('f-company', !comp); if(!comp) ok=false;
-    setErr('f-email', !emailOk); if(!emailOk) ok=false;
-    if (!ok) return;
+    setErr('f-name', !name); if(!name){ ok=false; first = first || document.getElementById('i-name'); }
+    setErr('f-func', !func); if(!func){ ok=false; first = first || document.getElementById('i-func'); }
+    setErr('f-company', !comp); if(!comp){ ok=false; first = first || document.getElementById('i-company'); }
+    setErr('f-email', !emailOk); if(!emailOk){ ok=false; first = first || document.getElementById('i-email'); }
+    if (!ok) { if (first) first.focus(); return; }
     submitBooking();
   });
 })();

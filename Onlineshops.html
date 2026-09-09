@@ -2,13 +2,15 @@
 <html lang="de">
 <head>
 <script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
-(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Onlineshops — Vincent & Partner</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/swiss.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
+<link rel="stylesheet" href="assets/mobile.css">
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -16,7 +18,7 @@
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="site-nav-links">
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
@@ -26,7 +28,7 @@
       <a href="KI-Automation.html">KI</a>
     </nav>
     <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
-    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
 

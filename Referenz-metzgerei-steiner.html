@@ -2,12 +2,13 @@
 <html lang="de">
 <head>
 <script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
-(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Metzgerei Steiner — Referenz | Vincent &amp; Partner</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/swiss.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <style>
 .refpage .ptitle{font-size:clamp(44px,8.5vw,128px);margin:0}
@@ -39,13 +40,20 @@ html[data-mode="Dunkel"] .shot{background:#1b1d21}html[data-mode="Dunkel"]{--sha
 .dsys{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(55px,6vw,144px);align-items:start}
 .dsys .cols{display:grid;gap:clamp(55px,6vw,89px)}
 .dsys .lab{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:21px}
+.logo-slot{border-radius:3px;background:var(--paper);border:var(--hair) solid var(--line);display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.logo-slot image-slot{display:block;aspect-ratio:16/9}
+.logo-slot .dark{background:#1b1d21}
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px}
+.sw{display:flex;flex-direction:column;gap:9px}
+.sw i{display:block;aspect-ratio:1/1;border-radius:3px;border:var(--hair) solid var(--line)}
+.sw b{font-size:14px;font-weight:600}.sw span{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
 .typo{display:grid;gap:20px;border-top:var(--hair) solid var(--line)}
 .typo div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:18px 0;border-bottom:var(--hair) solid var(--line)}
 .typo .t1{font-size:clamp(30px,3.4vw,52px);line-height:1;font-weight:600;letter-spacing:-.02em}
 .typo .t2{font-size:17px;line-height:1.5;max-width:44ch;color:var(--ink)}
 .typo span{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
 @media(max-width:1024px){.dsys{grid-template-columns:1fr}.dsys .display{position:static;margin-bottom:8px}}
-@media(max-width:600px){.typo div{grid-template-columns:1fr}}
+@media(max-width:600px){.swatches{grid-template-columns:repeat(2,1fr)}.typo div{grid-template-columns:1fr}.logo-slot{grid-template-columns:1fr}}
 .vsec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-top:var(--hair) solid var(--line);padding-top:21px;margin-bottom:clamp(55px,6vw,89px)}
 .vsec-head .vsec-n{font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .work{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(55px,6vw,144px);align-items:start}
@@ -74,15 +82,15 @@ html[data-mode="Dunkel"] .shot{background:#1b1d21}html[data-mode="Dunkel"]{--sha
 @media(max-width:1024px){.phoneviews{grid-template-columns:repeat(2,1fr);padding-inline:0}}
 html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
 /* Eyebrows: dunkler + grösser für Lesbarkeit (--muted #9A9D9F auf Weiss ist nur ~2.5:1) */
-.refpage .crumbs a,.refpage .crumbs span,.refpage .crumbs h1,.meta .lab,.show-cap,.vsec-head .mono,.vsec-head .vsec-n,.worklist .n,.dsys .lab,.typo span,.vcap,.refhead .tag{color:color-mix(in srgb,var(--ink) 72%,var(--bg))}
-.meta .lab,.show-cap,.vsec-head .vsec-n,.dsys .lab,.typo span,.vcap{font-size:12px}
+.refpage .crumbs a,.refpage .crumbs span,.refpage .crumbs h1,.meta .lab,.show-cap,.vsec-head .mono,.vsec-head .vsec-n,.worklist .n,.dsys .lab,.sw span,.typo span,.vcap,.refhead .tag{color:color-mix(in srgb,var(--ink) 72%,var(--bg))}
+.meta .lab,.show-cap,.vsec-head .vsec-n,.dsys .lab,.sw span,.typo span,.vcap{font-size:12px}
 .crumbs .here,.vsec-head .mono,.refhead .tag{color:var(--ink)}
 /* Mobile: Golden-Ratio-Skala (Basis 17px, φ=1.618) — Typo 11 · 13 · 17 · 27.5 · 44.5 · 72; Abstände 13 · 21 · 34 · 55 · 89 */
 @media(max-width:600px){
   .refpage.ablock.first{padding-top:89px}
   .refpage .ablock,.ablock{padding-block:55px}
   .refpage .crumbs{margin-bottom:34px}.crumbs a,.crumbs span,.crumbs h1{font-size:13px}
-  .meta .lab,.show-cap,.vsec-head .mono,.vsec-head .vsec-n,.worklist .n,.dsys .lab,.typo span,.vcap{font-size:13px;letter-spacing:.1em}
+  .meta .lab,.show-cap,.vsec-head .mono,.vsec-head .vsec-n,.worklist .n,.dsys .lab,.sw span,.typo span,.vcap{font-size:13px;letter-spacing:.1em}
   .refhead .tag{font-size:12px}
   .refpage .ptitle{font-size:72px;line-height:.9}
   .vsec-head h2.mono{font-size:12px;line-height:1.5}
@@ -104,6 +112,7 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
   .worklist h3{font-size:27.5px;line-height:1.1;margin-bottom:8px;letter-spacing:-.02em}
   .worklist p{font-size:17px;line-height:1.618}
   .dsys .cols{gap:55px}.dsys .lab{font-size:11px;margin-bottom:13px}
+  .swatches{gap:21px 13px}.sw{gap:8px}.sw b{font-size:17px}.sw span{font-size:11px}
   .typo{gap:0}.typo div{gap:8px;padding:21px 0}
   .typo .t1{font-size:44.5px;line-height:.95}.typo .t2{font-size:17px;line-height:1.618}
   .view{gap:13px}.vcap{font-size:11px}
@@ -116,13 +125,14 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
 }
 .footer .ftl{display:block;color:#fff;font-size:15px;margin-bottom:9px}.footer .ftl:hover{color:var(--muted)}
 </style>
+<link rel="stylesheet" href="assets/mobile.css">
 </head>
 <body>
 <div class="bg-grid"></div>
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="site-nav-links">
       <a href="About.html">About</a>
       <a href="Referenzen.html" class="active">Work</a>
       <a href="Webdesign.html">Web</a>
@@ -132,7 +142,7 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
       <a href="KI-Automation.html">KI</a>
     </nav>
     <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
-    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
 <main class="above">
@@ -168,10 +178,9 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
     <div class="work">
       <p class="display">Von der Struktur bis zur Website.</p>
       <ol class="worklist">
-        <li><span class="n">01</span><div><h3>Konzept &amp; Seitenstruktur</h3><p>Sortiment, Öffnungszeiten und Bestellmöglichkeit klar geordnet; kurze Wege zur Anfrage.</p></div></li>
+        <li><span class="n">01</span><div><h3>Konzept &amp; Seitenstruktur</h3><p>Inhalte geordnet, Zielgruppen und Anfragewege klar geführt.</p></div></li>
         <li><span class="n">02</span><div><h3>Webdesign: Gestaltung &amp; Umsetzung</h3><p>Responsiv für Desktop und Mobile, schnelle Ladezeiten, klare Bildsprache.</p></div></li>
-        <li><span class="n">03</span><div><h3>Video für die Startseite</h3><p>Kurzer Film, der Handwerk und Laden zeigt und die Startseite trägt.</p></div></li>
-        <li><span class="n">04</span><div><h3>SEO-Grundlagen</h3><p>Seitentitel, Beschreibungen und Struktur für die lokale Auffindbarkeit.</p></div></li>
+        <li><span class="n">03</span><div><h3>SEO-Grundlagen</h3><p>Seitentitel, Beschreibungen und Struktur für die Auffindbarkeit.</p></div></li>
       </ol>
     </div>
   </section>
@@ -181,6 +190,14 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
     <div class="dsys">
       <p class="display">Ein System, das trägt.</p>
       <div class="cols">
+        <div><span class="lab">Logo</span><div class="logo-slot"><image-slot id="ref-steiner-logo-hell" shape="rect" fit="contain" placeholder="Logo auf Hell" alt="Logo Metzgerei Steiner auf hellem Hintergrund"></image-slot><image-slot class="dark" id="ref-steiner-logo-dunkel" shape="rect" fit="contain" placeholder="Logo auf Dunkel" alt="Logo Metzgerei Steiner auf dunklem Hintergrund"></image-slot></div></div>
+        <div><span class="lab">Farben</span><div class="swatches" data-palette="steiner" data-from="ref-steiner-hero-desktop">
+          <div class="sw"><i style="background:#22252A"></i><b>Primär</b><span>#22252A</span></div>
+          <div class="sw"><i style="background:#6B7C8C"></i><b>Akzent</b><span>#6B7C8C</span></div>
+          <div class="sw"><i style="background:#EEF0F2"></i><b>Fläche</b><span>#EEF0F2</span></div>
+          <div class="sw"><i style="background:#1B1D21"></i><b>Text</b><span>#1B1D21</span></div>
+          <div class="sw"><i style="background:#FFFFFF"></i><b>Hintergrund</b><span>#FFFFFF</span></div>
+        </div></div>
         <div><span class="lab">Typografie</span><div class="typo">
           <div><p class="t1" style="margin:0">Metzgerei Steiner</p><span>Headline · Schriftname</span></div>
           <div><p class="t2" style="margin:0">neue Website mit Sortiment, Öffnungszeiten und Bestellmöglichkeit sowie ein kurzer Film für die Startseite.</p><span>Text · Schriftname</span></div>
@@ -201,7 +218,6 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
     <h2 class="sr">Video für Metzgerei Steiner</h2>
     <figure class="view"><div class="vmedia" data-frame="steiner-video"><image-slot id="ref-steiner-video" shape="rect" placeholder="Video hochladen" alt="Video für Metzgerei Steiner — Startseiten-Film"></image-slot></div><figcaption class="vcap">Video · Startseite</figcaption></figure>
   </section>
-
   <section class="ablock awrap rsec">
     <h2 class="sr">Mobile Webdesign — Ansichten Metzgerei Steiner</h2>
     <div class="phoneviews">
@@ -219,6 +235,7 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
 <script src="assets/site.js"></script>
 <script src="assets/image-slot.js"></script>
 <script src="assets/frame-resize.js"></script>
+<script src="assets/palette.js"></script>
 <script src="assets/media-edit.js"></script>
 <script src="assets/footer.js"></script>
 </body>

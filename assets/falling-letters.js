@@ -1,9 +1,7 @@
 /* Falling letters hero — Matter.js physics.
    Usage: <div data-falling-letters data-words="DIGITALE|KOMPETENZ"></div>
-   Loads Matter locally (assets/vendor/matter.min.js) if not present. Letters are draggable.
-   Pauses the simulation when the hero scrolls out of view.
-   Jede Instanz besitzt einen destroy()-Pfad; der Resize-Handler wird nur
-   einmal pro Container registriert (kein Leak, keine Duplikate beim Rebuild). */
+   Loads Matter from CDN if not present. Letters are draggable.
+   Pauses the runner when the hero scrolls out of view. */
 (function () {
   function hexFromVar(el, name, fallback) {
     const v = getComputedStyle(el).getPropertyValue(name).trim();
@@ -18,27 +16,6 @@
     containers.forEach(setup);
   }
 
-  // Resize-Handler genau EINMAL pro Container. Er räumt die aktive Instanz
-  // über destroy() ab und baut anschliessend genau eine neue Instanz über den
-  // Router auf (der wählt Mobile- oder Desktop-Variante).
-  function ensureResize(container) {
-    if (container.__flResize) return;
-    let rT;
-    const onResize = () => {
-      clearTimeout(rT);
-      rT = setTimeout(() => {
-        const inst = container.__flInstance;
-        if (!inst) return;
-        const w = container.clientWidth;
-        if (Math.abs(w - inst.width) < 40) return;
-        inst.destroy();
-        (window.__flSetupAny || setup)(container);
-      }, 250);
-    };
-    window.addEventListener('resize', onResize);
-    container.__flResize = onResize;
-  }
-
   function setup(container) {
     if (container.__fl) return;
     // Mobile (<640px): eigene Variante mit VINCENT + Gyro übernehmen
@@ -47,9 +24,8 @@
       return;
     }
     container.__fl = true;
-    ensureResize(container);
 
-    const { Engine, Render, Bodies, Composite, Body, MouseConstraint, Mouse, Events } = Matter;
+    const { Engine, Render, Runner, Bodies, Composite, Body, MouseConstraint, Mouse, Events } = Matter;
 
     let width = container.clientWidth;
     const isMobile = width < 640;
@@ -57,6 +33,7 @@
     container.style.position = 'relative';
 
     const inkCol    = hexFromVar(container, '--ink', '#111111');
+    const accentCol = hexFromVar(container, '--accent', '#FF2B00');
 
     const rawWords = (container.dataset.words || 'DIGITALE|KOMPETENZ').split('|');
     // Case mode comes from the Tweaks panel (data-letter-case on <html>):
@@ -88,14 +65,6 @@
     let fontStyle = `${fontWeight} ${fontSize}px ${fontFamily}`;
     const bounciness = 0.7, friction = 0.02, airResistance = 0.015;
     const dropHeight = -500;
-
-    // Alle Timer dieser Instanz merken, damit destroy() sie abräumen kann.
-    const timers = new Set();
-    function later(fn, ms) {
-      const id = setTimeout(() => { timers.delete(id); fn(); }, ms);
-      timers.add(id);
-      return id;
-    }
 
     // Shrink the font so the WIDEST word fits on a single line. Otherwise the
     // last letters (e.g. the Z of KOMPETENZ) overflow and the wrap logic kicks
@@ -156,7 +125,7 @@
     const startX = 20;
 
     function spawnWord(word, color, delay) {
-      later(() => {
+      setTimeout(() => {
         const c = document.createElement('canvas');
         const cx = c.getContext('2d');
         cx.font = fontStyle;
@@ -172,7 +141,7 @@
           const xCenter = runningX + charWidth / 2;
           const yCenter = currentYOffset;
           const letterDelay = isMobile ? (index * 150) : 0;
-          later(() => {
+          setTimeout(() => {
             Composite.add(engine.world, makeLetter(char, xCenter, yCenter, color));
           }, letterDelay);
           runningX += charWidth + spacing;
@@ -188,10 +157,6 @@
         // Erstes Wort sofort beim Laden, Folgewörter im gewohnten Abstand.
         spawnWord(w, inkCol, i * 2500);
       });
-    }
-
-    function clearLetters() {
-      Composite.allBodies(engine.world).forEach(b => { if (b.render.text) Composite.remove(engine.world, b); });
     }
 
     // draw text aligned to bodies
@@ -262,17 +227,13 @@
     // Drive the simulation with our own rAF loop (more reliable than Runner
     // in embedded iframes). Visibility just toggles `paused`.
     let paused = false;
-    let destroyed = false;
-    let rafId = 0;
     let last = performance.now();
-    function tick(now) {
-      if (destroyed) return;
+    (function tick(now) {
       const dt = Math.min(32, (now || performance.now()) - last);
       last = now || performance.now();
       if (!paused) { applyHover(); Engine.update(engine, dt); }
-      rafId = requestAnimationFrame(tick);
-    }
-    tick(performance.now());
+      requestAnimationFrame(tick);
+    })(performance.now());
 
     startSpawns();
 
@@ -280,7 +241,7 @@
     // or the case mode (Versalien/Normal) changes, so the hero tracks the
     // rest of the site.
     let lastCase = caseMode();
-    function onTweaks() {
+    document.addEventListener('tweaks:apply', () => {
       const fam = headFamily();
       const wgt = headWeight();
       const cs = caseMode();
@@ -290,11 +251,10 @@
       lastCase = cs;
       words = applyCase(rawWords);
       fitFont();
-      clearLetters();
+      Composite.allBodies(engine.world).forEach(b => { if (b.render.text) Composite.remove(engine.world, b); });
       startedSpawn = false;
       startSpawns();
-    }
-    document.addEventListener('tweaks:apply', onTweaks);
+    });
 
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
@@ -306,41 +266,26 @@
 
     // reset button support
     const resetBtn = document.querySelector(container.dataset.reset || '');
-    function onReset() {
-      clearLetters();
-      startedSpawn = false;
-      startSpawns();
-    }
-    if (resetBtn) resetBtn.addEventListener('click', onReset);
-
-    // Vollständiger Abbau dieser Instanz: Tick-Schleife, Observer, Listener,
-    // offene Timer, Canvas und Engine. Danach darf setup() neu aufbauen.
-    function destroy() {
-      if (destroyed) return;
-      destroyed = true;
-      paused = true;
-      cancelAnimationFrame(rafId);
-      timers.forEach(clearTimeout);
-      timers.clear();
-      io.disconnect();
-      document.removeEventListener('tweaks:apply', onTweaks);
-      if (resetBtn) resetBtn.removeEventListener('click', onReset);
-      Events.off(mc);
-      Events.off(render);
-      Render.stop(render);
-      render.canvas.remove();
-      Composite.clear(engine.world, false, true);
-      Engine.clear(engine);
-      if (container.__engine === engine) container.__engine = null;
-      if (container.__render === render) container.__render = null;
-      if (window.__flEngine === engine) window.__flEngine = null;
-      if (window.__flRender === render) window.__flRender = null;
-      if (container.__flInstance === inst) container.__flInstance = null;
-      container.__fl = false;
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        Composite.allBodies(engine.world).forEach(b => { if (b.render.text) Composite.remove(engine.world, b); });
+        startedSpawn = false;
+        startSpawns();
+      });
     }
 
-    const inst = { width, destroy };
-    container.__flInstance = inst;
+    let rT;
+    window.addEventListener('resize', () => {
+      clearTimeout(rT);
+      rT = setTimeout(() => {
+        const w = container.clientWidth;
+        if (Math.abs(w - width) < 40) return;
+        // simplest robust path: rebuild
+        Render.stop(render); paused = true;
+        render.canvas.remove(); container.__fl = false;
+        setup(container);
+      }, 250);
+    });
   }
 
   // Router für Rebuilds (Resize über den Breakpoint hinweg)
