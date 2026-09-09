@@ -2,6 +2,8 @@
 .ptitle .t-m,.hero-alt .t-m{display:none}
 @media (max-width:760px){
   html{overflow-x:clip}
+  .nav{position:fixed;top:0;left:0;right:0;z-index:80;background:var(--bg)}
+  body{padding-top:64px}
   .nav-inner{height:64px}
   .nav.open .nav-links{display:none}
   .nav-burger{position:relative;z-index:2}
