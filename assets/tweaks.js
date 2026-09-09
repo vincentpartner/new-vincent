@@ -6,7 +6,7 @@
 
   const DEFAULTS = /*EDITMODE-BEGIN*/{
     "accent": "#2A2D31",
-    "mode": "Dunkel",
+    "mode": "Hell",
     "fontHead": "Bricolage",
     "fontBody": "Bricolage",
     "tracking": -0.03,
@@ -723,17 +723,12 @@
   function hide() { openState = false; if (panel) panel.classList.remove('show'); }
   function dismiss() { hide(); window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); }
 
-  // Editor-Protokoll nur, wenn die Seite eingebettet ist; Nachrichten nur vom einbettenden Fenster.
-  const framed = window.parent && window.parent !== window;
-  if (framed) {
-    window.addEventListener('message', e => {
-      if (e.source !== window.parent) return;
-      const t = e && e.data && e.data.type;
-      if (t === '__activate_edit_mode') show();
-      else if (t === '__deactivate_edit_mode') hide();
-    });
-    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
-  }
+  window.addEventListener('message', e => {
+    const t = e && e.data && e.data.type;
+    if (t === '__activate_edit_mode') show();
+    else if (t === '__deactivate_edit_mode') hide();
+  });
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
 
   function mountModeToggle() {
     if (document.getElementById('vp-mode')) return;

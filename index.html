@@ -2,13 +2,12 @@
 <html lang="de">
 <head>
 <script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
-(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vincent & Partner — Agentur für Webdesign, Onlineshops, SEO & KI · Zürich</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/swiss.css">
-<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <style>
   /* ---------- Hero ---------- */
@@ -19,14 +18,6 @@
   .hero-stage { width: 100%; height: clamp(440px, 60vh, 720px); position: relative; cursor: grab; touch-action: pan-y; }
   /* Mobile: mehr Fallhöhe nach unten für die VINCENT-Buchstaben */
   @media (max-width: 640px){ .hero-stage { height: clamp(560px, 76vh, 780px); } }
-  /* Mobile: Scroll-Pfeil, weil die Buchstaben-Fläche die Wischgeste abfängt */
-  .hero-down { display: none; }
-  @media (max-width: 640px){
-    .hero-down { display: flex; position: absolute; left: 50%; bottom: 13px; transform: translateX(-50%); z-index: 3; width: 55px; height: 55px; border-radius: 50%; align-items: center; justify-content: center; background: var(--ink); color: var(--bg); border: 0; padding: 0; animation: heroDown 1.8s ease-in-out infinite; }
-    .hero-down svg { width: 22px; height: 22px; }
-  }
-  @keyframes heroDown { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 6px); } }
-  @media (prefers-reduced-motion: reduce){ .hero-down { animation: none; } }
   .hero-static2 { padding: 18px 0 6px; }
   .hero-static2 .h-giant { line-height: .82; }
   .hero-foot { display: grid; grid-template-columns: 1fr auto; gap: clamp(24px,4vw,72px); align-items: end; margin-top: clamp(20px,3vh,40px); }
@@ -45,12 +36,6 @@
   .marquee-x .marquee { padding-block: 9px; }
   .marquee-x .marquee-track span { font-size: clamp(14px, 2.5vw, 38px); }
   .marquee-x .band-b { margin-top: clamp(-40px,-2.6vw,-20px); }
-  @media (max-width: 640px){
-    .marquee-x { padding-block: 55px; }
-    .marquee-x .marquee { padding-block: 13px; }
-    .marquee-x .marquee-track span { font-size: 21px; }
-    .marquee-x .band-b { margin-top: -21px; }
-  }
 
   /* ---------- Services 2x2 grid ---------- */
   .svc2 { display: grid; grid-template-columns: 1fr 1fr; border-top: var(--hair) solid var(--line); border-left: var(--hair) solid var(--line); }
@@ -144,7 +129,6 @@
   /* ---------- Footer ---------- */
   .footer .ftl { display:none; }
 </style>
-<link rel="stylesheet" href="assets/mobile.css">
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -152,7 +136,7 @@
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
-    <nav class="nav-links" id="site-nav-links">
+    <nav class="nav-links">
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
@@ -162,7 +146,7 @@
       <a href="KI-Automation.html">KI</a>
     </nav>
     <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
-    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
+    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
   </div>
 </header>
 
@@ -173,9 +157,8 @@
     <p class="hero-h1">Digitale Kompetenz</p>
 
     <!-- Variant A: physics letters -->
-    <div data-hero-letters style="position:relative">
+    <div data-hero-letters>
       <div class="hero-stage" data-falling-letters data-words="Digitale|Kompetenz" data-reset="#heroReset"></div>
-      <button class="hero-down" type="button" aria-label="Nach unten scrollen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m-7-7l7 7l7-7"/></svg></button>
     </div>
     <!-- Variant B: static type -->
     <div data-hero-static class="hero-static2" style="display:none;">
@@ -351,16 +334,6 @@
     var done = false;
     function hide(){ if (done) return; done = true; hint.classList.add('hide'); }
     v.addEventListener('scroll', function(){ if (v.scrollLeft > 12) hide(); }, { passive: true });
-  })();
-</script>
-<script>
-  (function(){
-    var b = document.querySelector('.hero-down');
-    if (!b) return;
-    b.addEventListener('click', function(){
-      var t = document.querySelector('.marquee-x') || document.querySelector('.hero').nextElementSibling;
-      if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' });
-    });
   })();
 </script>
 <script src="assets/media-edit.js"></script>

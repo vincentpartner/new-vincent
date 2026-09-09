@@ -2,13 +2,12 @@
 <html lang="de">
 <head>
 <script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
-(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Datenschutz — Vincent &amp; Partner</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/swiss.css">
-<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <style>
   .legal-body { max-width: 72ch; margin-top: clamp(40px,5vw,72px); }
@@ -21,7 +20,6 @@
   .legal-body a:hover { color: var(--muted); }
   .legal-body .stand { font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-top: clamp(36px,4vw,56px); }
 </style>
-<link rel="stylesheet" href="assets/mobile.css">
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -29,7 +27,7 @@
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
-    <nav class="nav-links" id="site-nav-links">
+    <nav class="nav-links">
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
@@ -39,7 +37,7 @@
       <a href="KI-Automation.html">KI</a>
     </nav>
     <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
-    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
+    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
   </div>
 </header>
 
@@ -59,7 +57,7 @@
 <h2>4. Kontakt und Terminbuchung</h2>
 <p>Wenn Sie uns per Formular, E-Mail oder Telefon kontaktieren oder über die Website einen Termin buchen, bearbeiten wir die von Ihnen angegebenen Daten (Name, E-Mail, Unternehmen, Funktion, Anliegen, Wunschtermin) zur Bearbeitung Ihrer Anfrage. Bei der Terminbuchung wird der Termin in unserem Google-Kalender (Google Workspace) eingetragen und Sie erhalten eine Kalendereinladung mit Google-Meet-Link. Dabei werden Ihre Angaben an Google Ireland Ltd. übermittelt.</p>
 <h2>5. Lokale Speicherung im Browser</h2>
-<p>Diese Website verwendet keine Tracking-Cookies. Darstellungseinstellungen (z. B. Hell-/Dunkelmodus) werden ausschliesslich lokal in Ihrem Browser gespeichert und nicht an uns übermittelt. Angaben aus dem Kostenrechner werden ebenfalls zunächst nur lokal in Ihrem Browser zwischengespeichert (längstens 24 Stunden bzw. bis zum Aufruf des Kontaktformulars). Öffnen Sie danach das Kontaktformular, wird die Zusammenfassung sichtbar in das Feld «Ihr Anliegen» übernommen und aus dem lokalen Speicher entfernt; Sie können sie dort bearbeiten oder löschen. Erst mit dem Absenden des Formulars werden diese Angaben zusammen mit Ihren Kontaktdaten an uns übermittelt und wie unter Ziffer 4 beschrieben bearbeitet.</p>
+<p>Diese Website verwendet keine Tracking-Cookies. Darstellungseinstellungen (z. B. Hell-/Dunkelmodus) und Angaben aus dem Kostenrechner werden ausschliesslich lokal in Ihrem Browser gespeichert und nicht an uns übermittelt.</p>
 <h2>6. Eingebettete Inhalte Dritter</h2>
 <p>Auf einzelnen Seiten sind Inhalte Dritter eingebettet: Google Maps (Anfahrtsplan auf der Kontaktseite) und YouTube-Videos im erweiterten Datenschutzmodus (youtube-nocookie.com). Beim Laden dieser Inhalte wird Ihre IP-Adresse an Google übermittelt. Es gelten die Datenschutzbestimmungen von Google.</p>
 <h2>7. Weitergabe an Dritte</h2>

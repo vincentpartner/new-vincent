@@ -1,10 +1,8 @@
-# Direkten Browser-Zugriff auf Konfiguration, Datenablage und Einrichtungsskript verbieten.
+# Direkten Browser-Zugriff auf Konfiguration und Datenablage verbieten.
 # (PHP kann sie weiterhin einlesen – das ist Datei-Ebene.)
-<FilesMatch "^(config\.php|oauth-setup\.php|.*\.json|.*\.tmp|.*\.lock|.*\.txt)$">
+<FilesMatch "^(config\.php|.*\.json|.*\.tmp)$">
   Require all denied
 </FilesMatch>
-# Für die einmalige OAuth-Einrichtung oauth-setup.php oben aus der Liste nehmen,
-# danach wieder eintragen (oder Datei löschen).
 <IfModule mod_autoindex.c>
   Options -Indexes
 </IfModule>

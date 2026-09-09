@@ -40,7 +40,7 @@
           <span class="calc-sval" data-sval></span>
           <span class="calc-smax">${cfg.maxLabel || ''}</span>
         </div>
-        <input class="calc-range" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step || 1}" value="${state.slider}" aria-label="${(cfg.sliderLabel || 'Umfang').replace(/"/g, '&quot;')}">
+        <input class="calc-range" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step || 1}" value="${state.slider}">
         <div data-groups></div>
         <div class="calc-step mono calc-gstep">${String(groups.length + 2).padStart(2, '0')}. ${cfg.notesLabel || 'Ihre Notiz (optional)'}</div>
         <textarea class="calc-notes" data-notes rows="3" placeholder="${cfg.notesPlaceholder || 'Was benötigen Sie konkret? Zeitrahmen, bestehende Website, Besonderheiten…'}"></textarea>
@@ -79,7 +79,7 @@
       if (g.type === 'slider') {
         const box = document.createElement('div');
         box.innerHTML = `<div class="calc-srow"><span class="calc-sval" data-gval></span><span class="calc-smax">${g.maxLabel || ''}</span></div>
-          <input class="calc-range" type="range" min="${g.min}" max="${g.max}" step="${g.step || 1}" value="${state.sel[gi]}" aria-label="${(g.name || 'Auswahl').replace(/"/g, '&quot;')}">`;
+          <input class="calc-range" type="range" min="${g.min}" max="${g.max}" step="${g.step || 1}" value="${state.sel[gi]}">`;
         gHost.appendChild(box);
         const gr = box.querySelector('input');
         const gv = box.querySelector('[data-gval]');
@@ -89,24 +89,21 @@
       }
       const tiles = document.createElement('div');
       tiles.className = 'calc-tiles';
-      tiles.setAttribute('role', 'group'); tiles.setAttribute('aria-label', g.name || '');
       gHost.appendChild(tiles);
       g.items.forEach((it, ii) => {
         const on = g.type === 'choice' ? state.sel[gi] === ii : state.sel[gi][ii];
         const t = document.createElement('button');
         t.type = 'button';
         t.className = 'calc-tile' + (on ? ' on' : '');
-        t.setAttribute('aria-pressed', on ? 'true' : 'false');
         const p = it.monthly ? '+ ' + fmt(it.monthly) + '/Mt.' : it.perPage ? '+ ' + fmt(it.perPage) + ' / Seite' : (it.price ? '+ ' + fmt(it.price) : '—');
         t.innerHTML = `<span class="calc-tname">${it.name}</span><span class="mono calc-tprice">${p}</span>`;
         t.addEventListener('click', () => {
           if (g.type === 'choice') {
             state.sel[gi] = ii;
-            [...tiles.children].forEach((el, k) => { el.classList.toggle('on', k === ii); el.setAttribute('aria-pressed', k === ii ? 'true' : 'false'); });
+            [...tiles.children].forEach((el, k) => el.classList.toggle('on', k === ii));
           } else {
             state.sel[gi][ii] = !state.sel[gi][ii];
             t.classList.toggle('on', state.sel[gi][ii]);
-            t.setAttribute('aria-pressed', state.sel[gi][ii] ? 'true' : 'false');
           }
           recalc();
         });
@@ -201,8 +198,8 @@
         const picked = g.items.filter((it, ii) => g.type === 'choice' ? state.sel[gi] === ii : state.sel[gi][ii]).map(it => it.name);
         if (picked.length) lines.push(g.name + ': ' + picked.join(', '));
       });
-      lines.push('', (cfg.totalLabel || 'Geschätzte Investition') + ': CHF ' + totalEl.textContent + ' (' + (cfg.discountNote || 'einmalig, exkl. MwSt.') + ')');
-      if (!mWrap.hidden) lines.push((cfg.monthlyLabel || 'Laufende Kosten') + ': CHF ' + monthlyEl.textContent + ' / Mt. (' + (cfg.monthlyNote || 'pro Monat, exkl. MwSt.') + ')');
+      lines.push('', (cfg.totalLabel || 'Geschätzte Investition') + ': CHF ' + totalEl.textContent);
+      if (!mWrap.hidden) lines.push((cfg.monthlyLabel || 'Laufende Kosten') + ': CHF ' + monthlyEl.textContent + ' / Mt.');
       const note = (notesEl.value || '').trim();
       if (note) lines.push('', 'Notiz: ' + note);
       try {

@@ -377,9 +377,3 @@ html[data-mode="Dunkel"] .footer { background: #15171A; }
 @media (max-width: 620px) {
   .cols-4, .cols-3, .cols-2 { grid-template-columns: 1fr; }
 }
-
-/* Querformat auf Smartphones unterbinden: Hinweis-Overlay, Seite bleibt darunter stehen. */
-@media (orientation: landscape) and (pointer: coarse) and (max-height: 520px) {
-  html::after { content: "Bitte Gerät ins Hochformat drehen."; position: fixed; inset: 0; z-index: 99999; display: grid; place-items: center; padding: 34px; text-align: center; background: var(--bg); color: var(--ink); font-family: var(--font-head, sans-serif); font-size: 20px; line-height: 1.618; }
-  body { overflow: hidden; }
-}
