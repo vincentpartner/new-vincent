@@ -1,7 +1,8 @@
 /* perpetuum.js — abstraktes "Perpetuum mobile" als SVG-Animation.
    Partikel kondensieren aus dem Chaos immer wieder in geordnete
    elliptische Bahnen (Orbits) und lösen sich wieder ins Chaos auf.
-   Monochrom: nutzt currentColor (= --ink), passt sich Hell/Dunkel an.
+   Fünf Leuchtfarben; bei Hover sammelt sich jede Farbe auf ihrer eigenen
+   Kreisbahn (konzentrisch, kontrolliert rotierend).
 
    Aktivierung: <div data-perpetuum></div> in einem position:relative-Rahmen.
 */
@@ -13,14 +14,14 @@
   const VW = 2100, VH = 900;
   const CX = VW / 2, CY = VH / 2;
 
-  // Konzentrische, breite Ellipsen-Bahnen (rx, ry, Partikelzahl, Winkeltempo)
+  // Konzentrische, breite Ellipsen-Bahnen, eine pro Leuchtfarbe (rx, ry, Partikelzahl, Winkeltempo, Farbe)
   const RINGS = [
-    { rx: 210, ry: 92,  n: 5,  sp:  0.150 },
-    { rx: 360, ry: 150, n: 8,  sp: -0.112 },
-    { rx: 500, ry: 208, n: 11, sp:  0.086 },
-    { rx: 640, ry: 264, n: 14, sp: -0.064 },
-    { rx: 780, ry: 322, n: 18, sp:  0.048 },
-    { rx: 920, ry: 380, n: 22, sp: -0.036 }
+    { rx: 210, ry: 92,  n: 6,  sp:  0.150, col: '#ccff00' }, // Leuchtgelb
+    { rx: 360, ry: 150, n: 9,  sp: -0.112, col: '#39ff14' }, // Leuchtgrün
+    { rx: 500, ry: 208, n: 12, sp:  0.086, col: '#ff2bd6' }, // Neonpink
+    { rx: 640, ry: 264, n: 15, sp: -0.064, col: '#ff7a00' }, // Leuchtorange
+    { rx: 780, ry: 322, n: 18, sp:  0.048, col: '#2bd2ff' }, // Leuchtblau
+    { rx: 920, ry: 380, n: 22, sp: -0.036, col: '#ccff00' }  // Leuchtgelb
   ];
 
   function smootherstep(x) {
@@ -49,7 +50,7 @@
       e.setAttribute('cx', CX); e.setAttribute('cy', CY);
       e.setAttribute('rx', R.rx); e.setAttribute('ry', R.ry);
       e.setAttribute('fill', 'none');
-      e.setAttribute('stroke', 'currentColor');
+      e.setAttribute('stroke', R.col);
       e.setAttribute('stroke-width', '1.4');
       e.setAttribute('vector-effect', 'non-scaling-stroke');
       svg.appendChild(e);
@@ -64,7 +65,7 @@
         const c = document.createElementNS(NS, 'circle');
         const rad = 4.2 + Math.random() * 2.6;
         c.setAttribute('r', rad.toFixed(2));
-        c.setAttribute('fill', 'currentColor');
+        c.setAttribute('fill', R.col);
         svg.appendChild(c);
         parts.push({
           el: c, ring: R, ri, baseAng,
@@ -89,7 +90,7 @@
       for (let i = 0; i < R.n; i++) {
         const a = seg[i], b = seg[(i + 1) % R.n];
         const ln = document.createElementNS(NS, 'line');
-        ln.setAttribute('stroke', 'currentColor');
+        ln.setAttribute('stroke', R.col);
         ln.setAttribute('stroke-width', '1');
         ln.setAttribute('vector-effect', 'non-scaling-stroke');
         svg.insertBefore(ln, parts[0].el); // unter die Punkte
@@ -118,7 +119,7 @@
 
       // Bahn-Umrisse
       for (let k = 0; k < ringEls.length; k++) {
-        ringEls[k].setAttribute('stroke-opacity', (ord * 0.22).toFixed(3));
+        ringEls[k].setAttribute('stroke-opacity', (ord * 0.35).toFixed(3));
       }
 
       // Partikel positionieren
@@ -138,13 +139,13 @@
         pt.el.setAttribute('cy', y.toFixed(1));
         // im Chaos heller flackernd, in Ordnung ruhig & klar
         const twk = 0.55 + 0.45 * Math.sin(pt.tw + t * 1.6);
-        const op = (0.32 + 0.30 * twk) * (1 - ord) + 0.95 * ord;
+        const op = (0.55 + 0.35 * twk) * (1 - ord) + 1 * ord;
         pt.el.setAttribute('opacity', op.toFixed(3));
       }
 
       // Verbindungslinien
       const lop = (ord - 0.45) / 0.55; // erst spät einblenden
-      const lo = lop > 0 ? lop * 0.16 : 0;
+      const lo = lop > 0 ? lop * 0.28 : 0;
       for (let i = 0; i < links.length; i++) {
         const L = links[i];
         if (lo <= 0.002) { L.el.setAttribute('stroke-opacity', '0'); continue; }
@@ -158,7 +159,7 @@
 
     if (REDUCED) {
       // Statischer geordneter Zustand
-      ringEls.forEach(e => e.setAttribute('stroke-opacity', '0.2'));
+      ringEls.forEach(e => e.setAttribute('stroke-opacity', '0.35'));
       parts.forEach(pt => {
         const R = pt.ring;
         const x = CX + R.rx * Math.cos(pt.baseAng);

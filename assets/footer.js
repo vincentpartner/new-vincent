@@ -11,18 +11,10 @@
           '<h4>Leistungen</h4>' +
           '<a href="Webdesign.html">Webdesign</a>' +
           '<a href="Onlineshops.html">Onlineshops</a>' +
-          '<a href="SEA.html">Onlinemarketing</a>' +
-          '<a href="SEO.html">SEO &amp; GEO</a>' +
           '<a href="KI-Automation.html">KI &amp; Automation</a>' +
-          '<a href="Leistungen.html">Alle Leistungen</a>' +
-        '</div>' +
-        '<div class="ft-col">' +
-          '<h4>Aktuell</h4>' +
-          '<a href="Aktuell.html">Übersicht</a>' +
-          '<a href="About.html">Über uns</a>' +
-          '<a href="Referenzen.html">Kunden</a>' +
-          '<a href="Aktuell.html">Technik</a>' +
-          '<a href="SEO.html">SEO</a>' +
+          '<a href="KI.html">KI-Apps</a>' +
+          '<a href="SEO.html">SEO &amp; GEO</a>' +
+          '<a href="SEA.html">SEA</a>' +
         '</div>' +
         '<div class="ft-col">' +
           '<h4>Kontakt</h4>' +

@@ -2,7 +2,7 @@
    Die umherfliegenden Punkte treiben im Chaos; sobald der Cursor über dem
    CTA ist, organisieren sie sich in konzentrische Bahnen UM DEN CURSOR herum
    und kreisen perpetuell. Verlässt der Cursor die Fläche, zerfällt die Ordnung
-   wieder ins Chaos. Monochrom (currentColor = --ink), Hell/Dunkel-tauglich.
+   wieder ins Chaos. Ellipsenbahnen (wie der Hero), monochrom (currentColor = --ink).
 
    Aktivierung: <div class="bigcta" data-ctaperp> … </div>
 */
@@ -10,14 +10,14 @@
   const NS = 'http://www.w3.org/2000/svg';
   const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Bahnen um den Cursor (Radius in px, Partikelzahl, Winkeltempo)
+  // Ellipsen-Bahnen um den Cursor (rx, ry in px, Partikelzahl, Winkeltempo, Farbe)
   const RINGS = [
-    { r: 34,  n: 4,  sp:  0.85 },
-    { r: 68,  n: 7,  sp: -0.55 },
-    { r: 104, n: 10, sp:  0.40 },
-    { r: 144, n: 13, sp: -0.30 },
-    { r: 188, n: 16, sp:  0.22 },
-    { r: 236, n: 20, sp: -0.17 }
+    { rx: 60,  ry: 26,  n: 4,  sp:  0.85, col: '#ccff00' },
+    { rx: 110, ry: 46,  n: 7,  sp: -0.55, col: '#39ff14' },
+    { rx: 160, ry: 66,  n: 10, sp:  0.40, col: '#ff2bd6' },
+    { rx: 210, ry: 86,  n: 13, sp: -0.30, col: '#ff7a00' },
+    { rx: 260, ry: 106, n: 16, sp:  0.22, col: '#2bd2ff' },
+    { rx: 310, ry: 126, n: 20, sp: -0.17, col: '#ccff00' }
   ];
 
   function smootherstep(x) {
@@ -41,8 +41,8 @@
 
     let W = 0, H = 0;
 
-    const ringEls = RINGS.map(() => {
-      const c = document.createElementNS(NS, 'circle');
+    const ringEls = RINGS.map((R) => {
+      const c = document.createElementNS(NS, 'ellipse');
       c.setAttribute('fill', 'none');
       c.setAttribute('stroke', 'currentColor');
       c.setAttribute('stroke-width', '1.2');
@@ -126,15 +126,16 @@
         const c = ringEls[k];
         c.setAttribute('cx', cx.toFixed(1));
         c.setAttribute('cy', cy.toFixed(1));
-        c.setAttribute('r', RINGS[k].r);
+        c.setAttribute('rx', RINGS[k].rx);
+        c.setAttribute('ry', RINGS[k].ry);
         c.setAttribute('stroke-opacity', (o * 0.20).toFixed(3));
       }
 
       for (let i = 0; i < parts.length; i++) {
         const p = parts[i], R = p.ring;
         const ang = p.baseAng + R.sp * t;
-        const ox = cx + R.r * Math.cos(ang);
-        const oy = cy + R.r * Math.sin(ang);
+        const ox = cx + R.rx * Math.cos(ang);
+        const oy = cy + R.ry * Math.sin(ang);
         const chx = p.hx * W + Math.cos(p.dax + t * p.dsx) * p.amp;
         const chy = p.hy * H + Math.sin(p.day + t * p.dsy) * p.amp;
         const x = chx + (ox - chx) * o;

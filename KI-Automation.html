@@ -2,13 +2,15 @@
 <html lang="de">
 <head>
 <script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
-(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KI &amp; Automation — Vincent &amp; Partner</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/swiss.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
+<link rel="stylesheet" href="assets/mobile.css">
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -16,7 +18,7 @@
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="site-nav-links">
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
@@ -26,7 +28,7 @@
       <a href="KI-Automation.html" class="active">KI</a>
     </nav>
     <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
-    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
 
@@ -39,7 +41,7 @@
       <span class="sep">/</span>
       <h1 class="here">KI &amp; Automation Zürich</h1>
     </div>
-    <p class="ptitle">Digitalisieren.<br>Automatisieren.<br>Skalieren.</p>
+    <p class="ptitle"><span class="t-d">Digitalisieren.<br>Automatisieren.<br>Skalieren.</span><span class="t-m">Digital.<br>Automatisch.<br>Skalierbar.</span></p>
     <div class="meta" style="margin-top:clamp(28px,4vh,52px)">
       <div><span class="lab">Disziplin</span><span class="v">Automatisierung &amp; KI</span></div>
       <div><span class="lab">Fokus</span><span class="v">Effizienz &amp; Datenschutz</span></div>
@@ -49,7 +51,7 @@
 
   <!-- Big visual -->
   <section class="ablock awrap" style="padding-top:0">
-    <div class="visual r219 dotbg" style="background:var(--paper)">
+    <div class="visual r219 dotbg pstage">
       <div class="pmobile" data-perpetuum></div>
     </div>
   </section>
@@ -112,6 +114,9 @@
 <style>
   .footer .ftl { display:block; color:#fff; font-size:15px; margin-bottom:9px; }
   .footer .ftl:hover { color: var(--muted); }
+  /* Perpetuum-Bühne: dunkel wie der Body im Dunkelmodus, im Hellmodus umgekehrt (dunkel auf hell) */
+  .pstage { background: #1B1D20; color: #D2D4D2; }
+  html[data-mode="Dunkel"] .pstage { background: var(--bg); }
   /* Perpetuum-CTA: Hintergrund neutral lassen, damit die Punkte sichtbar sind */
   .bigcta[data-ctaperp], .bigcta[data-ctaperp]:hover { background: transparent; }
   /* Intro-Spalte beim Scrollen fixieren (Desktop), bis die Feature-Boxen durchgelaufen sind */
