@@ -10,9 +10,12 @@
   const NS = 'http://www.w3.org/2000/svg';
   const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // 21:9 Bühne
-  const VW = 2100, VH = 900;
+  // 21:9 Bühne; auf Smartphones (Quadrat) quadratische Bühne mit kleineren Bahnen
+  const PHONE = matchMedia('(max-width: 760px)').matches;
+  const TOUCH = matchMedia('(hover: none)').matches;
+  const VW = PHONE ? 900 : 2100, VH = 900;
   const CX = VW / 2, CY = VH / 2;
+  const RS = PHONE ? 0.42 : 1;   // Radius-Skalierung
 
   // Konzentrische, breite Ellipsen-Bahnen, eine pro Leuchtfarbe (rx, ry, Partikelzahl, Winkeltempo, Farbe)
   const RINGS = [
@@ -22,7 +25,7 @@
     { rx: 640, ry: 264, n: 15, sp: -0.064, col: '#ff7a00' }, // Leuchtorange
     { rx: 780, ry: 322, n: 18, sp:  0.048, col: '#2bd2ff' }, // Leuchtblau
     { rx: 920, ry: 380, n: 22, sp: -0.036, col: '#ccff00' }  // Leuchtgelb
-  ];
+  ].map(R => ({ ...R, rx: R.rx * RS, ry: R.ry * RS }));
 
   function smootherstep(x) {
     x = x < 0 ? 0 : x > 1 ? 1 : x;
@@ -103,9 +106,9 @@
     let paused = false;
     // Hover AKTIVIERT die Ordnung (an/aus) — die Bewegung selbst wird NICHT vom
     // Cursor gesteuert. Organisation passiert gross & zentriert wie zuvor.
-    let target = 0, order = 0;
+    let target = TOUCH ? 1 : 0, order = 0;
     host.addEventListener('mouseenter', () => { target = 1; });
-    host.addEventListener('mouseleave', () => { target = 0; });
+    host.addEventListener('mouseleave', () => { if (!TOUCH) target = 0; });
 
     function frame(now) {
       requestAnimationFrame(frame);

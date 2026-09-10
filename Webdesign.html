@@ -11,6 +11,7 @@
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <link rel="stylesheet" href="assets/mobile.css">
+<link rel="stylesheet" href="assets/askbot.css">
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -90,11 +91,25 @@
     </div>
   </section>
 
-  <!-- Cost calculator -->
-  <section class="ablock awrap" data-screen-label="Kalkulator">
-    <div class="calc" data-calc>
-      <script type="application/json" class="calc-config">{"title":"Projekt<br>Schätzung.","sliderLabel":"Seitenanzahl","sliderHint":"Jede Seite ist eine eigene Unterseite mit eigenem Layout, eigenem Inhalt und eigener SEO-Struktur.","maxLabel":"Umfangreiche Website","min":1,"max":25,"step":1,"default":8,"unit":"Seiten","base":2400,"perUnit":450,"pmPct":0.15,"totalLabel":"Geschätzte Investition","discountNote":"Einmalig, inkl. 15% Projektmanagement (Exkl. MwSt.)","monthlyBase":20,"monthlyLabel":"Laufende Kosten","monthlyNote":"Hosting CHF 20 inkl., pro Monat (Exkl. MwSt.)","notesLabel":"Ihre Notiz (optional)","groups":[{"name":"Design & Prototyp","type":"slider","hint":"Wie aufwändig soll das Design werden — vom klaren Standard-Layout bis zum vollständig individuellen Auftritt.","min":0,"max":10,"step":1,"default":3,"perUnit":720,"maxLabel":"Maximales Design (5 Tage)","steps":{"0":"Einfaches Design (Standard)","10":"Maximales Design"}},{"name":"Inhalte","type":"choice","hint":"Inhalte wie Bild, Video und Text zum Unternehmen und dem Angebot.","items":[{"name":"Inhalte werden geliefert","price":0,"on":true},{"name":"Bestehende Inhalte überarbeiten","perPage":180},{"name":"Inhalte von uns erstellt","perPage":280}]},{"name":"SEO & KI-SEO","type":"choice","hint":"Damit Sie in Google und in KI-Suchen wie ChatGPT gefunden werden.","items":[{"name":"Keine","price":0},{"name":"SEO-Basis","price":720,"on":true},{"name":"Onpage & KI-Suche","price":2880},{"name":"SEO Pro inkl. Backlinks","price":3780}]},{"name":"Branding & Logo","type":"choice","hint":"Logo, Farben und Schriften — die visuelle Identität Ihres Unternehmens.","items":[{"name":"Vorhanden","price":0,"on":true},{"name":"Logo-Refresh","price":360},{"name":"Logo-Redesign & CD","price":2340},{"name":"Neues Branding inkl. Manual","price":3940}]},{"name":"Weitere Leistungen","type":"toggle","hint":"Ergänzungen, die je nach Projekt dazukommen.","items":[{"name":"Mehrsprachigkeit DE/FR/IT/EN","price":1530},{"name":"Fotoshooting (halber Tag)","price":3100},{"name":"Drittsystem-Integration","price":720},{"name":"Supportpaket","monthly":40}]}]}</script>
-    </div>
+  <!-- Fragen & Antworten (Chatbot) -->
+  <section class="ablock awrap ask" data-ask data-page="Webdesign" data-screen-label="Fragen und Antworten">
+    <script type="application/json" class="ask-tips-config">[
+      "Was kostet eine Website, wenn ich nur ein Logo und gute Laune mitbringe?",
+      "Ich habe CHF 5'000. Was bekomme ich dafür – ehrlich?",
+      "Wie lange dauert es, bis meine Website online ist? Mein Chef fragt.",
+      "Reicht ein One-Pager oder brauche ich mehr Seiten als mein Lebenslauf?",
+      "Kann ich Texte später selbst ändern, ohne etwas kaputt zu machen?",
+      "Meine Website ist von 2014. Reparieren oder neu bauen?",
+      "Was kostet eine Landingpage für eine Kampagne im Herbst?",
+      "Muss ich Texte selbst schreiben oder übernehmt ihr das?",
+      "Was ist im Preis drin – und was kommt später noch dazu?",
+      "Wie viel kostet die Wartung pro Monat, wenn ich sonst nie an die Website denke?",
+      "Wir sind eine Praxis. Was ist bei einer Praxis-Website anders?",
+      "Braucht meine Website ein CMS oder ist das nur ein teures Wort?",
+      "Wie sieht die Zusammenarbeit aus, wenn ich wenig Zeit habe?",
+      "Was kostet eine mehrsprachige Website (DE/FR/EN)?",
+      "Könnt ihr meine alte Website umziehen, ohne dass Google mich vergisst?"
+    ]</script>
   </section>
 
   <!-- FAQ -->
@@ -176,8 +191,8 @@
 <script src="assets/tweaks.js"></script>
 <script src="assets/site.js"></script>
 <script src="assets/image-slot.js?v=20260906b"></script>
-<script src="assets/calc.js"></script>
 <script src="assets/fluid.js"></script>
+<script src="assets/askbot.js"></script>
 <script src="assets/media-edit.js"></script>
 <script src="assets/footer.js"></script>
 <script src="assets/refslider.js?v=20260906b"></script>

@@ -117,6 +117,7 @@
   /* Perpetuum-Bühne: dunkel wie der Body im Dunkelmodus, im Hellmodus umgekehrt (dunkel auf hell) */
   .pstage { background: #1B1D20; color: #D2D4D2; }
   html[data-mode="Dunkel"] .pstage { background: var(--bg); }
+  @media (max-width: 760px){ .visual.r219.pstage { aspect-ratio: 1 / 1; } }
   /* Perpetuum-CTA: Hintergrund neutral lassen, damit die Punkte sichtbar sind */
   .bigcta[data-ctaperp], .bigcta[data-ctaperp]:hover { background: transparent; }
   /* Intro-Spalte beim Scrollen fixieren (Desktop), bis die Feature-Boxen durchgelaufen sind */

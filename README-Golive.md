@@ -1,18 +1,22 @@
-# VinWeb Go-live v3 — Stand 9. September 2026
+# VinWeb Go-live v4 — Website für Cyon — Stand 10. September 2026
 
-Inhalt: alle 37 Seiten, assets/, kalender/ (inkl. .htaccess), Sidecars (.state.json), doc-page.js.
+Inhalt: alle 34 öffentlichen Seiten, assets/, Sidecars (.state.json).
+NICHT enthalten (liegen bereits auf Hostpoint unter api.vincent-partner.ch): kalender/, chat/.
 
-## Vor dem Upload auf Hostpoint
-1. `kalender/config.php`: echte OAuth-Werte (client_id, client_secret, calendar_id) eintragen. Für die Einrichtung `setup_enabled => true` + `setup_key` (≥ 24 Zeichen), `.htaccess` temporär lockern (siehe Kopf von `oauth-setup.php`).
-2. `kalender/data/` anlegen und beschreibbar machen.
-3. `oauth-setup.php?key=…` einmal aufrufen, Refresh-Token in `config.php` eintragen, danach `setup_enabled => false` und `oauth-setup.php` vom Server löschen.
-4. Ordner**inhalt** (nicht den Ordner) ins Webroot hochladen.
-5. Testen: Kontakt.html lädt Slots (`/kalender/availability.php`), Testbuchung, Mobil-Menü, Hell/Dunkel, echtes Smartphone.
+## Upload auf Cyon
+1. my.cyon.ch → Dateimanager (oder SFTP) → Webroot der Domain (`public_html/`).
+2. Den INHALT dieses Ordners hochladen (nicht den Ordner selbst). Vorhandene Dateien ersetzen.
+3. Versteckte Dateien (`.image-slots-*.state.json`, `.frames.state.json`, `.media-edits.state.json`) mit hochladen — sie enthalten per Editor ersetzte Bilder.
 
-## Neu seit v2
-- Top-Navigation mit Kachelmenü, Bottom-Bar entfernt.
-- Mobile-Hero: Pfeil-Button als Physikkörper, Buchstaben prallen ab.
-- Alle 37 Seiten standardmässig dunkel.
-- kalender/-Backend gehärtet (Idempotenz per Event-ID, atomares Rate-Limit, Origin-Prüfung, FreeBusy-Validierung).
+## Nach dem Upload prüfen
+- index.html: Menü (Kacheln), Hell/Dunkel, Hero-Animation.
+- Kontakt.html: Terminslots laden (Backend api.vincent-partner.ch/kalender/). Fehlt etwas: Domain `vincent-partner.ch` und `www.vincent-partner.ch` müssen in `kalender/config.php` → `origins` stehen.
+- Webdesign.html → Sektion «Fragen Sie einfach.»: Frage stellen (Backend api.vincent-partner.ch/chat/chat/). Bei CORS-Fehler: Domain in `chat/config.php` → `allowed_hosts`.
+- Auf Hostpoint `chat/chat/test.php` löschen.
 
-Details zur Codeprüfung: `Codepruefung-Umsetzung-2026-09-09.md` im Projekt.
+## Neu seit v3
+- Mobile Navigation fixiert beim Scrollen.
+- KI-Automation: erste Animation auf Mobil quadratisch, Bahnen verkleinert; CTA-Kreise mobil kleiner und dauerhaft sichtbar.
+- Preisrechner und SEO/GEO-Pakete archiviert (nicht im Export).
+- Chatbot-Sektion «Fragen & Antworten» auf Webdesign.html (assets/askbot.js/.css).
+- Kontakt-Buchung ruft Backend absolut auf api.vincent-partner.ch auf.

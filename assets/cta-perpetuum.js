@@ -40,6 +40,8 @@
     host.insertBefore(svg, host.firstChild);
 
     let W = 0, H = 0;
+    const TOUCH = matchMedia('(hover: none)').matches;
+    let mx = 0, my = 0;
 
     const ringEls = RINGS.map((R) => {
       const c = document.createElementNS(NS, 'ellipse');
@@ -88,25 +90,30 @@
       idx += R.n;
     });
 
+    // Bahnen-Skalierung: auf schmalen Flächen (Smartphone) deutlich kleinere Radien
+    let S = 1;
     function resize() {
       const r = host.getBoundingClientRect();
       W = Math.round(r.width); H = Math.round(r.height);
       svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      S = W <= 760 ? Math.max(0.28, Math.min(0.45, W / 900)) : 1;
+      if (TOUCH) { mx = W / 2; my = H / 2; }
     }
     resize();
     let rt;
     window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 120); });
 
     // Cursor
-    let mx = W / 2, my = H / 2;      // Ziel-Zentrum (Cursor)
+    mx = W / 2; my = H / 2;          // Ziel-Zentrum (Cursor)
     let cx = W / 2, cy = H / 2;      // geglättetes Zentrum
     let target = 0;                  // 1 = Cursor drin → Ordnung
+    if (TOUCH) { target = 1; }       // ohne Hover: dauerhaft geordnet um die Mitte
     host.addEventListener('mousemove', e => {
       const r = host.getBoundingClientRect();
       mx = e.clientX - r.left; my = e.clientY - r.top;
     });
     host.addEventListener('mouseenter', () => { target = 1; });
-    host.addEventListener('mouseleave', () => { target = 0; });
+    host.addEventListener('mouseleave', () => { if (!TOUCH) target = 0; });
 
     let order = 0;
     const start = performance.now();
@@ -126,16 +133,16 @@
         const c = ringEls[k];
         c.setAttribute('cx', cx.toFixed(1));
         c.setAttribute('cy', cy.toFixed(1));
-        c.setAttribute('rx', RINGS[k].rx);
-        c.setAttribute('ry', RINGS[k].ry);
+        c.setAttribute('rx', (RINGS[k].rx * S).toFixed(1));
+        c.setAttribute('ry', (RINGS[k].ry * S).toFixed(1));
         c.setAttribute('stroke-opacity', (o * 0.20).toFixed(3));
       }
 
       for (let i = 0; i < parts.length; i++) {
         const p = parts[i], R = p.ring;
         const ang = p.baseAng + R.sp * t;
-        const ox = cx + R.rx * Math.cos(ang);
-        const oy = cy + R.ry * Math.sin(ang);
+        const ox = cx + R.rx * S * Math.cos(ang);
+        const oy = cy + R.ry * S * Math.sin(ang);
         const chx = p.hx * W + Math.cos(p.dax + t * p.dsx) * p.amp;
         const chy = p.hy * H + Math.sin(p.day + t * p.dsy) * p.amp;
         const x = chx + (ox - chx) * o;
