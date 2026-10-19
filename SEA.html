@@ -11,6 +11,7 @@
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <link rel="stylesheet" href="assets/mobile.css">
+<link rel="stylesheet" href="assets/askbot.css">
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -22,12 +23,12 @@
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
-      <a href="Onlineshops.html">Shops</a>
+      <!-- vorerst ausgeblendet: <a href="Onlineshops.html">Shops</a> -->
       <a href="SEA.html" class="active">Marketing</a>
       <a href="SEO.html">SEO / GEO</a>
-      <a href="KI-Automation.html">KI</a>
+      <a href="KI-Automation.html">KI-Auto</a>
     </nav>
-    <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
     <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -39,7 +40,7 @@
     <div class="crumbs">
       <a href="Leistungen.html"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7 7l-7-7l7-7"/></svg> Leistungen</a>
       <span class="sep">/</span>
-      <h1 class="here">Online Marketing Agentur</h1>
+      <h1 class="here">Google-Ads-Agentur in Zürich</h1>
     </div>
     <p class="ptitle">Direkt.<br>Sichtbar.<br>Messbar.</p>
     <div class="meta" style="margin-top:clamp(28px,4vh,52px)">
@@ -102,7 +103,7 @@
   </section>
 
   <!-- Reference slider -->
-  <section class="ablock awrap" data-screen-label="Referenzen Slider" style="padding-top:0">
+  <template data-hidden="Referenzen Marketing vorerst ausgeblendet"><section class="ablock awrap" data-screen-label="Referenzen Slider" style="padding-top:0">
     <div class="refslider">
       <div class="refslider-head">
         <div>
@@ -116,12 +117,26 @@
       </div>
       <div class="refslider-track" data-rs-track data-rs-source="Referenzen.html" data-rs-group="Onlinemarketing">
         <a class="refc" href="Referenz-comparis-cinemagraph.html"><div class="m"><image-slot data-mirror="referenzen" id="o-comp-cine" placeholder="Comparis Cinemagraph" shape="rect" alt="Comparis — Cinemagraph Onlinemarketing Referenz"></image-slot><span class="play">▶</span></div><span class="t">Cinemagraph · Kampagne</span><h3>Comparis</h3></a>
-        <a class="refc" href="Referenz-video-salsicceria.html"><div class="m"><image-slot data-mirror="referenzen" id="o-vid-salsicceria" placeholder="Video Salsicceria" shape="rect" alt="Salsicceria — Video Onlinemarketing Referenz"></image-slot><span class="play">▶</span></div><span class="t">Video</span><h3>Salsicceria</h3></a>
+        <!-- ausgeblendet bis Bilder vorhanden: <a class="refc" href="Referenz-video-salsicceria.html"><div class="m"><image-slot data-mirror="referenzen" id="o-vid-salsicceria" placeholder="Video Salsicceria" shape="rect" alt="Salsicceria — Video Onlinemarketing Referenz"></image-slot><span class="play">▶</span></div><span class="t">Video</span><h3>Salsicceria</h3></a> -->
         <a class="refc" href="Referenz-video-alpfrieden.html"><div class="m"><image-slot data-mirror="referenzen" id="o-vid-alpfrieden" placeholder="Video Alpfrieden" shape="rect" alt="Alpfrieden — Video Onlinemarketing Referenz"></image-slot><span class="play">▶</span></div><span class="t">Video</span><h3>Alpfrieden</h3></a>
-        <a class="refc" href="Referenz-video-reklamationszentrale.html"><div class="m"><image-slot data-mirror="referenzen" id="o-vid-rekla" placeholder="Video Reklamationszentrale" shape="rect" alt="Reklamationszentrale — Video Onlinemarketing Referenz"></image-slot><span class="play">▶</span></div><span class="t">Video</span><h3>Reklamationszentrale</h3></a>
+        <!-- ausgeblendet bis Bilder vorhanden: <a class="refc" href="Referenz-video-reklamationszentrale.html"><div class="m"><image-slot data-mirror="referenzen" id="o-vid-rekla" placeholder="Video Reklamationszentrale" shape="rect" alt="Reklamationszentrale — Video Onlinemarketing Referenz"></image-slot><span class="play">▶</span></div><span class="t">Video</span><h3>Reklamationszentrale</h3></a> -->
         <a class="refc" href="Referenz-landingpage-alpfrieden.html"><div class="m"><image-slot data-mirror="referenzen" id="o-lp-alpfrieden" placeholder="Landingpage Alpfrieden Sommeraktion" shape="rect" alt="Berghotel Alpfrieden Bettmeralp — Landingpage Sommeraktion Onlinemarketing Referenz"></image-slot></div><span class="t">Landingpage · Kampagne</span><h3>Alpfrieden</h3></a>
       </div>
     </div>
+  </section></template>
+
+  <!-- Fragen & Antworten (Chatbot) -->
+  <section class="ablock awrap ask" data-ask data-page="Onlinemarketing" data-screen-label="Fragen und Antworten">
+    <script type="application/json" class="ask-tips-config">[
+      "Wie viel Budget braucht Google Ads, damit sich etwas bewegt?",
+      "Was kostet die Betreuung meiner Kampagnen pro Monat?",
+      "Lohnt sich Werbung auf Instagram für mein Café?",
+      "Wie schnell sehe ich erste Anfragen nach dem Start?",
+      "Ich habe schon Ads geschaltet und nur Geld verbrannt. Was macht ihr anders?",
+      "Was ist eine Landingpage und brauche ich wirklich eine?",
+      "Wie messt ihr, ob die Werbung etwas bringt?",
+      "Kann ich klein starten und später erhöhen?"
+    ]</script>
   </section>
 
   <!-- CTA -->
@@ -156,6 +171,8 @@
 <script src="assets/site.js"></script>
 <script src="assets/image-slot.js?v=20260906b"></script>
 <script src="assets/fluid.js"></script>
+<script src="assets/vendor/thinking-orb.js"></script>
+<script src="assets/askbot.js"></script>
 <script src="assets/media-edit.js"></script>
 <script src="assets/footer.js"></script>
 <script src="assets/cta-dotgrid.js"></script>

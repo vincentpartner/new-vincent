@@ -17,6 +17,10 @@
   window.__flMobileSetup = function setup(container) {
     if (container.__fl) return;
     container.__fl = true;
+    const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const timers = new Set();
+    const later = (fn, ms) => { const id = setTimeout(() => { timers.delete(id); fn(); }, ms); timers.add(id); return id; };
+    let dead = false, raf = 0;
 
     const { Engine, Render, Bodies, Composite, Body, MouseConstraint, Mouse, Events } = Matter;
 
@@ -103,6 +107,7 @@
       };
       syncDown();
       Matter.Events.on(engine, 'beforeUpdate', syncDown);
+      container.__flSyncDown = syncDown;
     }
     // Decke: wird erst nach dem Einfliegen der Buchstaben geschlossen, damit die
     // Buchstaben bei umgekehrter Schwerkraft (Gerät nach hinten gekippt) an der
@@ -112,7 +117,7 @@
     function armCeiling(ms) {
       clearTimeout(ceilT);
       if (ceilingOn) { Composite.remove(engine.world, ceiling); ceilingOn = false; }
-      ceilT = setTimeout(() => { Composite.add(engine.world, ceiling); ceilingOn = true; }, ms);
+      ceilT = later(() => { Composite.add(engine.world, ceiling); ceilingOn = true; }, ms);
     }
 
     function makeLetter(char, x, y, color) {
@@ -130,7 +135,7 @@
     }
 
     function spawnWord(word, color, delay) {
-      setTimeout(() => {
+      later(() => {
         const c = document.createElement('canvas');
         const cx = c.getContext('2d');
         cx.font = fontStyle;
@@ -145,9 +150,9 @@
           const jitter = (Math.random() - 0.5) * width * 0.06;
           let xCenter = width * slots[index % slots.length] + jitter;
           xCenter = Math.max(min, Math.min(max, xCenter));
-          setTimeout(() => {
+          later(() => {
             Composite.add(engine.world, makeLetter(char, xCenter, dropHeight, color));
-          }, index * 420);
+          }, REDUCED ? 0 : index * 420);
         });
       }, delay);
     }
@@ -160,7 +165,8 @@
         spawnWord(w, inkCol, i * 2500); // erstes Wort sofort
       });
       const total = words.reduce((n, w) => n + w.length, 0);
-      armCeiling(total * 420 + 1400);
+      armCeiling(REDUCED ? 0 : total * 420 + 1400);
+      if (REDUCED) later(() => { for (let k = 0; k < 420; k++) Engine.update(engine, 16); Render.world(render); }, 30);
     }
 
     Events.on(render, 'afterRender', () => {
@@ -236,16 +242,23 @@
       container.addEventListener('touchend', tryEnableGyro, { once: true, passive: true });
     }
 
-    Render.run(render);
+    if (!REDUCED) Render.run(render);
     container.__render = render;
     render.canvas.style.position = 'absolute';
     render.canvas.style.top = '0';
     render.canvas.style.left = '0';
     render.canvas.style.zIndex = '1';
 
-    let paused = false;
+    let paused = false, rendering = !REDUCED;
     let last = performance.now();
-    (function tick(now) {
+    function setPaused(p) {
+      paused = p;
+      if (REDUCED || dead) return;
+      if (p && rendering) { Render.stop(render); rendering = false; }
+      else if (!p && !rendering) { Render.run(render); rendering = true; last = performance.now(); }
+    }
+    function tick(now) {
+      if (dead) return;
       const dt = Math.min(32, (now || performance.now()) - last);
       last = now || performance.now();
       if (!paused) {
@@ -255,14 +268,15 @@
         }
         Engine.update(engine, dt);
       }
-      requestAnimationFrame(tick);
-    })(performance.now());
+      raf = requestAnimationFrame(tick);
+    }
+    if (!REDUCED) tick(performance.now());
 
     startSpawns();
 
     // Tweaks: Schrift/Case-Wechsel -> neu aufbauen
     let lastCase = caseMode();
-    document.addEventListener('tweaks:apply', () => {
+    function onTweaks() {
       const fam = headFamily();
       const cs = caseMode();
       if (fam === fontFamily && cs === lastCase) return;
@@ -273,12 +287,13 @@
       Composite.allBodies(engine.world).forEach(b => { if (b.render.text) Composite.remove(engine.world, b); });
       startedSpawn = false;
       startSpawns(); // öffnet und schliesst die Decke via armCeiling()
-    });
+    }
+    document.addEventListener('tweaks:apply', onTweaks);
 
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) { startSpawns(); paused = false; }
-        else { paused = true; }
+        if (e.isIntersecting) { startSpawns(); setPaused(false); }
+        else { setPaused(true); }
       });
     }, { threshold: 0 });
     io.observe(container);
@@ -293,16 +308,32 @@
     }
 
     let rT;
-    window.addEventListener('resize', () => {
+    function onResize() {
       clearTimeout(rT);
       rT = setTimeout(() => {
         const w = container.clientWidth;
         if (Math.abs(w - width) < 40) return;
-        Render.stop(render); paused = true;
-        render.canvas.remove(); container.__fl = false;
+        destroy();
         // Über den Router neu aufbauen (wählt Mobile- oder Desktop-Variante)
         (window.__flSetupAny || setup)(container);
       }, 250);
-    });
+    }
+    window.addEventListener('resize', onResize);
+
+    function destroy() {
+      if (dead) return; dead = true;
+      clearTimeout(rT); clearTimeout(ceilT); timers.forEach(clearTimeout); timers.clear();
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('deviceorientation', onOrient);
+      document.removeEventListener('tweaks:apply', onTweaks);
+      io.disconnect();
+      try { Render.stop(render); } catch (e) {}
+      try { Mouse.clearSourceEvents && Mouse.clearSourceEvents(mouse); } catch (e) {}
+      Events.off(engine); Composite.clear(engine.world, false); Engine.clear(engine);
+      render.canvas.remove(); render.textures = {};
+      container.__fl = false; container.__flDestroy = null;
+    }
+    container.__flDestroy = destroy;
   };
 })();

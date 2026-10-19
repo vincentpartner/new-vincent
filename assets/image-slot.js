@@ -608,6 +608,16 @@
       // frame's clamp range.
       this._ro = new ResizeObserver(() => this._render());
       this._ro.observe(this);
+      // Ladepriorität: Bilder im ersten Bildschirm sofort (das erste mit fetchpriority=high),
+      // alle weiteren lazy (der Browser lädt mit grossem Vorlauf, kein Aufblitzen beim Scrollen/Wischen).
+      if (!this._prioSet && this._img) {
+        this._prioSet = true;
+        const top = this.getBoundingClientRect().top;
+        const above = top < (window.innerHeight || 800) * 1.1;
+        this._img.decoding = 'async';
+        if (above) { this._img.loading = 'eager'; if (!ImageSlot._hero) { ImageSlot._hero = true; this._img.setAttribute('fetchpriority', 'high'); } }
+        else { this._img.loading = 'lazy'; this._ghost && (this._ghost.loading = 'lazy'); }
+      }
       load();
       this._render();
     }

@@ -24,6 +24,10 @@
       return;
     }
     container.__fl = true;
+    const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const timers = new Set();
+    const later = (fn, ms) => { const id = setTimeout(() => { timers.delete(id); fn(); }, ms); timers.add(id); return id; };
+    let dead = false, raf = 0;
 
     const { Engine, Render, Runner, Bodies, Composite, Body, MouseConstraint, Mouse, Events } = Matter;
 
@@ -41,10 +45,16 @@
     function caseMode() {
       return document.documentElement.getAttribute('data-letter-case') || 'Versalien';
     }
+    // Optional per word: data-word-case="upper|as-is" and data-word-weights="900|400" (pipe-separated, same order as data-words).
+    const wordCase = (container.dataset.wordCase || '').split('|');
+    const wordWeights = (container.dataset.wordWeights || '').split('|');
+    const wordSizes = (container.dataset.wordSizes || '').split('|').map(v => parseFloat(v) || 1);
+    function wordSize(i) { return fontSize * (wordSizes[i] || 1); }
     function applyCase(arr) {
-      return caseMode() === 'Normal' ? arr.slice() : arr.map(w => w.toUpperCase());
+      return arr.map((w, i) => wordCase[i] === 'as-is' ? w : (wordCase[i] === 'upper' || caseMode() !== 'Normal') ? w.toUpperCase() : w);
     }
     let words = applyCase(rawWords);
+    function wordFont(i) { return `${wordWeights[i] || fontWeight} ${wordSize(i)}px ${fontFamily}`; }
 
     // --- Exact parameters from the original template (do not "improve") ---
     const baseFontSize = isMobile ? 100 : 200;
@@ -77,14 +87,17 @@
       mc2.font = fontStyle;
       const spacing = fontSize * 0.05;
       let maxW = 0;
-      words.forEach(w => {
+      words.forEach((w, i) => {
         let tot = 0;
-        w.split('').forEach(ch => { tot += mc2.measureText(ch).width + spacing; });
+        mc2.font = wordFont(i);
+        const sp = wordSize(i) * 0.05;
+        w.split('').forEach(ch => { tot += mc2.measureText(ch).width + sp; });
+        tot += sp; // Sicherheitsreserve gegen Umbruch des letzten Buchstabens
         maxW = Math.max(maxW, tot);
       });
       const avail = width - startPad * 2;
-      if (maxW > avail && maxW > 0) {
-        fontSize = Math.floor(fontSize * (avail / maxW));
+      if (maxW > 0 && (maxW > avail || container.hasAttribute('data-fit-width'))) {
+        fontSize = Math.floor(fontSize * (avail / maxW) * (parseFloat(container.dataset.fitScale) || 1));
         fontStyle = `${fontWeight} ${fontSize}px ${fontFamily}`;
       }
     }
@@ -108,15 +121,16 @@
     ];
     Composite.add(engine.world, walls);
 
-    function makeLetter(char, x, y, color) {
+    function makeLetter(char, x, y, color, font, size) {
+      font = font || fontStyle; size = size || fontSize;
       const c = document.createElement('canvas');
       const cx = c.getContext('2d');
-      cx.font = fontStyle;
+      cx.font = font;
       const w = cx.measureText(char).width;
-      const h = fontSize * 0.74;
+      const h = size * 0.74;
       const body = Bodies.rectangle(x, y, w, h, {
         restitution: bounciness, friction: friction, frictionAir: airResistance,
-        render: { fillStyle: 'transparent', strokeStyle: 'transparent', text: { content: char, font: fontStyle, color: color, z: Math.random() } }
+        render: { fillStyle: 'transparent', strokeStyle: 'transparent', text: { content: char, font: font, size: size, color: color, z: Math.random() } }
       });
       Body.setAngle(body, (Math.random() - 0.5) * 0.15);
       return body;
@@ -124,25 +138,27 @@
 
     const startX = 20;
 
-    function spawnWord(word, color, delay) {
-      setTimeout(() => {
+    function spawnWord(word, color, delay, wi) {
+      later(() => {
+        const font = wordFont(wi || 0);
+        const size = wordSize(wi || 0);
         const c = document.createElement('canvas');
         const cx = c.getContext('2d');
-        cx.font = fontStyle;
+        cx.font = font;
         let runningX = startX;
         let currentYOffset = dropHeight;
-        const spacing = fontSize * 0.05;
+        const spacing = size * 0.05;
         word.split('').forEach((char, index) => {
           const charWidth = cx.measureText(char).width;
           if (runningX + charWidth > width - 20) {
             runningX = startX;
-            currentYOffset -= (fontSize * 0.85);
+            currentYOffset -= (size * 0.85);
           }
           const xCenter = runningX + charWidth / 2;
           const yCenter = currentYOffset;
-          const letterDelay = isMobile ? (index * 150) : 0;
-          setTimeout(() => {
-            Composite.add(engine.world, makeLetter(char, xCenter, yCenter, color));
+          const letterDelay = (isMobile && !REDUCED) ? (index * 150) : 0;
+          later(() => {
+            Composite.add(engine.world, makeLetter(char, xCenter, yCenter, color, font, size));
           }, letterDelay);
           runningX += charWidth + spacing;
         });
@@ -155,8 +171,10 @@
       startedSpawn = true;
       words.forEach((w, i) => {
         // Erstes Wort sofort beim Laden, Folgewörter im gewohnten Abstand.
-        spawnWord(w, inkCol, i * 2500);
+        spawnWord(w, inkCol, REDUCED ? 0 : i * 2500, i);
       });
+      // Bewegung reduzieren: Buchstaben sofort fertig liegend zeigen (einmal vorrechnen, kein Loop)
+      if (REDUCED) later(() => { for (let k = 0; k < 420; k++) Engine.update(engine, 16); Render.world(render); }, 30);
     }
 
     // draw text aligned to bodies
@@ -171,13 +189,13 @@
       const letters = Composite.allBodies(engine.world).filter(b => b.render.text);
       letters.sort((a, b) => a.render.text.z - b.render.text.z);
       letters.forEach(b => {
-        const { content, font } = b.render.text;
+        const { content, font, size } = b.render.text;
         ctx.save();
         ctx.translate(b.position.x, b.position.y);
         ctx.rotate(b.angle);
         ctx.font = font;
         ctx.fillStyle = liveInk;
-        ctx.fillText(content, 0, fontSize * 0.06);
+        ctx.fillText(content, 0, (size || fontSize) * 0.06);
         ctx.restore();
       });
     });
@@ -216,7 +234,7 @@
       }
     }
 
-    Render.run(render);
+    if (!REDUCED) Render.run(render);
     container.__render = render; window.__flRender = render;
     // Match the absolutely-positioned overlay pattern (keeps siblings painting + capture-safe)
     render.canvas.style.position = 'absolute';
@@ -226,14 +244,22 @@
 
     // Drive the simulation with our own rAF loop (more reliable than Runner
     // in embedded iframes). Visibility just toggles `paused`.
-    let paused = false;
+    let paused = false, rendering = !REDUCED;
     let last = performance.now();
-    (function tick(now) {
+    function setPaused(p) {
+      paused = p;
+      if (REDUCED || dead) return;
+      if (p && rendering) { Render.stop(render); rendering = false; }
+      else if (!p && !rendering) { Render.run(render); rendering = true; last = performance.now(); }
+    }
+    function tick(now) {
+      if (dead) return;
       const dt = Math.min(32, (now || performance.now()) - last);
       last = now || performance.now();
       if (!paused) { applyHover(); Engine.update(engine, dt); }
-      requestAnimationFrame(tick);
-    })(performance.now());
+      raf = requestAnimationFrame(tick);
+    }
+    if (!REDUCED) tick(performance.now());
 
     startSpawns();
 
@@ -241,7 +267,7 @@
     // or the case mode (Versalien/Normal) changes, so the hero tracks the
     // rest of the site.
     let lastCase = caseMode();
-    document.addEventListener('tweaks:apply', () => {
+    function onTweaks() {
       const fam = headFamily();
       const wgt = headWeight();
       const cs = caseMode();
@@ -252,14 +278,16 @@
       words = applyCase(rawWords);
       fitFont();
       Composite.allBodies(engine.world).forEach(b => { if (b.render.text) Composite.remove(engine.world, b); });
+      timers.forEach(clearTimeout); timers.clear();
       startedSpawn = false;
       startSpawns();
-    });
+    }
+    document.addEventListener('tweaks:apply', onTweaks);
 
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) { startSpawns(); paused = false; }
-        else { paused = true; }
+        if (e.isIntersecting) { startSpawns(); setPaused(false); }
+        else { setPaused(true); }
       });
     }, { threshold: 0 });
     io.observe(container);
@@ -275,17 +303,32 @@
     }
 
     let rT;
-    window.addEventListener('resize', () => {
+    function onResize() {
       clearTimeout(rT);
       rT = setTimeout(() => {
         const w = container.clientWidth;
         if (Math.abs(w - width) < 40) return;
-        // simplest robust path: rebuild
-        Render.stop(render); paused = true;
-        render.canvas.remove(); container.__fl = false;
+        destroy();
         setup(container);
       }, 250);
-    });
+    }
+    window.addEventListener('resize', onResize);
+
+    // Vollständig abbauen: Handler, Observer, Timer, rAF, Matter-Engine/Render (genau eine Instanz pro Container)
+    function destroy() {
+      if (dead) return; dead = true;
+      clearTimeout(rT); timers.forEach(clearTimeout); timers.clear();
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      document.removeEventListener('tweaks:apply', onTweaks);
+      io.disconnect();
+      try { Render.stop(render); } catch (e) {}
+      try { Mouse.clearSourceEvents && Mouse.clearSourceEvents(mouse); } catch (e) {}
+      Composite.clear(engine.world, false); Engine.clear(engine);
+      render.canvas.remove(); render.textures = {};
+      container.__fl = false; container.__flDestroy = null;
+    }
+    container.__flDestroy = destroy;
   }
 
   // Router für Rebuilds (Resize über den Breakpoint hinweg)

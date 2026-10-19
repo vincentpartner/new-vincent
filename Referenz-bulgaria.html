@@ -2,12 +2,13 @@
 <html lang="de">
 <head>
 <script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
-(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>bulgariadirect — Referenz | Vincent &amp; Partner</title>
+<title>Bulgariadirect — Referenz Webdesign Immobilien | Vincent &amp; Partner</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/swiss.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <style>
 .refpage .ptitle{font-size:clamp(44px,8.5vw,128px);margin:0}
@@ -71,14 +72,23 @@ html[data-mode="Dunkel"] .shot{background:#1b1d21}html[data-mode="Dunkel"]{--sha
 .photogrid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,38px)}
 .photogrid .vmedia{aspect-ratio:4/5}
 .photogrid .wide{grid-column:span 2}.photogrid .wide .vmedia{aspect-ratio:8/5}
+.bdgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.bdgrid .vmedia{aspect-ratio:16/10}.bdgrid .wide .vmedia{aspect-ratio:16/9}.bdgrid .vmedia img{object-position:top}
+.videowrap .vmedia video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.showcase.solo{grid-template-columns:1fr}
+.shot-desktop.bdvid{aspect-ratio:16/9;overflow:hidden}
+.shot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:inherit;display:block}
+.story .storytext{margin:0;font-size:clamp(20px,1.7vw,30px);line-height:1.45;max-width:38ch;text-wrap:pretty}
+@media(max-width:760px){.bdgrid{grid-template-columns:1fr}.bdgrid .wide .vmedia,.bdgrid .vmedia{aspect-ratio:16/10}}
 @media(max-width:760px){.photogrid{grid-template-columns:1fr}.photogrid .wide{grid-column:auto}.photogrid .wide .vmedia{aspect-ratio:4/5}}
 .photogrid,.videowrap figure{padding-inline:clamp(0px,3vw,64px)}
 .videowrap .vmedia{aspect-ratio:16/9}
 .videowrap .vmedia img{position:absolute;inset:0;height:100%}
 .phoneviews{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(24px,4vw,72px);padding-inline:clamp(0px,4vw,80px)}
 .phoneviews .vmedia{aspect-ratio:9/19;border-radius:5px}
-.phoneviews .vmedia img,.phoneviews .vmedia image-slot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.phoneviews .vmedia img,.phoneviews .vmedia video,.phoneviews .vmedia image-slot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
 @media(max-width:1024px){.phoneviews{grid-template-columns:repeat(2,1fr);padding-inline:0}}
+.bdphones{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:760px){.bdphones{grid-template-columns:repeat(2,minmax(0,1fr))}}
 html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
 /* Eyebrows: dunkler + grösser für Lesbarkeit (--muted #9A9D9F auf Weiss ist nur ~2.5:1) */
 .refpage .crumbs a,.refpage .crumbs span,.refpage .crumbs h1,.meta .lab,.show-cap,.vsec-head .mono,.vsec-head .vsec-n,.worklist .n,.dsys .lab,.sw span,.typo span,.vcap,.refhead .tag{color:color-mix(in srgb,var(--ink) 72%,var(--bg))}
@@ -106,6 +116,7 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
   .vsec-head .vsec-n,.vsec-head .mono{font-size:11px}
   .work,.dsys{gap:34px}
   .work .display,.dsys .display{font-size:44.5px;line-height:.95;margin-bottom:0}
+  .story .storytext{font-size:17px;line-height:1.618}
   .worklist li{grid-template-columns:34px minmax(0,1fr);gap:13px;padding:21px 0}
   .worklist .n{font-size:11px;padding-top:6px}
   .worklist h3{font-size:27.5px;line-height:1.1;margin-bottom:8px;letter-spacing:-.02em}
@@ -124,112 +135,100 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
 }
 .footer .ftl{display:block;color:#fff;font-size:15px;margin-bottom:9px}.footer .ftl:hover{color:var(--muted)}
 </style>
+<link rel="stylesheet" href="assets/mobile.css">
 </head>
 <body>
 <div class="bg-grid"></div>
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="site-nav-links">
       <a href="About.html">About</a>
       <a href="Referenzen.html" class="active">Work</a>
       <a href="Webdesign.html">Web</a>
-      <a href="Onlineshops.html">Shops</a>
+      <!-- vorerst ausgeblendet: <a href="Onlineshops.html">Shops</a> -->
       <a href="SEA.html">Marketing</a>
       <a href="SEO.html">SEO / GEO</a>
-      <a href="KI-Automation.html">KI</a>
+      <a href="KI-Automation.html">KI-Auto</a>
     </nav>
-    <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
-    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
 <main class="above">
-  <section class="ablock first awrap refpage" data-screen-label="Referenz bulgariadirect">
+  <section class="ablock first awrap refpage" data-screen-label="Referenz Bulgariadirect">
     <div class="crumbs">
       <a href="Referenzen.html"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7 7l-7-7l7-7"/></svg> Arbeiten</a>
       <span class="sep">/</span>
-      <h1 class="here">Webdesign Versicherung bulgariadirect</h1>
+      <h1 class="here">Webdesign Immobilien · Veliko Tarnovo</h1>
     </div>
-    <p class="ptitle">bulgaria<br>direct</p>
+    <p class="ptitle">Bulgaria<br>direct</p>
     <div class="refhead">
-      <p class="lead">Webdesign für bulgariadirect: Website für Versicherungsangebote mit klarer Nutzerführung, verständlich aufgebauten Angebotsseiten und responsiver Umsetzung.</p>
-      <div class="tags"><span class="tag">Webdesign</span><span class="tag">Konzept</span></div>
+      <p class="lead">Häuser, Land und Wald in Bulgarien. Direkt, ohne Makler, in zinsfreien Raten. Seit 2003.</p>
+      <div class="tags"><span class="tag">Webdesign</span><span class="tag">Animationen</span><span class="tag">SEO</span><span class="tag">GEO</span></div>
     </div>
     <div class="meta" style="margin-top:clamp(55px,6vw,89px)">
-      <div><span class="lab">Kunde</span><span class="v">bulgariadirect</span></div>
-      <div><span class="lab">Bereich</span><span class="v">Versicherung</span></div>
-      <div><span class="lab">Jahr</span><span class="v">2024</span></div>
+      <div><span class="lab">Kunde</span><span class="v">Bulgariadirect</span></div>
+      <div><span class="lab">Bereich</span><span class="v">Immobilien</span></div>
+      <div><span class="lab">Jahr</span><span class="v">2026</span></div>
       <div class="end"><a class="livebtn" href="https://www.bulgariadirect.com" target="_blank" rel="noopener">Live ansehen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10M7 17L17 7"/></svg></a></div>
     </div>
   </section>
 
   <section class="ablock awrap rsec">
-    <div class="showcase">
-      <figure class="shot shot-desktop" data-frame="bulgaria-hero-desktop"><image-slot id="ref-bulgaria-hero-desktop" shape="rounded" radius="3" src="assets/refs/bulgaria-hero.webp" placeholder="Desktop-Screenshot" alt="Startseite bulgariadirect auf Desktop — Webdesign Versicherung bulgariadirect"></image-slot></figure>
-      <figure class="shot shot-mobile" data-frame="bulgaria-hero-mobile"><image-slot id="ref-bulgaria-hero-mobile" shape="rounded" radius="5" placeholder="Mobile-Screenshot" alt="Startseite bulgariadirect auf dem Smartphone — responsives Webdesign"></image-slot></figure>
+    <div class="showcase solo">
+      <figure class="shot shot-desktop bdvid" data-frame="bulgaria-hero-desktop"><video src="assets/refs/bulgaria-desktop.mp4" poster="assets/refs/bulgaria-hero.webp" muted playsinline preload="metadata" aria-label="Startseite Bulgariadirect auf Desktop mit Animationen — Webdesign Immobilien in Bulgarien" data-once></video></figure>
     </div>
-    <div class="show-cap"><span>Startseite — Desktop &amp; Mobile</span></div>
+    <div class="show-cap"><span>Startseite — Desktop</span></div>
   </section>
 
   <section class="ablock awrap rsec">
-    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Leistungen: Webdesign, Konzept für bulgariadirect</h2></div>
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Geschichte · Webdesign Immobilien Bulgarien</h2></div>
+    <div class="work story">
+      <p class="display">Eine Mail aus Bulgarien.</p>
+      <p class="storytext">Wir waren skeptisch und merkten: Auch wir haben Vorurteile. Der Videocall mit Inhaber Damiano Baldi zeigte das Gegenteil. Über 20 Jahre Erfahrung, 1'396 verkaufte Liegenschaften, keine Masse, nur ausgesuchte Perlen. Unser Auftrag: dieses Vertrauen schon beim ersten Klick spürbar machen.</p>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec">
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Leistungen: Webdesign, Animationen, SEO &amp; GEO für Bulgariadirect</h2></div>
     <div class="work">
-      <p class="display">Von der Struktur bis zur Website.</p>
+      <p class="display">Vom Vorurteil zum Vertrauen.</p>
       <ol class="worklist">
-        <li><span class="n">01</span><div><h3>Konzept &amp; Seitenstruktur</h3><p>Inhalte geordnet, Zielgruppen und Anfragewege klar geführt.</p></div></li>
-        <li><span class="n">02</span><div><h3>Webdesign: Gestaltung &amp; Umsetzung</h3><p>Responsiv für Desktop und Mobile, schnelle Ladezeiten, klare Bildsprache.</p></div></li>
-        <li><span class="n">03</span><div><h3>SEO-Grundlagen</h3><p>Seitentitel, Beschreibungen und Struktur für die Auffindbarkeit.</p></div></li>
+        <li><span class="n">01</span><div><h3>Webdesign</h3><p>Drei Kaufwege, klar erklärt. Geschichte, Käufer und Zahlen als Beweis.</p></div></li>
+        <li><span class="n">02</span><div><h3>Animationen</h3><p>Bewegung, die führt. Nicht ablenkt.</p></div></li>
+        <li><span class="n">03</span><div><h3>SEO &amp; GEO</h3><p>Gefunden bei Google. Genannt von ChatGPT &amp; Co.</p></div></li>
       </ol>
     </div>
   </section>
 
   <section class="ablock awrap rsec">
-    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Designsystem Webdesign bulgariadirect</h2></div>
-    <div class="dsys">
-      <p class="display">Ein System, das trägt.</p>
-      <div class="cols">
-        <div><span class="lab">Logo</span><div class="logo-slot"><image-slot id="ref-bulgaria-logo-hell" shape="rect" fit="contain" placeholder="Logo auf Hell" alt="Logo bulgariadirect auf hellem Hintergrund"></image-slot><image-slot class="dark" id="ref-bulgaria-logo-dunkel" shape="rect" fit="contain" placeholder="Logo auf Dunkel" alt="Logo bulgariadirect auf dunklem Hintergrund"></image-slot></div></div>
-        <div><span class="lab">Farben</span><div class="swatches" data-palette="bulgaria" data-from="ref-bulgaria-hero-desktop">
-          <div class="sw"><i style="background:#22252A"></i><b>Primär</b><span>#22252A</span></div>
-          <div class="sw"><i style="background:#6B7C8C"></i><b>Akzent</b><span>#6B7C8C</span></div>
-          <div class="sw"><i style="background:#EEF0F2"></i><b>Fläche</b><span>#EEF0F2</span></div>
-          <div class="sw"><i style="background:#1B1D21"></i><b>Text</b><span>#1B1D21</span></div>
-          <div class="sw"><i style="background:#FFFFFF"></i><b>Hintergrund</b><span>#FFFFFF</span></div>
-        </div></div>
-        <div><span class="lab">Typografie</span><div class="typo">
-          <div><p class="t1" style="margin:0">bulgariadirect</p><span>Headline · Schriftname</span></div>
-          <div><p class="t2" style="margin:0">Website für Versicherungsangebote mit klarer Nutzerführung, verständlich aufgebauten Angebotsseiten und responsiver Umsetzung.</p><span>Text · Schriftname</span></div>
-        </div></div>
-      </div>
+    <h2 class="sr">Ansichten Webdesign Immobilien Bulgariadirect</h2>
+    <div class="photogrid bdgrid">
+      <figure class="view wide"><div class="vmedia" data-frame="bulgaria-foto-1"><img src="assets/refs/bulgaria-properties.webp" alt="Immobilienübersicht auf bulgariadirect.com mit Häusern, Wald und Innenräumen — Webdesign Immobilien Bulgarien" loading="lazy"></div><figcaption class="vcap">Properties · Ausgesuchte Häuser</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="bulgaria-foto-2"><img src="assets/refs/bulgaria-forest.webp" alt="Seite Forest auf bulgariadirect.com mit Waldgrundstücken in Bulgarien — Webdesign Immobilien" loading="lazy"></div><figcaption class="vcap">Forest · Wald als Anlage</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="bulgaria-foto-3"><img src="assets/refs/bulgaria-101.webp" alt="Ratgeber Bulgaria 101 auf bulgariadirect.com für Immobilienkäufer — Webdesign Immobilien Bulgarien" loading="lazy"></div><figcaption class="vcap">Bulgaria 101 · Ratgeber für Käufer</figcaption></figure>
     </div>
   </section>
+
+  
 
   <section class="ablock awrap rsec">
-    <h2 class="sr">Ansichten bulgariadirect</h2>
-    <div class="photogrid">
-      <figure class="view wide"><div class="vmedia" data-frame="bulgaria-foto-1"><image-slot id="ref-bulgaria-foto-1" shape="rect" placeholder="Bild 1 — Detail / Ansicht" alt="bulgariadirect — Detailansicht 1"></image-slot></div><figcaption class="vcap">Ansicht · Detail</figcaption></figure>
-      <figure class="view"><div class="vmedia" data-frame="bulgaria-foto-2"><image-slot id="ref-bulgaria-foto-2" shape="rect" placeholder="Bild 2 — Detail / Ansicht" alt="bulgariadirect — Detailansicht 2"></image-slot></div><figcaption class="vcap">Ansicht · Detail</figcaption></figure>
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Mobile Webdesign Immobilien Bulgariadirect</h2></div>
+    <div class="phoneviews bdphones">
+      <figure class="view"><div class="vmedia" data-frame="bulgaria-m-1"><video src="assets/refs/bulgaria-mobile-start.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Bulgariadirect mobil — Startseite mit Animationen, Webdesign Immobilien Bulgarien"></video></div><figcaption class="vcap">Mobile · Startseite</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="bulgaria-m-2"><video src="assets/refs/bulgaria-mobile-forest.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Bulgariadirect mobil — Wald und Land mit Kontakt und Rightmove, Webdesign Immobilien Bulgarien"></video></div><figcaption class="vcap">Mobile · Forest &amp; Land</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="bulgaria-m-3"><img src="assets/refs/bulgaria-mobile.webp" alt="Bulgariadirect mobil — Startseite mit Kamin und «Flexible Pay-Monthly Ownership», Webdesign Immobilien Bulgarien" loading="lazy"></div><figcaption class="vcap">Mobile · Innenraum</figcaption></figure>
     </div>
   </section>
 
-  <section class="ablock awrap rsec">
-    <h2 class="sr">Mobile Webdesign — Ansichten bulgariadirect</h2>
-    <div class="phoneviews">
-      <figure class="view"><div class="vmedia" data-frame="bulgaria-m-1"><image-slot id="ref-bulgaria-m-1" shape="rect" placeholder="Mobile 1" alt="bulgariadirect mobil — Ansicht 1"></image-slot></div></figure>
-      <figure class="view"><div class="vmedia" data-frame="bulgaria-m-2"><image-slot id="ref-bulgaria-m-2" shape="rect" placeholder="Mobile 2" alt="bulgariadirect mobil — Ansicht 2"></image-slot></div></figure>
-      <figure class="view"><div class="vmedia" data-frame="bulgaria-m-3"><image-slot id="ref-bulgaria-m-3" shape="rect" placeholder="Mobile 3" alt="bulgariadirect mobil — Ansicht 3"></image-slot></div></figure>
-      <figure class="view"><div class="vmedia" data-frame="bulgaria-m-4"><image-slot id="ref-bulgaria-m-4" shape="rect" placeholder="Mobile 4" alt="bulgariadirect mobil — Ansicht 4"></image-slot></div></figure>
-    </div>
-  </section>
-
-  <div class="bigcta"><a href="Referenz-Reklamationszentrale.html" class="awrap" style="display:block"><div class="row"><div><div class="mono" style="margin-bottom:21px">Nächstes Projekt · Webdesign für Reklamationszentrale</div><p class="display">Reklamationszentrale.</p></div><span class="go">Weiter <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span></div></a></div>
+  <div class="bigcta"><a href="Referenz-Reklamationszentrale.html" class="awrap" style="display:block"><div class="row"><div><div class="mono" style="margin-bottom:21px">Nächstes Projekt · Webdesign für Reklamationszentrale</div><p class="display">Reklamations&shy;zentrale.</p></div><span class="go">Weiter <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span></div></a></div>
 </main>
 <footer class="footer" data-site-footer></footer>
 <script src="assets/tweaks.js"></script>
 <script src="assets/site.js"></script>
 <script src="assets/image-slot.js"></script>
 <script src="assets/frame-resize.js"></script>
-<script src="assets/palette.js"></script>
 <script src="assets/media-edit.js"></script>
 <script src="assets/footer.js"></script>
 </body>

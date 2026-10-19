@@ -66,9 +66,12 @@
       }
     }
 
+    const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let raf = 0;
     function frame() {
-      requestAnimationFrame(frame);
+      raf = 0;
       if (paused) return;
+      if (!REDUCED) raf = requestAnimationFrame(frame);
       const now = performance.now();
       const t = now * 0.00035; // slow clock for the “swimming” motion
       ctx.clearRect(0, 0, w, h);
@@ -123,9 +126,16 @@
 
     build();
     let rt;
-    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(build, 120); });
+    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { build(); if (REDUCED) frame(); }, 120); });
 
-    requestAnimationFrame(frame);
+    // Nur zeichnen, wenn der CTA sichtbar ist; bei «Bewegung reduzieren» ein statisches Raster
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(es => {
+        const vis = es[es.length - 1].isIntersecting;
+        paused = !vis;
+        if (vis && !raf) raf = requestAnimationFrame(frame);
+      }, { rootMargin: '100px 0px' }).observe(host);
+    } else raf = requestAnimationFrame(frame);
   }
 
   function boot() {

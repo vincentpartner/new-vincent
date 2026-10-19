@@ -9,13 +9,14 @@
         '<div><div class="lets-talk">Let\'s<br>talk</div></div>' +
         '<div class="ft-col">' +
           '<h4>Leistungen</h4>' +
-          '<a href="Webdesign.html">Webdesign</a>' +
-          '<a href="Onlineshops.html">Onlineshops</a>' +
-          '<a href="KI-Automation.html">KI &amp; Automation</a>' +
-          '<a href="KI.html">KI-Apps</a>' +
-          '<a href="SEO.html">SEO &amp; GEO</a>' +
-          '<a href="SEA.html">SEA</a>' +
+          '<a href="Referenzen.html">Work</a>' +
+          '<a href="Webdesign.html">Web</a>' +
+          // vorerst ausgeblendet: '<a href="Onlineshops.html">Shops</a>' +
+          '<a href="SEA.html">Marketing</a>' +
+          '<a href="SEO.html">SEO / GEO</a>' +
+          '<a href="KI-Automation.html">KI-Auto</a>' +
         '</div>' +
+        // vorerst ausgeblendet: '<div class="ft-col"><h4>Aktuelles</h4><a href="Aktuelles.html">Aus dem Team</a></div>' +
         '<div class="ft-col">' +
           '<h4>Kontakt</h4>' +
           '<p>Vincent &amp; Partner GmbH</p>' +

@@ -463,7 +463,7 @@
     ui.accentBtns = [];
     ACCENTS.forEach(a => {
       const b = el('button'); b.style.background = a.val; b.title = a.label;
-      b.onclick = () => set('accent', a.val);
+      b.onclick = () => { state.accentGradient = ''; set('accent', a.val); };
       if (a.val === state.accent) b.classList.add('on');
       sw.appendChild(b); ui.accentBtns.push({ b, val: a.val });
     });

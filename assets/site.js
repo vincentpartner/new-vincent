@@ -38,24 +38,43 @@
     if (nav && burger && !document.querySelector('.mmenu')) {
       const navLinks = Array.from(document.querySelectorAll('.nav-links > a, .nav-links .nav-drop-menu a'));
       const page = location.pathname.split('/').pop() || 'index.html';
-      const full = { 'About': 'About', 'Work': 'Referenzen', 'Web': 'Webdesign', 'Shops': 'Onlineshops', 'Marketing': 'Marketing', 'SEO / GEO': 'SEO / GEO', 'KI': 'KI & Automation' };
+      const full = { 'About': 'About', 'Work': 'Referenzen', 'Web': 'Webdesign', 'Shops': 'Onlineshops', 'Marketing': 'Marketing', 'SEO / GEO': 'SEO / GEO', 'KI': 'KI & Automation', 'KI-Auto': 'KI & Automation' };
       const tiles = navLinks.map((a, i) => {
         const href = a.getAttribute('href'); const t = a.textContent.trim();
         return '<a href="' + href + '"' + (href === page ? ' class="active"' : '') + '><span class="n">0' + (i + 1) + '</span>' + (full[t] || t) + '</a>';
       }).join('');
-      const menu = document.createElement('div'); menu.className = 'mmenu'; menu.id = 'mobile-menu'; menu.setAttribute('aria-hidden', 'true');
+      const menu = document.createElement('div'); menu.className = 'mmenu'; menu.id = 'mobile-menu'; menu.setAttribute('aria-hidden', 'true'); menu.inert = true;
       menu.innerHTML = '<nav class="mm-grid" aria-label="Mobile Navigation">' + tiles +
         '<a href="Kontakt.html" class="cta' + (page === 'Kontakt.html' ? ' active' : '') + '"><span class="n"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>Termin buchen</a>' +
         '<a href="tel:+41445346560" class="cta"><span class="n"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg></span>Anrufen</a></nav>' +
         '<div class="mm-foot"><a href="mailto:info@vincent-partner.ch">info@vincent-partner.ch</a><a href="Impressum.html">Impressum</a></div>';
       nav.appendChild(menu);
       const isPhone = () => matchMedia('(max-width: 760px)').matches;
-      const setOpen = (o) => { menu.classList.toggle('open', o); menu.setAttribute('aria-hidden', o ? 'false' : 'true'); document.body.classList.toggle('mmenu-open', o); };
+      const setOpen = (o) => {
+        menu.classList.toggle('open', o); menu.setAttribute('aria-hidden', o ? 'false' : 'true'); menu.inert = !o; document.body.classList.toggle('mmenu-open', o);
+        if (o) { const f = menu.querySelector('a'); if (f) setTimeout(() => f.focus({ preventScroll: true }), 50); }
+      };
+      const syncControls = () => burger.setAttribute('aria-controls', isPhone() ? 'mobile-menu' : 'site-nav-links');
+      syncControls();
       // Auf Smartphones steuert der Burger das Kachelmenü, auf Tablets die klassische Liste (.nav.open)
       burger.addEventListener('click', () => { if (isPhone()) { nav.classList.remove('open'); setOpen(!menu.classList.contains('open')); burger.setAttribute('aria-expanded', menu.classList.contains('open') ? 'true' : 'false'); } else setOpen(false); });
       document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu.classList.contains('open')) { setOpen(false); burger.setAttribute('aria-expanded', 'false'); burger.focus(); } });
       menu.addEventListener('click', e => { if (e.target.closest('a')) { setOpen(false); burger.setAttribute('aria-expanded', 'false'); } });
-      matchMedia('(max-width: 760px)').addEventListener('change', () => { setOpen(false); nav.classList.remove('open'); syncBurger(); });
+      matchMedia('(max-width: 760px)').addEventListener('change', () => { setOpen(false); nav.classList.remove('open'); syncBurger(); syncControls(); });
+    }
+
+    // Loop-Videos: nur abspielen, wenn sichtbar (spart Akku/Bandbreite). data-autoplay = erst bei Sichtbarkeit laden.
+    if ('IntersectionObserver' in window) {
+      const vids = document.querySelectorAll('video[autoplay][muted], video[data-autoplay], video[data-once]');
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const vio = new IntersectionObserver(es => es.forEach(e => {
+        const v = e.target;
+        // data-once: einmal abspielen, sobald Seite und Video geladen und sichtbar sind; danach bleibt das letzte Bild stehen
+        if (v.hasAttribute('data-once')) { if (e.isIntersecting && !v.__played) { const go = () => { if (v.__played) return; v.__played = true; const p = v.play(); if (p && p.catch) p.catch(() => { v.__played = false; }); }; if (document.readyState === 'complete' && v.readyState >= 3) go(); else { v.addEventListener('canplay', () => { if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true }); }, { once: true }); if (v.readyState >= 3) window.addEventListener('load', go, { once: true }); } } return; }
+        if (e.isIntersecting) { if (v.preload === 'none') v.preload = 'auto'; if (!still || v.hasAttribute('autoplay')) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } }
+        else if (!v.paused) v.pause();
+      }), { rootMargin: '200px 0px' });
+      vids.forEach(v => { v.muted = true; vio.observe(v); });
     }
 
     // Scroll reveal

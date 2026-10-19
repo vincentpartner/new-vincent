@@ -97,6 +97,7 @@
   .vpmap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; filter: grayscale(1) contrast(1.04); }
 </style>
 <link rel="stylesheet" href="assets/mobile.css">
+<link rel="stylesheet" href="assets/askbot.css">
 </head>
 <body>
 <header class="nav">
@@ -106,12 +107,12 @@
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
-      <a href="Onlineshops.html">Shops</a>
+      <!-- vorerst ausgeblendet: <a href="Onlineshops.html">Shops</a> -->
       <a href="SEA.html">Marketing</a>
       <a href="SEO.html">SEO / GEO</a>
-      <a href="KI-Automation.html">KI</a>
+      <a href="KI-Automation.html">KI-Auto</a>
     </nav>
-    <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
     <button class="nav-burger" aria-label="Menü" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -151,7 +152,7 @@
         <div class="frow">
           <div class="field" id="f-name">
             <label class="flabel" for="i-name">Name</label>
-            <input id="i-name" type="text" placeholder="Vor- &amp; Nachname" autocomplete="name" required aria-required="true" aria-describedby="e-name">
+            <input id="i-name" type="text" maxlength="120" placeholder="Vor- &amp; Nachname" autocomplete="name" required aria-required="true" aria-describedby="e-name">
             <span class="msg" id="e-name">Bitte Namen angeben.</span>
           </div>
           <div class="field" id="f-func">
@@ -171,19 +172,20 @@
         <div class="frow">
           <div class="field" id="f-company">
             <label class="flabel" for="i-company">Unternehmen</label>
-            <input id="i-company" type="text" placeholder="Firmenname" autocomplete="organization" required aria-required="true" aria-describedby="e-company">
+            <input id="i-company" type="text" maxlength="160" placeholder="Firmenname" autocomplete="organization" required aria-required="true" aria-describedby="e-company">
             <span class="msg" id="e-company">Bitte Unternehmen angeben.</span>
           </div>
           <div class="field" id="f-email">
             <label class="flabel" for="i-email">E-Mail</label>
-            <input id="i-email" type="email" placeholder="name@unternehmen.ch" autocomplete="email" required aria-required="true" aria-describedby="e-email">
+            <input id="i-email" type="email" maxlength="200" placeholder="name@unternehmen.ch" autocomplete="email" required aria-required="true" aria-describedby="e-email">
             <span class="msg" id="e-email">Bitte gültige E-Mail angeben.</span>
           </div>
         </div>
 
         <div class="field" id="f-msg">
           <label class="flabel" for="i-msg">Ihr Anliegen <span class="opt" id="msgOpt">(optional)</span></label>
-          <textarea id="i-msg" placeholder="Kurz zu Ihrer Ausgangslage…"></textarea>
+          <textarea id="i-msg" maxlength="4000" placeholder="Kurz zu Ihrer Ausgangslage…" aria-describedby="msgCount"></textarea>
+          <span class="note" id="msgCount" aria-live="polite" hidden style="font-size:12px;color:var(--muted);margin-top:8px;align-self:flex-end"></span>
           <span class="note" id="calcNote" style="display:none;font-size:12px;color:var(--muted);margin-top:8px;">Die Angaben aus dem Preisrechner stehen oben im Anliegen und werden mit dem Formular an uns übermittelt. Sie können sie vor dem Absenden bearbeiten oder löschen.</span>
         </div>
 
@@ -205,6 +207,20 @@
 
   </div>
 </section>
+
+<!-- Fragen & Antworten (Chatbot) -->
+<section class="ablock awrap ask" data-ask data-page="Kontakt" data-screen-label="Fragen und Antworten">
+    <script type="application/json" class="ask-tips-config">[
+      "Was kostet ein erstes Gespräch? Bitte nicht «kommt drauf an».",
+      "Wie schnell meldet ihr euch nach einer Anfrage?",
+      "Kommt ihr auch vorbei oder nur per Video?",
+      "Was soll ich zum ersten Termin mitbringen, ausser Kaffee?",
+      "Arbeitet ihr auch mit kleinen Firmen und Einzelpersonen?",
+      "Wo genau ist euer Büro, und gibt es Parkplätze?",
+      "Könnt ihr Webdesign, Shop und Google Ads aus einer Hand?",
+      "Wie läuft ein Projekt bei euch von A bis Z ab?"
+    ]</script>
+  </section>
 
 <!-- Standort / Karte -->
 <section class="mapband" aria-label="Standort auf der Karte">
@@ -328,7 +344,8 @@
     setStatus('loading', 'Kalender wird geladen…');
     let state = 'fallback', slots = [];
     try {
-      const r = await fetch(CONFIG.availUrl, { headers: { 'Accept':'application/json' }, credentials:'omit' });
+      const ac = new AbortController(), to = setTimeout(() => ac.abort(), 10000);
+      const r = await fetch(CONFIG.availUrl, { headers: { 'Accept':'application/json' }, credentials:'omit', signal: ac.signal }).finally(() => clearTimeout(to));
       const data = await r.json().catch(() => null);
       if (r.ok && data && data.ok === true && Array.isArray(data.collection)) {
         slots = data.collection.filter(x => !x.status || x.status === 'available').slice(0, 6)
@@ -416,20 +433,27 @@
       func: document.getElementById('i-func').value, message: gv('i-msg'),
       start: selected ? selected.startISO : '', website: gv('hp-website'), t: FORM_T0
     };
+    if (mode === 'fallback') payload.mode = 'request'; // Ausfallmodus: nie automatisch buchen, nur Anfrage
     try {
-      const r = await fetch(CONFIG.bookUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload), credentials:'omit' });
+      const ac = new AbortController(), to = setTimeout(() => ac.abort(), 45000);
+      const r = await fetch(CONFIG.bookUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload), credentials:'omit', signal: ac.signal }).finally(() => clearTimeout(to));
       const data = await r.json().catch(() => ({}));
       if (r.ok && data.ok === true && (data.state === 'booked' || data.state === 'requested') && validStart(data.start)) { showDone(payload.name, data); return; }
       const err = data && data.error;
       bookMsg(ERR[err] || 'Buchung fehlgeschlagen. Bitte rufen Sie an (044 534 65 60) oder schreiben Sie uns.');
       if (err === 'taken' || err === 'time') loadSlots();
     } catch (e) {
+      if (e && e.name === 'AbortError') { bookMsg('Wir konnten nicht bestätigen, ob die Buchung angekommen ist. Bitte senden Sie das Formular noch einmal, ein doppelter Termin entsteht dabei nicht.'); return; }
       bookMsg('Verbindung fehlgeschlagen. Bitte rufen Sie an (044 534 65 60) oder schreiben Sie uns.');
     } finally {
       submitting = false;
       btn.classList.remove('loading'); btn.disabled = (mode === 'empty'); btn.removeAttribute('aria-busy');
     }
   }
+
+  (function(){ const ta = document.getElementById('i-msg'), cnt = document.getElementById('msgCount');
+    const upd = () => { const n = ta.value.length; cnt.hidden = n < 3500; cnt.textContent = n + ' / 4000 Zeichen'; };
+    ta.addEventListener('input', upd); upd(); })();
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -449,6 +473,8 @@
   });
 })();
 </script>
+<script src="assets/vendor/thinking-orb.js"></script>
+<script src="assets/askbot.js"></script>
 <script src="assets/media-edit.js"></script>
 <script src="assets/footer.js"></script>
 </body>

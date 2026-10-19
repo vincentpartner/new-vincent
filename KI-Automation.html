@@ -11,6 +11,7 @@
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <link rel="stylesheet" href="assets/mobile.css">
+<link rel="stylesheet" href="assets/askbot.css">
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -22,12 +23,12 @@
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
-      <a href="Onlineshops.html">Shops</a>
+      <!-- vorerst ausgeblendet: <a href="Onlineshops.html">Shops</a> -->
       <a href="SEA.html">Marketing</a>
       <a href="SEO.html">SEO / GEO</a>
-      <a href="KI-Automation.html" class="active">KI</a>
+      <a href="KI-Automation.html" class="active">KI-Auto</a>
     </nav>
-    <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
     <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -51,8 +52,8 @@
 
   <!-- Big visual -->
   <section class="ablock awrap" style="padding-top:0">
-    <div class="visual r219 dotbg pstage">
-      <div class="pmobile" data-perpetuum></div>
+    <div class="visual r219 kiorb-stage" role="img" aria-label="Animierter Thinking Orb: KI-Automation von Vincent &amp; Partner denkt nach, sucht, arbeitet und verdichtet">
+      <div class="kiorb-host" data-kiorb="cycle"></div>
     </div>
   </section>
 
@@ -94,15 +95,32 @@
     </div>
   </section>
 
+  <!-- Fragen & Antworten (Chatbot) -->
+  <section class="ablock awrap ask" data-ask data-page="KI &amp; Automation" data-screen-label="Fragen und Antworten">
+    <script type="application/json" class="ask-tips-config">[
+      "Welche Aufgaben in meinem Büro kann KI übernehmen, ohne zu kündigen?",
+      "Was kostet eine Automatisierung für Offerten und Rechnungen?",
+      "Bleiben meine Daten in der Schweiz?",
+      "Brauche ich ChatGPT, Claude oder etwas Lokales?",
+      "Wie lange dauert es, bis der erste Workflow läuft?",
+      "Kann KI meine E-Mails vorsortieren, bevor ich den Kaffee fertig habe?",
+      "Was passiert, wenn die KI einen Fehler macht?",
+      "Lohnt sich das für ein Team mit fünf Leuten?"
+    ]</script>
+  </section>
+
   <!-- CTA -->
-  <div class="bigcta" data-ctaperp>
+  <div class="bigcta orbcta">
     <a href="Kontakt.html" class="awrap" style="display:block">
       <div class="row">
         <div>
           <div class="mono" style="margin-bottom:21px">Zusammenarbeit</div>
           <h3>Workflow<br>analysieren.</h3>
         </div>
-        <span class="go">Erstgespräch vereinbaren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+        <div class="orbcta-aim">
+          <div class="orbcta-orb" data-kiorb="arrow" data-aim="-118" aria-hidden="true"></div>
+          <span class="go">Erstgespräch vereinbaren <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+        </div>
       </div>
     </a>
   </div>
@@ -114,12 +132,16 @@
 <style>
   .footer .ftl { display:block; color:#fff; font-size:15px; margin-bottom:9px; }
   .footer .ftl:hover { color: var(--muted); }
-  /* Perpetuum-Bühne: dunkel wie der Body im Dunkelmodus, im Hellmodus umgekehrt (dunkel auf hell) */
-  .pstage { background: #1B1D20; color: #D2D4D2; }
-  html[data-mode="Dunkel"] .pstage { background: var(--bg); }
-  @media (max-width: 760px){ .visual.r219.pstage { aspect-ratio: 1 / 1; } }
-  /* Perpetuum-CTA: Hintergrund neutral lassen, damit die Punkte sichtbar sind */
-  .bigcta[data-ctaperp], .bigcta[data-ctaperp]:hover { background: transparent; }
+  /* KI-Header: Thinking Orb, wechselt die Art. Hell: anthrazit auf Weiss, Dunkel: hell auf dunkel */
+  .kiorb-stage { background: #FFFFFF; color: #2A2D31; }
+  html[data-mode="Dunkel"] .kiorb-stage { background: var(--bg); color: #D2D4D2; }
+  .kiorb-host { position:absolute; inset:0; touch-action:pan-y; cursor:pointer; }
+  .kiorb-label { position:absolute; left:21px; bottom:18px; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:currentColor; opacity:.75; pointer-events:none; }
+  @media (max-width:760px){ .visual.r219.kiorb-stage { aspect-ratio:1/1; } .kiorb-label { left:13px; bottom:13px; } }
+  /* CTA mit Pfeil-Orb («Computer Use»): Pfeil zeigt auf «Erstgespräch vereinbaren» */
+  .orbcta-aim { display:flex; flex-direction:column; align-items:flex-end; gap:clamp(0px,0.5vw,8px); }
+  .orbcta-orb { position:relative; width:clamp(200px,22vw,340px); aspect-ratio:1; color:var(--ink); margin-right:clamp(13px,4vw,89px); pointer-events:none; }
+  @media (max-width:760px){ .orbcta-aim { align-items:flex-start; } .orbcta-orb { width:min(62vw,260px); margin:0 0 0 21%; } }
   /* Intro-Spalte beim Scrollen fixieren (Desktop), bis die Feature-Boxen durchgelaufen sind */
   @media (min-width: 901px){
     .story .sticky-intro { position: sticky; top: 100px; align-self: start; }
@@ -129,10 +151,11 @@
 <script src="assets/tweaks.js"></script>
 <script src="assets/site.js"></script>
 <script src="assets/image-slot.js"></script>
-<script src="assets/perpetuum.js"></script>
-<script src="assets/cta-perpetuum.js"></script>
 <script src="assets/cta-dotgrid.js"></script>
+<script src="assets/vendor/thinking-orb.js"></script>
+<script src="assets/askbot.js"></script>
 <script src="assets/media-edit.js"></script>
+<script src="assets/ki-orb.js"></script>
 <script src="assets/footer.js"></script>
 </body>
 </html>

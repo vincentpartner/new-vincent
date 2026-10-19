@@ -22,12 +22,12 @@
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
-      <a href="Onlineshops.html">Shops</a>
+      <!-- vorerst ausgeblendet: <a href="Onlineshops.html">Shops</a> -->
       <a href="SEA.html">Marketing</a>
       <a href="SEO.html">SEO / GEO</a>
-      <a href="KI-Automation.html">KI</a>
+      <a href="KI-Automation.html">KI-Auto</a>
     </nav>
-    <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
     <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -39,7 +39,7 @@
     <div class="crumbs">
       <a href="Leistungen.html"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7 7l-7-7l7-7"/></svg> Leistungen</a>
       <span class="sep">/</span>
-      <h1 class="here">KI-Apps</h1>
+      <h1 class="here">KI-Apps und Chatbots für KMU in Zürich</h1>
     </div>
     <p class="ptitle">KI, die<br>arbeitet.</p>
     <div class="meta" style="margin-top:clamp(28px,4vh,52px)">
@@ -51,8 +51,8 @@
 
   <!-- Big visual -->
   <section class="ablock awrap" style="padding-top:0">
-    <div class="visual r219 dotbg">
-      <image-slot id="ki-hero" placeholder="Großes Bild / Video — KI-Apps" shape="rect" alt="Großes Bild / Video — KI-Apps — KI-App Vincent & Partner"></image-slot>
+    <div class="visual r219 kiorb-stage" role="img" aria-label="Animierter Thinking Orb: KI-Apps von Vincent &amp; Partner denken nach, suchen, arbeiten und verdichten">
+      <div class="kiorb-host" data-kiorb="cycle"></div>
     </div>
   </section>
 
@@ -172,12 +172,19 @@
 <style>
   .footer .ftl { display:block; color:#fff; font-size:15px; margin-bottom:9px; }
   .footer .ftl:hover { color: var(--muted); }
+  /* KI-Header: Thinking Orb, wechselt die Art. Hell: anthrazit auf Weiss, Dunkel: hell auf dunkel */
+  .kiorb-stage { background: #FFFFFF; color: #2A2D31; }
+  html[data-mode="Dunkel"] .kiorb-stage { background: var(--bg); color: #D2D4D2; }
+  .kiorb-host { position:absolute; inset:0; touch-action:pan-y; cursor:pointer; }
+  .kiorb-label { position:absolute; left:21px; bottom:18px; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:currentColor; opacity:.75; pointer-events:none; }
+  @media (max-width:760px){ .visual.r219.kiorb-stage { aspect-ratio:1/1; } .kiorb-label { left:13px; bottom:13px; } }
 </style>
 
 <script src="assets/tweaks.js"></script>
 <script src="assets/site.js"></script>
 <script src="assets/image-slot.js"></script>
 <script src="assets/media-edit.js"></script>
+<script src="assets/ki-orb.js"></script>
 <script src="assets/footer.js"></script>
 </body>
 </html>

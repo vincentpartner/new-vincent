@@ -5,7 +5,7 @@
 (function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vincent & Partner — Agentur für Webdesign, Onlineshops, SEO & KI · Zürich</title>
+<title>Vincent & Partner — Agentur für Webdesign, Onlinemarketing, SEO & KI · Zürich</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/swiss.css">
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
@@ -17,6 +17,8 @@
   .hero .wrap { position: relative; z-index: 2; }
   .hero-label { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; font-weight: 400; }
   .hero-stage { width: 100%; height: clamp(440px, 60vh, 720px); position: relative; cursor: grab; touch-action: pan-y; }
+  /* Bühne über die volle Viewportbreite, damit VINCENT bildschirmfüllend fällt */
+  [data-hero-letters] { width: 100vw; margin-left: calc(50% - 50vw); }
   /* Mobile: mehr Fallhöhe nach unten für die VINCENT-Buchstaben */
   @media (max-width: 640px){ .hero-stage { height: clamp(560px, 76vh, 780px); } }
   /* Mobile: Scroll-Pfeil, weil die Buchstaben-Fläche die Wischgeste abfängt */
@@ -82,7 +84,10 @@
   .fcard { display: flex; flex-direction: column; gap: 14px; text-decoration: none; color: var(--ink); }
   .fcard .fmedia { position: relative; overflow: hidden; background: var(--paper); border-radius: 3px; }
   .fcard .fmedia image-slot { width: 100%; height: auto; aspect-ratio: 3/2; display: block; transition: transform .55s cubic-bezier(.2,.7,.3,1); }
-  .fcard:hover .fmedia image-slot { transform: scale(1.035); }
+  
+  .fcard .fmedia[data-frame] { aspect-ratio: 16/10; max-width: 100%; }
+  .fcard .fmedia > img, .fcard .fmedia > video { width: 100%; height: 100%; object-fit: cover; object-position: left top; display: block; transform: scale(1.04); transform-origin: center top; }
+  
   .fcard .play { position: absolute; left: 18px; bottom: 18px; width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.92); color: #111; display: flex; align-items: center; justify-content: center; font-size: 17px; padding-left: 3px; pointer-events: none; transition: transform .3s ease; box-shadow: 0 6px 24px rgba(0,0,0,.18); }
   .fcard:hover .play { transform: scale(1.1); }
   .fcard image-slot.yellow { background: #FFD400; }
@@ -92,7 +97,7 @@
   .fcard:hover h3 { color: var(--accent); }
 
   /* ---------- Testimonials ---------- */
-  .voices { display: flex; gap: clamp(18px,2vw,28px); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: none; -ms-overflow-style: none; }
+  .voices { display: flex; position: relative; gap: clamp(18px,2vw,28px); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: none; -ms-overflow-style: none; }
   .voices::-webkit-scrollbar { display: none; }
   /* Swipe hint */
   .swipe-hint { display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; user-select: none; transition: opacity .45s ease; }
@@ -143,6 +148,7 @@
 
   /* ---------- Footer ---------- */
   .footer .ftl { display:none; }
+@media(min-width:901px){.svc2.svc3{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 <link rel="stylesheet" href="assets/mobile.css">
 </head>
@@ -156,12 +162,12 @@
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
-      <a href="Onlineshops.html">Shops</a>
+      <!-- vorerst ausgeblendet: <a href="Onlineshops.html">Shops</a> -->
       <a href="SEA.html">Marketing</a>
       <a href="SEO.html">SEO / GEO</a>
-      <a href="KI-Automation.html">KI</a>
+      <a href="KI-Automation.html">KI-Auto</a>
     </nav>
-    <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
     <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -169,21 +175,21 @@
 <!-- ============ HERO ============ -->
 <header class="hero" data-screen-label="Hero">
   <div class="wrap">
-    <h1 class="hero-label">Agentur für Webdesign · Onlineshops · SEO · GEO · KI-Apps · Zürich</h1>
-    <p class="hero-h1">Digitale Kompetenz</p>
+    <h1 class="hero-label">Agentur für Webdesign · Onlinemarketing · SEO · GEO · KI-Automation · Zürich</h1>
+    <p class="hero-h1">Vincent &amp; Partner</p>
 
     <!-- Variant A: physics letters -->
     <div data-hero-letters style="position:relative">
-      <div class="hero-stage" data-falling-letters data-words="Digitale|Kompetenz" data-reset="#heroReset"></div>
+      <div class="hero-stage" data-falling-letters data-fit-width data-fit-scale="1" data-words="VINCENT|&amp; Partner" data-word-case="upper|as-is" data-word-weights="600|300" data-word-sizes="2|0.8" data-reset="#heroReset"></div>
       <button class="hero-down" type="button" aria-label="Nach unten scrollen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m-7-7l7 7l7-7"/></svg></button>
     </div>
     <!-- Variant B: static type -->
     <div data-hero-static class="hero-static2" style="display:none;">
-      <div class="h-giant">Digitale<br>Kompetenz</div>
+      <div class="h-giant">VINCENT<br><span style="font-weight:300;font-size:.4em">&amp; Partner</span></div>
     </div>
 
     <div class="hero-foot" style="margin: 42px 0px 0px">
-      <p class="lead" style="line-height: 1.3; font-size: 27px">Vincent sieht in jeder Herausforderung eine getarnte Möglichkeit und entwickelt innovative, digitale Lösungen, die Unternehmen nachhaltig weiterbringen. sdfasdfasdfas</p>
+      <p class="lead" style="line-height: 1.3; font-size: 27px">Vincent sieht in jeder Herausforderung eine getarnte Möglichkeit und entwickelt innovative, digitale Lösungen, die Unternehmen nachhaltig weiterbringen.</p>
       <div class="hero-cta">
         <a class="btn" href="Referenzen.html" style="padding: 16px 26px; margin: 9px; border-width: 1px">Referenzen</a>
       </div>
@@ -195,8 +201,8 @@
 <section class="marquee-x" aria-hidden="true">
   <div class="marquee svc-marquee band band-a">
     <div class="marquee-track">
-      <span>Webdesign</span><span class="sep">·</span><span>Onlineshops mit Bexio</span><span class="sep">·</span><span>SEO &amp; GEO</span><span class="sep">·</span><span>SEA</span><span class="sep">·</span><span>KI-Apps</span><span class="sep">·</span><span>Online Marketing</span><span class="sep">·</span><span>Video Ads</span><span class="sep">·</span><span>Google Ads</span><span class="sep">·</span>
-      <span>Webdesign</span><span class="sep">·</span><span>Onlineshops mit Bexio</span><span class="sep">·</span><span>SEO &amp; GEO</span><span class="sep">·</span><span>SEA</span><span class="sep">·</span><span>KI-Apps</span><span class="sep">·</span><span>Online Marketing</span><span class="sep">·</span><span>Video Ads</span><span class="sep">·</span><span>Google Ads</span><span class="sep">·</span>
+      <span>Webdesign</span><span class="sep">·</span><span>Onlinemarketing</span><span class="sep">·</span><span>SEO &amp; GEO</span><span class="sep">·</span><span>SEA</span><span class="sep">·</span><span>KI-Automation</span><span class="sep">·</span><span>Online Marketing</span><span class="sep">·</span><span>Video Ads</span><span class="sep">·</span><span>Google Ads</span><span class="sep">·</span>
+      <span>Webdesign</span><span class="sep">·</span><span>Onlinemarketing</span><span class="sep">·</span><span>SEO &amp; GEO</span><span class="sep">·</span><span>SEA</span><span class="sep">·</span><span>KI-Automation</span><span class="sep">·</span><span>Online Marketing</span><span class="sep">·</span><span>Video Ads</span><span class="sep">·</span><span>Google Ads</span><span class="sep">·</span>
     </div>
   </div>
   <div class="marquee svc-marquee band band-b">
@@ -210,29 +216,47 @@
 <!-- ============ SERVICES GRID ============ -->
 <section class="section tight" data-screen-label="Leistungen">
   <div class="wrap">
-    <div class="svc2">
-      <a class="scell reveal" href="Webdesign.html">
+    <div class="svc2 svc3">
+      <a class="scell reveal" href="About.html">
         <span class="sn">#1</span>
+        <h3>Über Vincent</h3>
+        <p style="line-height: 1.3">Seit 2002 Webagentur in Zürich: Team, Geschichte und Arbeitsweise von Vincent &amp; Partner.</p>
+        <span class="more">Mehr →</span>
+      </a>
+      <a class="scell reveal" href="Referenzen.html">
+        <span class="sn">#2</span>
+        <h3>Referenzen</h3>
+        <p style="line-height: 1.3">Ausgewählte Websites für Kunden aus der Schweiz.</p>
+        <span class="more">Mehr →</span>
+      </a>
+      <a class="scell reveal" href="Webdesign.html">
+        <span class="sn">#3</span>
         <h3>Webdesign</h3>
         <p style="line-height: 1.3">Innovative Webauftritte von A bis Z. Wir verbinden Design und Technik perfekt.</p>
         <span class="more">Mehr →</span>
       </a>
-      <a class="scell reveal" href="SEO.html">
-        <span class="sn">#2</span>
-        <h3>SEO / SEA / GEO</h3>
-        <p style="line-height: 1.25">Nachhaltige Traffic-Steigerung und Sichtbarkeit auf Google.</p>
-        <span class="more">Mehr →</span>
-      </a>
-      <a class="scell reveal" href="Onlineshops.html">
+      <!-- vorerst ausgeblendet: <a class="scell reveal" href="Onlineshops.html">
         <span class="sn">#3</span>
         <h3>Onlineshops</h3>
         <p style="line-height: 1.25">E-Commerce Lösungen mit Bexio-Anbindung für effiziente Prozesse.</p>
         <span class="more">Mehr →</span>
-      </a>
-      <a class="scell reveal" href="KI.html">
+      </a> -->
+      <a class="scell reveal" href="SEA.html">
         <span class="sn">#4</span>
-        <h3>KI Apps</h3>
-        <p style="line-height: 1.3">ChatGPT und KI-Lösungen sofort umsetzbar für KMU.</p>
+        <h3>Onlinemarketing</h3>
+        <p style="line-height: 1.25">Google Ads, Social Media und Landingpages, die messbar Anfragen bringen.</p>
+        <span class="more">Mehr →</span>
+      </a>
+      <a class="scell reveal" href="SEO.html">
+        <span class="sn">#5</span>
+        <h3>SEO / SEA / GEO</h3>
+        <p style="line-height: 1.25">Nachhaltige Traffic-Steigerung und Sichtbarkeit auf Google.</p>
+        <span class="more">Mehr →</span>
+      </a>
+      <a class="scell reveal" href="KI-Automation.html">
+        <span class="sn">#6</span>
+        <h3>KI-Automatisierung</h3>
+        <p style="line-height: 1.3">Abläufe digitalisieren und automatisieren, mit oder ohne KI.</p>
         <span class="more">Mehr →</span>
       </a>
     </div>
@@ -248,29 +272,53 @@
     </div>
     <div class="fgrid">
       <a class="fcard reveal" href="Referenz-flexpep.html">
-        <div class="fmedia"><image-slot data-mirror="referenzen" id="o-flexpep" placeholder="Screenshot Flexpep" shape="rect" alt="Flexpep — Webdesign Personalplanung Software, Vincent & Partner Zürich" src="assets/img/refs/o-flexpep.webp"></image-slot></div>
+        <div class="fmedia" data-frame="focus-flexpep"><video src="assets/refs/flexpep-start.mp4" poster="assets/img/refs/ref-flexpep-hero-desktop.webp" autoplay muted loop playsinline preload="metadata" aria-label="Startseite Flexpep auf Desktop — Webdesign für Flexpep in der Schweiz"></video></div>
         <span class="date">Webdesign</span>
         <h3>Webdesign für Flexpep</h3>
         <p style="line-height: 1.3">Redesign der Website für die Schweizer Software für Personal- und Einsatzplanung, mit Preisrechner und Onlinekalender.</p>
       </a>
-      <a class="fcard reveal" href="Referenz-video-alpfrieden.html">
-        <div class="fmedia"><image-slot data-mirror="referenzen" id="o-vid-alpfrieden" placeholder="Video Alpfrieden Sommeraktion" shape="rect" alt="Berghotel Alpfrieden Bettmeralp — Video und Landingpage Sommeraktion, Onlinemarketing"></image-slot><span class="play">▶</span></div>
+      <!-- vorerst ausgeblendet: <a class="fcard reveal" href="Referenz-video-alpfrieden.html">
+        <div class="fmedia" data-frame="focus-video-alpfrieden"><image-slot data-mirror="referenzen" id="o-vid-alpfrieden" placeholder="Video Alpfrieden Sommeraktion" shape="rect" alt="Berghotel Alpfrieden Bettmeralp — Video und Landingpage Sommeraktion, Onlinemarketing"></image-slot><span class="play">▶</span></div>
         <span class="date">Onlinemarketing</span>
         <h3>Video Sommeraktion für Alpfrieden</h3>
         <p style="line-height: 1.3">Kampagnenvideo für das Berghotel Alpfrieden auf der Bettmeralp, abgestimmt auf die Landingpage Sommeraktion.</p>
-      </a>
+      </a> -->
       <a class="fcard reveal" href="Referenz-prodorso.html">
-        <div class="fmedia"><image-slot data-mirror="referenzen" id="o-prodorso" placeholder="Screenshot prodorso" shape="rect" alt="prodorso — Webdesign Praxis Wirbelsäulenmedizin Zürich" src="assets/refs/prodorso-hero.webp"></image-slot></div>
+        <div class="fmedia" data-frame="focus-prodorso"><video src="assets/refs/prodorso-v4.mp4" poster="assets/img/refs/o-prodorso.webp" autoplay muted playsinline preload="metadata" aria-label="Startseite prodorso.ch auf Desktop — Webdesign Praxis Wirbelsäulenmedizin Zürich"></video></div>
         <span class="date">Webdesign</span>
         <h3>Webdesign für prodorso</h3>
         <p style="line-height: 1.3">Die neue Website für die Praxis für Wirbelsäulenmedizin in Zürich.</p>
       </a>
       <a class="fcard reveal" href="Referenz-Batinu.html">
-        <div class="fmedia"><image-slot data-mirror="referenzen" id="o-batinu" placeholder="Screenshot Batinu" shape="rect" alt="Batinu Bauingenieure — Webdesign, Vincent & Partner Zürich" src="assets/img/refs/o-batinu.webp"></image-slot></div>
+        <div class="fmedia" data-frame="focus-batinu"><img style="transform-origin:left top" src="assets/refs/batinu-start.webp" alt="Startseite Batinu auf Desktop — Webdesign Bauingenieure Batinu in Zürich Oerlikon" loading="lazy"></div>
         <span class="date">Webdesign</span>
         <h3>Webdesign für Batinu Bauingenieure</h3>
         <p style="line-height: 1.3">Die neue Webseite für Batinu Bauingenieure in Zürich Oerlikon.</p>
       </a>
+      <a class="fcard reveal" href="Referenz-bulgaria.html">
+        <div class="fmedia" data-frame="focus-bulgaria"><video src="assets/refs/bulgaria-desktop.mp4" poster="assets/refs/bulgaria-hero.webp" autoplay muted loop playsinline preload="metadata" aria-label="Startseite Bulgariadirect auf Desktop — Webdesign Immobilien in Bulgarien"></video></div>
+        <span class="date">Webdesign</span>
+        <h3>Webdesign für Bulgariadirect</h3>
+        <p style="line-height: 1.3">Ausgesuchte Immobilien in Bulgarien, direkt und in Raten.</p>
+      </a>
+      <a class="fcard reveal" href="Referenz-wdvs.html">
+        <div class="fmedia" data-frame="focus-wdvs"><img src="assets/refs/wdvs-d-2.webp" alt="Startseite WDVS-Expert mit Drohne — Webdesign Fassadenexperten Rupperswil" loading="lazy"></div>
+        <span class="date">Webdesign</span>
+        <h3>Webdesign für WDVS-Expert</h3>
+        <p style="line-height: 1.3">Website für Fassaden- und Wärmedämmarbeiten mit klarer Leistungsübersicht und direkter Kontaktaufnahme.</p>
+      </a>
+      <a class="fcard reveal" href="Referenz-alpfrieden.html">
+        <div class="fmedia" data-frame="focus-alpfrieden"><video src="assets/refs/alpfrieden-web-start.mp4" poster="assets/img/refs/ref-alpfrieden-hero-desktop.webp" autoplay muted loop playsinline preload="metadata" aria-label="Startseite alpfrieden.ch auf Desktop — Webdesign Hotel Bettmeralp"></video></div>
+        <span class="date">Webdesign</span>
+        <h3>Webdesign für Alpfrieden</h3>
+        <p style="line-height: 1.3">Neue Website für das Berghotel Alpfrieden auf der Bettmeralp mit Mews-Buchung, SEO und Google Ads.</p>
+      </a>
+      <!-- vorerst ausgeblendet: <a class="fcard reveal" href="Referenz-myshop.html">
+        <div class="fmedia" data-frame="focus-myshop"><image-slot data-mirror="referenzen" id="o-myshop" placeholder="Screenshot My-Onlineshop" shape="rect" alt="My-Onlineshop — Webdesign E-Commerce, Vincent & Partner Zürich" src="assets/refs/myshop-hero.webp"></image-slot></div>
+        <span class="date">Webdesign</span>
+        <h3>Webdesign für My-Onlineshop</h3>
+        <p style="line-height: 1.3">Website für E-Commerce-Lösungen mit klarer Angebotsübersicht und Anfragewegen, responsiv umgesetzt.</p>
+      </a> -->
     </div>
   </div>
 </section>
@@ -280,31 +328,28 @@
   <div class="wrap">
     <div class="focus-head reveal" style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:clamp(24px,3vh,40px)">
       <h2 style="font-size:clamp(28px,3.4vw,48px)">Kundenstimmen</h2>
-      <span class="swipe-hint" data-swipe-hint aria-hidden="true"><span class="sh-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M9 8l-4 4l4 4"/><path d="M15 8l4 4l-4 4"/></svg></span>Swipe</span>
+      <div class="refslider-nav"><button class="rsbtn" data-rs-prev aria-label="Zurück"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7 7l-7-7l7-7"/></svg></button><button class="rsbtn" data-rs-next aria-label="Weiter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></button></div>
     </div>
     <div class="voices">
       <figure class="vcard reveal">
-        <div class="vhead"><image-slot id="v1" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Sören Honegger</b><span>Baukonstrukt AG</span></div></div>
+        <div class="vhead"><image-slot id="v1" shape="circle" placeholder="" src="assets/img/kunden/soeren-honegger.webp" alt="Porträt Sören Honegger, Baukonstrukt AG — Kundenstimme Webdesign"></image-slot><div class="vn"><b>Sören Honegger</b><span>Baukonstrukt AG</span></div></div>
         <blockquote style="line-height: 1.35">Absolut geniale Dienstleistung und Betreuung. Unsere Webseiten sprechen Bände! Holzkonstrukt.ch und Baukonstrukt.ch.</blockquote>
       </figure>
       <figure class="vcard reveal">
-        <div class="vhead"><image-slot id="v2" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Nadine Hauser</b><span>weareconsultants</span></div></div>
+        <div class="vhead"><image-slot id="v2" shape="circle" placeholder="" src="assets/img/kunden/nadine-hauser.webp" alt="Porträt Nadine Hauser, weareconsultants — Kundenstimme Webdesign und SEO"></image-slot><div class="vn"><b>Nadine Hauser</b><span>weareconsultants</span></div></div>
         <blockquote style="line-height: 1.35">Vincent & Partner ist der Partner unserer Wahl, wenn es um Webdesign und SEO geht. Eine inspirierende Reise — am Ende eine massgeschneiderte, persönliche Kreation.</blockquote>
       </figure>
       <figure class="vcard reveal">
-        <div class="vhead"><image-slot id="v3" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Michael à Porta</b><span>wetalkwithyou</span></div></div>
+        <div class="vhead"><image-slot id="v3" shape="circle" placeholder="" src="assets/img/kunden/michael-a-porta.webp" alt="Porträt Michael à Porta, wetalkwithyou — Kundenstimme Webdesign"></image-slot><div class="vn"><b>Michael à Porta</b><span>wetalkwithyou</span></div></div>
         <blockquote style="line-height: 1.35">Ein Feuerwerk an innovativen Ideen — beeindruckend in Kreativität, Innovationskraft und Effizienz. Wir empfehlen Vincent & Partner jederzeit weiter.</blockquote>
       </figure>
       <figure class="vcard reveal">
-        <div class="vhead"><image-slot id="v4" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Valentina Scarascia</b><span>Praxis Scarascia</span></div></div>
+        <div class="vhead"><image-slot id="v4" shape="circle" placeholder="" src="assets/img/kunden/valentina-scarascia.webp" alt="Porträt Valentina Scarascia, Praxis Scarascia — Kundenstimme Webdesign und SEO"></image-slot><div class="vn"><b>Valentina Scarascia</b><span>Praxis Scarascia</span></div></div>
         <blockquote>Ich erhalte immer wieder Komplimente für meine Website und bin SEO-technisch stets auf dem aktuellen Stand. Sehr empfehlenswert.</blockquote>
       </figure>
+      
       <figure class="vcard reveal">
-        <div class="vhead"><image-slot id="v5" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Florian Müller</b><span>Santewell Physiotherapie Basel</span></div></div>
-        <blockquote>Sehr zufrieden. Immer ansprechbar, die Webseite sieht viel ansprechender aus und im Ranking sind wir geklettert.</blockquote>
-      </figure>
-      <figure class="vcard reveal">
-        <div class="vhead"><image-slot id="v6" shape="circle" placeholder="" alt="Vincent & Partner Zürich"></image-slot><div class="vn"><b>Giuliano Stellini</b><span>dreamhair</span></div></div>
+        <div class="vhead"><image-slot id="v6" shape="circle" placeholder="" src="assets/img/kunden/giuliano-stellini.webp" alt="Porträt Giuliano Stellini, dreamhair — Kundenstimme SEO"></image-slot><div class="vn"><b>Giuliano Stellini</b><span>dreamhair</span></div></div>
         <blockquote>Äusserst zufrieden. Traffic erheblich gesteigert, professionelles Team, stets erreichbar. Wärmstens empfohlen.</blockquote>
       </figure>
     </div>
@@ -364,7 +409,35 @@
   })();
 </script>
 <script src="assets/media-edit.js"></script>
+<script src="assets/frame-resize.js" defer></script>
 <script src="assets/fluid.js"></script>
 <script src="assets/footer.js"></script>
+<script>
+(function(){
+  var v=document.querySelector('.voices');if(!v)return;
+  var root=v.closest('section'),prev=root.querySelector('[data-rs-prev]'),next=root.querySelector('[data-rs-next]');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,timer=null,hover=false,visible=false,anim=null;
+  function step(){var c=v.querySelector('.vcard');return c?c.getBoundingClientRect().width+(parseFloat(getComputedStyle(v).columnGap)||24):v.clientWidth*.8}
+  function max(){return v.scrollWidth-v.clientWidth}
+  function update(){if(prev)prev.disabled=v.scrollLeft<=2;if(next)next.disabled=false}
+  function to(t){t=Math.max(0,Math.min(max(),t));v.scrollTo({left:t,behavior:reduce?'auto':'smooth'})}
+  function cards(){return [].slice.call(v.querySelectorAll('.vcard')).map(function(c){return c.offsetLeft-v.firstElementChild.offsetLeft})}
+  function fwd(){if(v.scrollLeft>=max()-2)return to(0);var x=v.scrollLeft+4,c=cards().find(function(o){return o>x});to(c==null?max():c)}
+  function back(){var x=v.scrollLeft-4,c=cards().filter(function(o){return o<x}).pop();to(c==null?0:c)}
+  function stop(){clearInterval(timer);timer=null}
+  function start(){stop();if(reduce||hover||!visible||max()<=2)return;timer=setInterval(fwd,10000)}
+  if(prev)prev.addEventListener('click',function(){back();start()});
+  if(next)next.addEventListener('click',function(){fwd();start()});
+  v.addEventListener('scroll',update,{passive:true});
+  v.addEventListener('pointerdown',start,{passive:true});
+  root.addEventListener('mouseenter',function(){hover=true;stop()});
+  root.addEventListener('mouseleave',function(){hover=false;start()});
+  root.addEventListener('focusin',function(){hover=true;stop()});
+  root.addEventListener('focusout',function(){hover=false;start()});
+  new IntersectionObserver(function(es){visible=es[0].isIntersecting;start()},{threshold:.3}).observe(v);
+  document.addEventListener('visibilitychange',function(){document.hidden?stop():start()});
+  addEventListener('resize',update);update();
+})();
+</script>
 </body>
 </html>

@@ -293,6 +293,12 @@ html.vp-brush ::selection { background: var(--accent); color: #fff; }
 }
 .nav-cta:hover { opacity: .82; }
 .nav-cta svg { width: 14px; height: 14px; }
+/* Kontakt-Button: dunkel, das Wort rollt alle 4 s sanft Buchstabe für Buchstabe durch */
+.nav-cta-roll .roll { display: inline-flex; height: 1.2em; line-height: 1.2em; overflow: hidden; }
+.nav-cta-roll .r { display: inline-flex; flex-direction: column; animation: navroll 4s cubic-bezier(.6,0,.2,1) infinite; animation-delay: calc(var(--i) * 45ms); }
+@keyframes navroll { 0%, 78% { transform: translateY(0); } 92%, 100% { transform: translateY(-1.2em); } }
+.nav-cta-roll:hover .r { animation-duration: 1.6s; }
+@media (prefers-reduced-motion: reduce) { .nav-cta-roll .r { animation: none; } }
 .nav-cta { display: inline-flex; }
 .nav-burger { display: none; }
 

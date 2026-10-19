@@ -2,12 +2,13 @@
 <html lang="de">
 <head>
 <script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
-(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>prodorso — Referenz | Vincent & Partner</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/swiss.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <style>
 .refpage .ptitle{font-size:clamp(44px,8.5vw,128px);margin:0}
@@ -123,24 +124,31 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
   .bigcta .go{font-size:13px}
 }
 .footer .ftl{display:block;color:#fff;font-size:15px;margin-bottom:9px}.footer .ftl:hover{color:var(--muted)}
+.showcase.solo{grid-template-columns:1fr}
+.shot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:inherit;display:block}
+.pdgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.pdgrid .vmedia{aspect-ratio:16/10}.pdgrid .vmedia img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+@media(max-width:760px){.pdgrid{grid-template-columns:1fr}}
+.phoneviews .vmedia video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.pdphones{grid-template-columns:repeat(3,minmax(0,clamp(200px,20vw,300px)));justify-content:center}@media(max-width:760px){.pdphones{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
+<link rel="stylesheet" href="assets/mobile.css">
 </head>
 <body>
 <div class="bg-grid"></div>
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="site-nav-links">
       <a href="About.html">About</a>
       <a href="Referenzen.html" class="active">Work</a>
       <a href="Webdesign.html">Web</a>
-      <a href="Onlineshops.html">Shops</a>
+      <!-- vorerst ausgeblendet: <a href="Onlineshops.html">Shops</a> -->
       <a href="SEA.html">Marketing</a>
       <a href="SEO.html">SEO / GEO</a>
-      <a href="KI-Automation.html">KI</a>
+      <a href="KI-Automation.html">KI-Auto</a>
     </nav>
-    <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
-    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
 <main class="above">
@@ -152,40 +160,39 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
     </div>
     <p class="ptitle">prodorso</p>
     <div class="refhead">
-      <p class="lead">Webdesign für die Praxis prodorso, Zentrum für Wirbelsäulenmedizin in Zürich: neue Praxis-Website mit klarer Struktur für Patientinnen und Zuweiser, Praxis-Fotoshooting vor Ort und Imagefilm für die Startseite.</p>
-      <div class="tags"><span class="tag">Webdesign</span><span class="tag">Fotoshooting</span><span class="tag">Video</span><span class="tag">SEO</span></div>
+      <p class="lead">Webdesign für die Praxis prodorso, Zentrum für Wirbelsäulenmedizin in Zürich: neue Praxis-Website mit klarer Struktur für Patientinnen und Zuweiser, Fotobearbeitung und Logo-Redesign.</p>
+      <div class="tags"><span class="tag">Webdesign</span><span class="tag">Fotobearbeitung</span><span class="tag">Logo-Redesign</span><span class="tag">SEO</span></div>
     </div>
     <div class="meta" style="margin-top:clamp(55px,6vw,89px)">
       <div><span class="lab">Kunde</span><span class="v">prodorso AG</span></div>
       <div><span class="lab">Bereich</span><span class="v">Wirbelsäulenmedizin</span></div>
-      <div><span class="lab">Jahr</span><span class="v">2025</span></div>
+      <div><span class="lab">Jahr</span><span class="v">2026</span></div>
       <div class="end"><a class="livebtn" href="https://www.prodorso.ch" target="_blank" rel="noopener">Live ansehen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10M7 17L17 7"/></svg></a></div>
     </div>
   </section>
 
   <section class="ablock awrap rsec">
-    <div class="showcase">
-      <figure class="shot shot-desktop" data-frame="prodorso-hero-desktop"><image-slot id="ref-prodorso-hero-desktop" shape="rounded" radius="3" src="assets/img/refs/ref-prodorso-hero-desktop.webp" placeholder="Desktop-Screenshot" alt="Startseite prodorso.ch auf Desktop — Webdesign Praxis Wirbelsäulenmedizin Zürich"></image-slot></figure>
-      <figure class="shot shot-mobile" data-frame="prodorso-hero-mobile"><image-slot id="ref-prodorso-hero-mobile" shape="rounded" radius="5" src="assets/refs/prodorso-mobile.webp" placeholder="Mobile-Screenshot" alt="Startseite prodorso.ch auf dem Smartphone — responsives Webdesign für die Praxis"></image-slot></figure>
+    <div class="showcase solo">
+      <figure class="shot shot-desktop" data-frame="prodorso-hero-desktop"><video src="assets/refs/prodorso-v4.mp4" muted playsinline preload="metadata" aria-label="Startseite prodorso.ch auf Desktop mit Animationen — Webdesign Praxis Wirbelsäulenmedizin Zürich" data-once></video></figure>
     </div>
-    <div class="show-cap"><span>Startseite — Desktop &amp; Mobile</span></div>
+    <div class="show-cap"><span>Startseite — Desktop</span></div>
   </section>
 
   <section class="ablock awrap rsec">
-    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Leistungen: Webdesign, Fotoshooting und Video für die Praxis</h2></div>
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Leistungen: Webdesign, Fotobearbeitung und Logo-Redesign für die Praxis</h2></div>
     <div class="work">
-      <p class="display">Von der Struktur bis zum Film.</p>
+      <p class="display">Von der Struktur bis zum Logo.</p>
       <ol class="worklist">
         <li><span class="n">01</span><div><h3>Konzept &amp; Seitenstruktur für die Praxis-Website</h3><p>Zielgruppen Patientinnen und zuweisende Ärzte getrennt geführt, Behandlungen und Team neu geordnet.</p></div></li>
         <li><span class="n">02</span><div><h3>Webdesign für Arztpraxen: Gestaltung &amp; Umsetzung</h3><p>Ruhiges, medizinisches Erscheinungsbild, responsiv für Desktop und Mobile, schnelle Ladezeiten.</p></div></li>
-        <li><span class="n">03</span><div><h3>Praxis-Fotoshooting vor Ort</h3><p>Team, Praxisräume und Behandlungssituationen vor Ort fotografiert, Bildwelt auf die Webseite abgestimmt.</p></div></li>
-        <li><span class="n">04</span><div><h3>Imagefilm für die Praxis</h3><p>Kurzer Film für die Startseite, zusätzlich Schnitt für Social Media.</p></div></li>
+        <li><span class="n">03</span><div><h3>Fotobearbeitung für die Praxis-Website</h3><p>Vorhandene Praxis- und Teamfotos bearbeitet und als einheitliche Bildwelt auf die Website abgestimmt.</p></div></li>
+        <li><span class="n">04</span><div><h3>Logo-Redesign für die Praxis</h3><p>Bestehendes Logo überarbeitet und für Website, Print und Social Media aufbereitet.</p></div></li>
         <li><span class="n">05</span><div><h3>Lokales SEO für Zürich</h3><p>Seitentitel, Beschreibungen, Struktur und lokale Auffindbarkeit für Zürich.</p></div></li>
       </ol>
     </div>
   </section>
 
-  <section class="ablock awrap rsec">
+  <!-- ausgeblendet bis Logoredesign vorliegt: <section class="ablock awrap rsec">
     <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Designsystem für die Praxis-Website</h2></div>
     <div class="dsys">
       <p class="display">Ein System, das trägt.</p>
@@ -204,28 +211,29 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
         </div></div>
       </div>
     </div>
-  </section>
+  </section> -->
+
+  
 
   <section class="ablock awrap rsec">
-    <h2 class="sr">Praxis-Fotoshooting prodorso</h2>
-    <div class="photogrid">
-      <figure class="view wide"><div class="vmedia" data-frame="prodorso-foto-1"><image-slot id="ref-prodorso-foto-1" shape="rect" placeholder="Foto 1 — Team / Praxis" alt="Praxis-Fotoshooting prodorso Zürich — Team und Praxisräume" src="assets/img/refs/ref-prodorso-foto-1.webp"></image-slot></div><figcaption class="vcap">Fotoshooting · Praxis &amp; Team</figcaption></figure>
-      <figure class="view"><div class="vmedia" data-frame="prodorso-foto-2"><image-slot id="ref-prodorso-foto-2" shape="rect" placeholder="Foto 2 — Portrait" alt="Praxis-Fotoshooting prodorso — Portrait"></image-slot></div><figcaption class="vcap">Fotoshooting · Portrait</figcaption></figure>
-          </div>
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Ansichten Webdesign Praxis Wirbelsäulenmedizin Zürich</h2></div>
+    <div class="photogrid pdgrid">
+      <figure class="view"><div class="vmedia" data-frame="prodorso-d-1"><img src="assets/refs/prodorso-d-kompetenzen.webp" alt="Kompetenzen-Slider auf prodorso.ch mit Wirbelsäulenchirurgie, Schmerztherapie und Neurologie — Webdesign Praxis Zürich" loading="lazy"></div><figcaption class="vcap">Startseite · Kompetenzen-Slider</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="prodorso-d-2"><img src="assets/refs/prodorso-d-team.webp" alt="Bildcollage Team und Praxisräume prodorso Zürich — Webdesign Arztpraxis" loading="lazy"></div><figcaption class="vcap">Unser Zentrum · Bildcollage</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="prodorso-d-3"><img src="assets/refs/prodorso-d-behandlungen.webp" alt="Seite Kompetenzen und Behandlungen auf prodorso.ch — Webdesign Praxis Wirbelsäulenmedizin" loading="lazy"></div><figcaption class="vcap">Kompetenzen &amp; Behandlungen</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="prodorso-d-4"><img src="assets/refs/prodorso-d-krankheitsbilder.webp" alt="Fachinformationen Krankheitsbilder Rückenschmerzen auf prodorso.ch — Webdesign Arztpraxis Zürich" loading="lazy"></div><figcaption class="vcap">Fachinformationen · Krankheitsbilder</figcaption></figure>
+    </div>
   </section>
 
-  <section class="ablock awrap videowrap rsec">
-    <h2 class="sr">Imagefilm für die Praxis prodorso</h2>
-    <figure class="view"><div class="vmedia" data-frame="prodorso-video"><img src="assets/refs/prodorso-hero.webp" alt="Imagefilm für die Praxis prodorso — Startseiten-Video"></div><figcaption class="vcap">Imagefilm · Startseite · 0:45</figcaption></figure>
-  </section>
+  
 
   <section class="ablock awrap rsec">
-    <h2 class="sr">Mobile Webdesign — Ansichten prodorso.ch</h2>
-    <div class="phoneviews">
-      <figure class="view"><div class="vmedia" data-frame="prodorso-m-1"><image-slot id="ref-prodorso-m-1" shape="rect" src="assets/refs/prodorso-mobile.webp" placeholder="Mobile 1" alt="prodorso.ch mobil — Startseite"></image-slot></div></figure>
-      <figure class="view"><div class="vmedia" data-frame="prodorso-m-2"><image-slot id="ref-prodorso-m-2" shape="rect" src="assets/refs/prodorso-m-about.webp" placeholder="Mobile 2" alt="prodorso.ch mobil — Über die Praxis"></image-slot></div></figure>
-      <figure class="view"><div class="vmedia" data-frame="prodorso-m-3"><image-slot id="ref-prodorso-m-3" shape="rect" src="assets/refs/prodorso-m-service.webp" placeholder="Mobile 3" alt="prodorso.ch mobil — Behandlungen"></image-slot></div></figure>
-      <figure class="view"><div class="vmedia" data-frame="prodorso-m-4"><image-slot id="ref-prodorso-m-4" shape="rect" placeholder="Mobile 4" alt="prodorso.ch mobil — weitere Ansicht"></image-slot></div></figure>
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Mobile Webdesign Praxis prodorso</h2></div>
+    <div class="phoneviews pdphones">
+      
+      <figure class="view"><div class="vmedia" data-frame="prodorso-m-2"><video src="assets/refs/prodorso-v42.mp4" autoplay muted loop playsinline preload="metadata" aria-label="prodorso.ch mobil — Scrollen durch die Praxis-Website, Webdesign Arztpraxis Zürich"></video></div></figure>
+      <figure class="view"><div class="vmedia" data-frame="prodorso-m-3"><img src="assets/refs/prodorso-m-team.webp" alt="prodorso.ch mobil — Team und Behandlung, Webdesign Praxis Zürich" loading="lazy"></div></figure>
+      <figure class="view"><div class="vmedia" data-frame="prodorso-m-4"><img src="assets/refs/prodorso-m-karte.webp" alt="prodorso.ch mobil — Standortkarte mit Termin, Anrufen und Route, Webdesign Arztpraxis Zürich" loading="lazy"></div></figure>
     </div>
   </section>
 
@@ -236,7 +244,6 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
 <script src="assets/site.js"></script>
 <script src="assets/image-slot.js"></script>
 <script src="assets/frame-resize.js"></script>
-<script src="assets/palette.js"></script>
 <script src="assets/media-edit.js"></script>
 <script src="assets/footer.js"></script>
 </body>

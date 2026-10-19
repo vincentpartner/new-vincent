@@ -2,12 +2,13 @@
 <html lang="de">
 <head>
 <script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
-(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=s.mode||"Dunkel";if(s.darkDefault!==true&&(!s.mode||s.mode==="Hell"))m="Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Batinu — Referenz | Vincent &amp; Partner</title>
 <link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="assets/swiss.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <style>
 .refpage .ptitle{font-size:clamp(44px,8.5vw,128px);margin:0}
@@ -123,24 +124,30 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
   .bigcta .go{font-size:13px}
 }
 .footer .ftl{display:block;color:#fff;font-size:15px;margin-bottom:9px}.footer .ftl:hover{color:var(--muted)}
+.btgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.btgrid .vmedia{aspect-ratio:16/10}.btgrid .wide .vmedia{aspect-ratio:16/10}.btgrid .vmedia img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+@media(max-width:760px){.btgrid{grid-template-columns:1fr}}
+.btphones{grid-template-columns:repeat(2,minmax(0,clamp(220px,24vw,340px)));justify-content:center}
+@media(max-width:600px){.btphones{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.shot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:inherit;display:block}
 </style>
+<link rel="stylesheet" href="assets/mobile.css">
 </head>
 <body>
 <div class="bg-grid"></div>
 <header class="nav">
   <div class="nav-inner">
     <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="site-nav-links">
       <a href="About.html">About</a>
       <a href="Referenzen.html" class="active">Work</a>
       <a href="Webdesign.html">Web</a>
-      <a href="Onlineshops.html">Shops</a>
+      <!-- vorerst ausgeblendet: <a href="Onlineshops.html">Shops</a> -->
       <a href="SEA.html">Marketing</a>
       <a href="SEO.html">SEO / GEO</a>
-      <a href="KI-Automation.html">KI</a>
+      <a href="KI-Automation.html">KI-Auto</a>
     </nav>
-    <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
-    <button class="nav-burger" aria-label="Menü"><span></span><span></span><span></span></button>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
 <main class="above">
@@ -165,8 +172,8 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
 
   <section class="ablock awrap rsec">
     <div class="showcase">
-      <figure class="shot shot-desktop" data-frame="batinu-hero-desktop"><image-slot id="ref-batinu-hero-desktop" shape="rounded" radius="3" src="assets/img/batinu-start.jpg" placeholder="Desktop-Screenshot" alt="Startseite Batinu auf Desktop — Webdesign Bauingenieure Batinu in Zürich Oerlikon"></image-slot></figure>
-      <figure class="shot shot-mobile" data-frame="batinu-hero-mobile"><image-slot id="ref-batinu-hero-mobile" shape="rounded" radius="5" placeholder="Mobile-Screenshot" alt="Startseite Batinu auf dem Smartphone — responsives Webdesign"></image-slot></figure>
+      <figure class="shot shot-desktop" data-frame="batinu-hero-desktop"><image-slot id="ref-batinu-hero-desktop" shape="rounded" radius="3" src="assets/refs/batinu-start.webp" placeholder="Desktop-Screenshot" alt="Startseite Batinu auf Desktop — Webdesign Bauingenieure Batinu in Zürich Oerlikon"></image-slot></figure>
+      <figure class="shot shot-mobile" data-frame="batinu-hero-mobile"><video src="assets/refs/batinu-video.mp4" poster="assets/refs/batinu-mobile-start.webp" autoplay muted loop playsinline preload="metadata" aria-label="Startseite Batinu auf dem Smartphone — responsives Webdesign Bauingenieure Zürich"></video></figure>
     </div>
     <div class="show-cap"><span>Startseite — Desktop &amp; Mobile</span></div>
   </section>
@@ -184,42 +191,21 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
     </div>
   </section>
 
+  
   <section class="ablock awrap rsec">
-    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Designsystem Webdesign Batinu</h2></div>
-    <div class="dsys">
-      <p class="display">Ein System, das trägt.</p>
-      <div class="cols">
-        <div><span class="lab">Logo</span><div class="logo-slot"><image-slot id="ref-batinu-logo-hell" shape="rect" fit="contain" placeholder="Logo auf Hell" alt="Logo Batinu auf hellem Hintergrund"></image-slot><image-slot class="dark" id="ref-batinu-logo-dunkel" shape="rect" fit="contain" placeholder="Logo auf Dunkel" alt="Logo Batinu auf dunklem Hintergrund"></image-slot></div></div>
-        <div><span class="lab">Farben</span><div class="swatches" data-palette="batinu" data-from="ref-batinu-hero-desktop">
-          <div class="sw"><i style="background:#22252A"></i><b>Primär</b><span>#22252A</span></div>
-          <div class="sw"><i style="background:#6B7C8C"></i><b>Akzent</b><span>#6B7C8C</span></div>
-          <div class="sw"><i style="background:#EEF0F2"></i><b>Fläche</b><span>#EEF0F2</span></div>
-          <div class="sw"><i style="background:#1B1D21"></i><b>Text</b><span>#1B1D21</span></div>
-          <div class="sw"><i style="background:#FFFFFF"></i><b>Hintergrund</b><span>#FFFFFF</span></div>
-        </div></div>
-        <div><span class="lab">Typografie</span><div class="typo">
-          <div><p class="t1" style="margin:0">Batinu</p><span>Headline · Schriftname</span></div>
-          <div><p class="t2" style="margin:0">strenges Schweizer Raster, ruhige Typografie und klare Projektübersichten, dazu ein schlankes CMS und eine saubere SEO-Basis.</p><span>Text · Schriftname</span></div>
-        </div></div>
-      </div>
+    <h2 class="sr">Ansichten Webdesign Bauingenieure Batinu Zürich</h2>
+    <div class="photogrid btgrid">
+      <figure class="view wide"><div class="vmedia" data-frame="batinu-foto-1"><img src="assets/refs/batinu-leistungen.webp" alt="Leistungen von Batinu Bauingenieure als Bildraster: Neubau, Geotechnik, Bauen im Bestand, Expertise, Wettbewerb, Erdbebenanalyse — Webdesign Bauingenieure Zürich" loading="lazy"></div><figcaption class="vcap">Leistungen · Bildraster</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="batinu-foto-2"><img src="assets/refs/batinu-team.webp" alt="Team-Seite Batinu Bauingenieure mit Porträts — Webdesign Bauingenieure Zürich" loading="lazy"></div><figcaption class="vcap">Über uns · Team</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="batinu-foto-3"><img src="assets/refs/batinu-kontakt.webp" alt="Kontaktseite Batinu Bauingenieure mit Karte Zürich Oerlikon — Webdesign Bauingenieure Zürich" loading="lazy"></div><figcaption class="vcap">Kontakt · Karte Zürich Oerlikon</figcaption></figure>
     </div>
   </section>
 
   <section class="ablock awrap rsec">
-    <h2 class="sr">Ansichten Batinu</h2>
-    <div class="photogrid">
-      <figure class="view wide"><div class="vmedia" data-frame="batinu-foto-1"><image-slot id="ref-batinu-foto-1" shape="rect" placeholder="Bild 1 — Detail / Ansicht" alt="Batinu — Detailansicht 1"></image-slot></div><figcaption class="vcap">Ansicht · Detail</figcaption></figure>
-      <figure class="view"><div class="vmedia" data-frame="batinu-foto-2"><image-slot id="ref-batinu-foto-2" shape="rect" placeholder="Bild 2 — Detail / Ansicht" alt="Batinu — Detailansicht 2"></image-slot></div><figcaption class="vcap">Ansicht · Detail</figcaption></figure>
-    </div>
-  </section>
-
-  <section class="ablock awrap rsec">
-    <h2 class="sr">Mobile Webdesign — Ansichten Batinu</h2>
-    <div class="phoneviews">
-      <figure class="view"><div class="vmedia" data-frame="batinu-m-1"><image-slot id="ref-batinu-m-1" shape="rect" placeholder="Mobile 1" alt="Batinu mobil — Ansicht 1"></image-slot></div></figure>
-      <figure class="view"><div class="vmedia" data-frame="batinu-m-2"><image-slot id="ref-batinu-m-2" shape="rect" placeholder="Mobile 2" alt="Batinu mobil — Ansicht 2"></image-slot></div></figure>
-      <figure class="view"><div class="vmedia" data-frame="batinu-m-3"><image-slot id="ref-batinu-m-3" shape="rect" placeholder="Mobile 3" alt="Batinu mobil — Ansicht 3"></image-slot></div></figure>
-      <figure class="view"><div class="vmedia" data-frame="batinu-m-4"><image-slot id="ref-batinu-m-4" shape="rect" placeholder="Mobile 4" alt="Batinu mobil — Ansicht 4"></image-slot></div></figure>
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Mobile Webdesign Bauingenieure Batinu</h2></div>
+    <div class="phoneviews btphones">
+      <figure class="view"><div class="vmedia" data-frame="batinu-m-1"><img src="assets/refs/batinu-mobile-start.webp" alt="Batinu mobil — Startseite mit Holzfassade, Webdesign Bauingenieure Zürich" loading="lazy"></div><figcaption class="vcap">Mobile · Startseite</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="batinu-m-2"><img src="assets/refs/batinu-mobile-leistungen.webp" alt="Batinu mobil — Leistungen Geotechnik und Bauen im Bestand, Webdesign Bauingenieure Zürich" loading="lazy"></div><figcaption class="vcap">Mobile · Leistungen</figcaption></figure>
     </div>
   </section>
 
@@ -230,7 +216,6 @@ html[data-mode="Dunkel"] .vmedia{background:#1b1d21}
 <script src="assets/site.js"></script>
 <script src="assets/image-slot.js"></script>
 <script src="assets/frame-resize.js"></script>
-<script src="assets/palette.js"></script>
 <script src="assets/media-edit.js"></script>
 <script src="assets/footer.js"></script>
 </body>

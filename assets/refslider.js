@@ -39,6 +39,7 @@
     track.addEventListener('scroll', update, {passive:true});
     window.addEventListener('resize', update);
     update();
+    root.__rsUpdate = update;
 
     // Drag / swipe with pointer
     var down=false, startX=0, startScroll=0, moved=0, dragged=false;
@@ -78,7 +79,10 @@
     var src = track.getAttribute('data-rs-source'), group = track.getAttribute('data-rs-group');
     if(!src || !window.fetch || location.protocol === 'file:') return Promise.resolve();
     var mirrorName = src.replace(/\.html?$/i,'').toLowerCase().replace(/[^a-z0-9_-]/g,'_');
-    return fetch(src, {cache:'no-cache'}).then(function(x){ return x.ok ? x.text() : null; }).catch(function(){ return null; }).then(function(html){
+    var ac = window.AbortController ? new AbortController() : null;
+    var to = setTimeout(function(){ if(ac) ac.abort(); }, 8000);
+    return fetch(src, {cache:'no-cache', signal: ac ? ac.signal : undefined}).then(function(x){ return x.ok ? x.text() : null; }).catch(function(){ return null; }).then(function(html){
+      clearTimeout(to);
       if(!html) return;
       var doc = new DOMParser().parseFromString(html, 'text/html');
       var heads = doc.querySelectorAll('.refgroup-head'), grid = null;
@@ -112,8 +116,9 @@
     for(var i=0;i<sliders.length;i++){
       (function(root){
         var track = root.querySelector('[data-rs-track]');
-        var p = track ? syncFromSource(track) : Promise.resolve();
-        p.then(function(){ initSlider(root); });
+        // Bedienung sofort aktiv; nach dem Abgleich nur Inhalt + Masse aktualisieren
+        initSlider(root);
+        if(track) syncFromSource(track).then(function(){ if(root.__rsUpdate){ track.scrollLeft = 0; root.__rsUpdate(); } });
       })(sliders[i]);
     }
   }

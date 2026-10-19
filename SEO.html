@@ -11,6 +11,7 @@
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <link rel="stylesheet" href="assets/mobile.css">
+<link rel="stylesheet" href="assets/askbot.css">
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -22,12 +23,12 @@
       <a href="About.html">About</a>
       <a href="Referenzen.html">Work</a>
       <a href="Webdesign.html">Web</a>
-      <a href="Onlineshops.html">Shops</a>
+      <!-- vorerst ausgeblendet: <a href="Onlineshops.html">Shops</a> -->
       <a href="SEA.html">Marketing</a>
       <a href="SEO.html" class="active">SEO / GEO</a>
-      <a href="KI-Automation.html">KI</a>
+      <a href="KI-Automation.html">KI-Auto</a>
     </nav>
-    <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
     <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -118,6 +119,20 @@
     </div>
   </section>
 
+  <!-- Fragen & Antworten (Chatbot) -->
+  <section class="ablock awrap ask" data-ask data-page="SEO / GEO" data-screen-label="Fragen und Antworten">
+    <script type="application/json" class="ask-tips-config">[
+      "Wie lange dauert es, bis ich bei Google oben stehe? Ehrlich bitte.",
+      "Was kostet SEO pro Monat für ein lokales Geschäft?",
+      "Was ist GEO und warum soll ChatGPT mich kennen?",
+      "Kann ich SEO selbst machen oder ist das Zauberei?",
+      "Meine Konkurrenz steht vor mir. Was kann ich tun?",
+      "Brauche ich laufend neue Texte oder reicht einmal gut?",
+      "Wie merke ich, ob SEO wirkt?",
+      "Was bringt ein Google-Unternehmensprofil wirklich?"
+    ]</script>
+  </section>
+
   <!-- CTA -->
   <div class="bigcta" data-ctadots>
     <a href="Kontakt.html" class="awrap" style="display:block">
@@ -145,6 +160,8 @@
 <script src="assets/image-slot.js"></script>
 <script src="assets/dotgrid.js"></script>
 <script src="assets/cta-dotgrid.js"></script>
+<script src="assets/vendor/thinking-orb.js"></script>
+<script src="assets/askbot.js"></script>
 <script src="assets/media-edit.js"></script>
 <script src="assets/footer.js"></script>
 </body>

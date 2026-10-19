@@ -33,23 +33,26 @@
     let tips = [];
     try { tips = JSON.parse(host.querySelector('.ask-tips-config')?.textContent || '[]'); } catch (e) {}
     const history = [];
-    let n = 0, busy = false;
+    let n = 0, busy = false, session = 0, ctrl = null;
 
     host.insertAdjacentHTML('beforeend', `
       <div class="ask-head">
-        <div><div class="mono">Fragen &amp; Antworten · ${esc(page)}</div><h2 class="ptitle" style="font-size:clamp(30px,4.4vw,60px)">Fragen Sie einfach.</h2></div>
-        <span class="mono ask-live">Antwortet sofort</span>
+        <div><div class="mono">Preise, Ablauf und Möglichkeiten · ${esc(page)}</div><h2 class="ptitle" style="font-size:clamp(30px,4.4vw,60px)">Fragen kostet nichts.</h2><p class="mono ask-try">Jetzt den Chat testen.</p></div>
+        <span class="mono ask-live"><svg class="ask-orb" data-orb></svg>Antwortet sofort</span>
       </div>
       <div class="ask-tips" data-tips aria-label="Beispielfragen"></div>
       <form class="ask-form" data-form>
-        <textarea rows="1" placeholder="Ihre Frage zu ${esc(page)} …" aria-label="Ihre Frage" data-input></textarea>
+        <div class="ask-field"><textarea rows="1" placeholder="Ihre Frage zu ${esc(page)} …" aria-label="Ihre Frage" data-input></textarea><span class="ask-caret" aria-hidden="true"></span></div>
         <button class="ask-send" type="submit" aria-label="Frage senden" data-send><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></button>
       </form>
+      <p class="ask-privacy">Ihre Frage wird zur Beantwortung an unseren Chat-Dienstleister Chatbase übermittelt. Bitte keine vertraulichen Angaben. Mehr in der <a href="Datenschutz.html">Datenschutzerklärung</a>.</p>
       <div class="ask-thread" data-thread aria-live="polite"></div>
       <div class="ask-foot"><span>Preise sind Richtwerte. Verbindlich wird es im <a href="Kontakt.html">Gespräch</a>.</span><button type="button" class="ask-reset" data-reset hidden>Neu beginnen</button></div>`);
 
     const tipsEl = host.querySelector('[data-tips]'), form = host.querySelector('[data-form]'), input = host.querySelector('[data-input]'),
-          send = host.querySelector('[data-send]'), thread = host.querySelector('[data-thread]'), reset = host.querySelector('[data-reset]');
+          send = host.querySelector('[data-send]'), orbEl = host.querySelector('[data-orb]'), thread = host.querySelector('[data-thread]'), reset = host.querySelector('[data-reset]');
+
+    if (orbEl && window.ThinkingOrb) window.ThinkingOrb.mountOrb(orbEl, { size: 20 }); else if (orbEl) orbEl.remove();
 
     // Rotierende Beispielfragen: 3 sichtbar, alle 6 s wechselt eine
     let order = tips.map((_, i) => i).sort(() => Math.random() - .5), ptr = 0, slot = 0, timer;
@@ -81,10 +84,14 @@
     input.addEventListener('input', grow);
     input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); } });
     form.addEventListener('submit', e => { e.preventDefault(); const q = input.value.trim(); if (q) ask(q); });
-    reset.addEventListener('click', () => { history.length = 0; thread.innerHTML = ''; n = 0; reset.hidden = true; input.focus(); });
+    reset.addEventListener('click', () => {
+      session++; if (ctrl) { ctrl.abort(); ctrl = null; }
+      history.length = 0; thread.innerHTML = ''; n = 0; reset.hidden = true; busy = false; send.disabled = false; input.focus();
+    });
 
     async function ask(q) {
-      if (busy) return; busy = true; send.disabled = true;
+      if (busy) return; busy = true; send.disabled = true; reset.hidden = false;
+      const sid = session; ctrl = new AbortController(); const sig = ctrl.signal;
       input.value = ''; grow();
       n++;
       const turn = document.createElement('div'); turn.className = 'ask-turn';
@@ -96,23 +103,27 @@
       history.push({ role: 'user', content: q });
       let text = '';
       try {
-        const r = await fetch(endpointFor(host), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history, page }) });
+        const r = await fetch(endpointFor(host), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history.slice(), page }), signal: sig });
         if (!r.ok) throw new Error((await r.text()) || ('HTTP ' + r.status));
         a.classList.remove('think');
         const rd = r.body.getReader(), dec = new TextDecoder();
-        while (true) { const { value, done } = await rd.read(); if (done) break; text += dec.decode(value, { stream: true }); a.innerHTML = md(text); }
+        while (true) { const { value, done } = await rd.read(); if (done) break; if (sid !== session) { rd.cancel().catch(() => {}); return; } text += dec.decode(value, { stream: true }); a.innerHTML = md(text); }
+        if (sid !== session) return;
         text = text.trim();
         if (!text) throw new Error('Leere Antwort.');
         a.innerHTML = md(text);
         history.push({ role: 'assistant', content: text });
         reset.hidden = false;
       } catch (err) {
+        if (sid !== session || err.name === 'AbortError') return;
         a.classList.remove('think'); a.classList.add('err');
         const m = String(err.message || '');
-        a.textContent = /konfiguriert/.test(m) ? 'Der Chat ist noch nicht freigeschaltet. Rufen Sie uns an oder buchen Sie einen Termin.' : /warten/.test(m) ? m : 'Gerade keine Verbindung. Versuchen Sie es gleich noch einmal oder fragen Sie uns direkt.';
+        const net = err instanceof TypeError; // fetch selbst fehlgeschlagen: CORS blockiert, DNS, offline
+        console.error('[askbot] Anfrage an', endpointFor(host), 'fehlgeschlagen:', net ? 'Netzwerk/CORS — Domain ' + location.host + ' in chat/config.php allowed_hosts?' : m);
+        a.textContent = /konfiguriert/.test(m) ? 'Der Chat ist noch nicht freigeschaltet. Rufen Sie uns an oder buchen Sie einen Termin.' : /warten/.test(m) ? m : /Nicht erlaubt/.test(m) ? 'Diese Domain ist für den Chat nicht freigegeben.' : 'Gerade keine Verbindung. Versuchen Sie es gleich noch einmal oder fragen Sie uns direkt.';
         history.pop();
       } finally {
-        a.classList.remove('streaming'); busy = false; send.disabled = false;
+        if (sid === session) { a.classList.remove('streaming'); busy = false; send.disabled = false; ctrl = null; reset.hidden = !history.length; }
       }
     }
   });
