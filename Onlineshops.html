@@ -11,6 +11,7 @@
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <link rel="stylesheet" href="assets/aura.css">
 <link rel="stylesheet" href="assets/mobile.css">
+<link rel="stylesheet" href="assets/askbot.css">
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -25,9 +26,9 @@
       <a href="Onlineshops.html" class="active">Shops</a>
       <a href="SEA.html">Marketing</a>
       <a href="SEO.html">SEO / GEO</a>
-      <a href="KI-Automation.html">KI</a>
+      <a href="KI-Automation.html">KI-Auto</a>
     </nav>
-    <a class="nav-cta" href="Kontakt.html">Kontakt <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
     <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -63,27 +64,7 @@
   </section>
 
   <!-- Reference slider -->
-  <section class="ablock awrap" data-screen-label="Referenzen Slider" style="padding-top:0">
-    <div class="refslider">
-      <div class="refslider-head">
-        <div>
-          <div class="mono" style="margin-bottom:14px">Referenzen</div>
-          <h2>Ausgewählte Arbeiten.</h2>
-        </div>
-        <div class="refslider-nav">
-          <button class="rsbtn" data-rs-prev aria-label="Zurück"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7 7l-7-7l7-7"/></svg></button>
-          <button class="rsbtn" data-rs-next aria-label="Weiter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></button>
-        </div>
-      </div>
-      <div class="refslider-track" data-rs-track data-rs-source="Referenzen.html" data-rs-group="Onlineshops">
-        <a class="refc" href="Referenz-salsicceria.html"><div class="m"><image-slot data-mirror="referenzen" id="o-salsicceria" placeholder="Salsicceria" shape="rect" alt="Salsicceria — Onlineshop Referenz"></image-slot></div><span class="t">Onlineshop · Feinkost</span><h3>Salsicceria</h3></a>
-        <a class="refc" href="Referenz-chinzi.html"><div class="m"><image-slot data-mirror="referenzen" id="o-chinzi" placeholder="Chinzi-Hof" shape="rect" alt="Chinzi-Hof — Onlineshop Hofladen" src="assets/refs/chinzi-hero.webp"></image-slot></div><span class="t">Onlineshop · Hofladen</span><h3>Chinzi-Hof</h3></a>
-        <a class="refc" href="Referenz-art-of-fondue.html"><div class="m"><image-slot data-mirror="referenzen" id="o-fondue" placeholder="Art of Fondue" shape="rect" alt="Art of Fondue — Onlineshop Referenz"></image-slot></div><span class="t">Onlineshop · Food</span><h3>Art of Fondue</h3></a>
-        <a class="refc" href="Referenz-foto-optik-grau.html"><div class="m"><image-slot data-mirror="referenzen" id="o-grau" placeholder="Foto-Optik Grau" shape="rect" alt="Foto-Optik Grau — Onlineshop Referenz"></image-slot></div><span class="t">Onlineshop · SEO</span><h3>Foto-Optik Grau</h3></a>
-      </div>
-    </div>
-  </section>
-
+  
   <!-- Advantages -->
   <section class="ablock awrap" data-screen-label="Vorteile" style="padding-top:0">
     <h2 class="ptitle" style="font-size:clamp(30px,4vw,56px);margin-bottom:clamp(24px,3.4vh,44px)">Die Vorteile<br>auf einen Blick.</h2>
@@ -129,6 +110,22 @@
     </div>
     <div class="mono" style="text-align:right;margin-top:14px">* Go! &amp; Custom sind einmalige Einrichtungen; der Shop-Betrieb läuft ab CHF 69.–/Mt.</div>
   </section>
+
+  <!-- Fragen & Antworten (Chatbot) -->
+  <section class="ablock awrap ask" data-ask data-page="Onlineshops" data-screen-label="Fragen und Antworten">
+    <script type="application/json" class="ask-tips-config">[
+      "Was kostet ein Onlineshop, wenn ich erst mal nur Socken verkaufe?",
+      "Welches Paket passt zu 30 Produkten und viel Ehrgeiz?",
+      "Kann ich Twint, Rechnung und Kreditkarte anbieten?",
+      "Wie schnell ist mein Shop online, bevor das Weihnachtsgeschäft vorbei ist?",
+      "Kann ich Produkte selbst pflegen, ohne IT-Studium?",
+      "Was kostet der Shop pro Monat, wenn er läuft?",
+      "Wir haben schon einen Shop. Umziehen oder neu bauen?",
+      "Wie verbinde ich den Shop mit meinem Lager und der Buchhaltung?",
+      "Ist ein Onlineshop in der Schweiz rechtlich kompliziert?"
+    ]</script>
+  </section>
+
 
   <!-- FAQ -->
   <section class="ablock awrap" data-screen-label="FAQ">
@@ -231,8 +228,9 @@
 <script src="assets/site.js"></script>
 <script src="assets/image-slot.js?v=20260906b"></script>
 <script src="assets/cta-dotgrid.js"></script>
+<script src="assets/vendor/thinking-orb.js"></script>
+<script src="assets/askbot.js"></script>
 <script src="assets/media-edit.js"></script>
 <script src="assets/footer.js"></script>
-<script src="assets/refslider.js?v=20260906b"></script>
 </body>
 </html>
