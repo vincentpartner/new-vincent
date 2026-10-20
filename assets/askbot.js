@@ -13,7 +13,9 @@
   // Minimal-Markdown → HTML (Absätze, Listen, fett, Links)
   function md(t) {
     t = t.replace(/\[[^\]]*\]\(https?:\/\/(?:www\.)?calendly\.com[^\s)]*\)/gi, '[Termin / Rückruf](Kontakt.html)')
-      .replace(/<?https?:\/\/(?:www\.)?calendly\.com\/[^\s>)]*>?/gi, '[Termin / Rückruf](Kontakt.html)');
+      .replace(/<?https?:\/\/(?:www\.)?calendly\.com\/[^\s>)]*>?/gi, '[Termin / Rückruf](Kontakt.html)')
+      .replace(/\[[^\]]*\]\((?:https?:\/\/)?(?:www\.)?vincent-partner\.ch\/lets-talk[^\s)]*\)/gi, '[Termin / Rückruf](Kontakt.html)')
+      .replace(/<?(?:https?:\/\/)?(?:www\.)?vincent-partner\.ch\/lets-talk[\w\-\/]*>?/gi, '[Termin / Rückruf](Kontakt.html)');
     const lines = t.replace(/\r/g, '').split('\n'); let out = '', list = null;
     const inl = s => esc(s)
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
