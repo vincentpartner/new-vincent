@@ -389,3 +389,45 @@ html[data-mode="Dunkel"] .footer { background: #15171A; }
   html::after { content: "Bitte Gerät ins Hochformat drehen."; position: fixed; inset: 0; z-index: 99999; display: grid; place-items: center; padding: 34px; text-align: center; background: var(--bg); color: var(--ink); font-family: var(--font-head, sans-serif); font-size: 20px; line-height: 1.618; }
   body { overflow: hidden; }
 }
+
+/* ---------- Mobile: Typo + Abstände nach Fibonacci / goldenem Schnitt ----------
+   Schriftstufen (Faktor √φ ≈ 1.272, jede zweite Stufe = φ): 13 · 17 · 21 · 27 · 34 · 55
+   Abstände (Fibonacci): 8 · 13 · 21 · 34 · 55 · 89. Fliesstext in Hanken Grotesk (besser lesbar klein). */
+@media (max-width: 760px) {
+  :root { --gutter: 21px; --font-body: "Hanken Grotesk", Arial, Helvetica, sans-serif !important; --track-body: 0em !important; }
+  body { font-size: 21px; line-height: 1.618; letter-spacing: 0; }
+  html body :is(main, .wrap, section) p:not(.ptitle):not(.display):not([class*="title"]):not([class*="h-"]):not(.ask *),
+  html body .vcard blockquote, html body .acc .ans p, html body .faq p {
+    font-size: 21px !important; line-height: 1.55 !important; letter-spacing: 0;
+  }
+  html body .lead, html body .hero-foot .lead, html body .story p.big { font-size: 21px !important; line-height: 1.55 !important; }
+  html body :is(.mono, .sn, .more, .date, .tag, .wtag, .refc .t, .crumbs a, .crumbs span, .crumbs h1, .meta .lab, .member .role, .member .links a, .ft-col h4, .cell .sub, .cell .pnote, .ptag, .dotlive, .kicker, .hero-label, .swipe-hint, .vcard .ml, .focus-head a, .winfo .more, .footer .ftl, .calc-tnote, .calc-hint-num, .calc-tcat, .calc-tprice, .pkg-row.head .cell) {
+    font-size: 13px !important; line-height: 1.4;
+  }
+  html body :is(.cell li, .fbox li, .ft-col a, .ft-col p, .ft-bottom, .vcard .vn span, .vcard .vn b, .qcheck, .calc-intro, .calc-notes, .cell .price, .btn) { font-size: 17px !important; line-height: 1.5; }
+  html body :is(.h-3, .scell h3, .fcard h3, .fbox h3, .cell h3, .member h3, .tlrow .c h3, .faq h4, .refc h3) { font-size: 27px !important; line-height: 1.1 !important; }
+  html body .acc summary { font-size: 21px; line-height: 1.3; padding-block: 21px; }
+  html body :is(.h-2, .story h2, .winfo h3, .refslider-head h2, .calc-inner h2.calc-title) { font-size: 34px !important; line-height: 1.05 !important; }
+  html body :is(.h-1, .focus-head h2) { font-size: 44px !important; line-height: .95 !important; }
+  /* Kacheln: klar getrennt, Abstand 21, Innenabstand 34/21 */
+  html body .svc2 { display: grid; grid-template-columns: 1fr; gap: 21px; border: 0; }
+  html body .scell { border: var(--hair) solid var(--line); padding: 34px 21px; display: flex; flex-direction: column; gap: 13px; }
+  html body .scell p { margin: 0; }
+  html body .fgrid { gap: 55px !important; }
+  html body .fcard { gap: 13px; }
+  html body .fcard + .fcard { border-top: var(--hair) solid var(--line); padding-top: 34px; }
+  html body :is(.fbox-grid, .refs, .gal) { gap: 34px !important; }
+  html body .fbox { padding-block: 21px; }
+  html body .team { gap: 55px; }
+  html body .story { gap: 34px; }
+  html body .work { gap: 89px; }
+  html body .wrow, html body .wrow.flip { gap: 21px; }
+  html body .voices { gap: 21px; }
+  html body .vcard { padding: 21px; gap: 21px; }
+  html body .tlrow { gap: 13px; padding: 34px 0; }
+  html body .section { padding-block: 89px; }
+  html body .section.tight { padding-block: 55px; }
+  html body .sec-head { margin-bottom: 34px; padding-top: 21px; padding-bottom: 21px; }
+  html body .grid { gap: 34px; }
+  html body .ft-grid { gap: 34px; padding-block: 55px; }
+}

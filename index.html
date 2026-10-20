@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
-(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+(function(){var m=new Date().getHours()<7?"Dunkel":"Hell";try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");if(s.modeUntil>Date.now()&&(s.mode==="Hell"||s.mode==="Dunkel"))m=s.mode;}catch(e){}document.documentElement.setAttribute("data-mode",m);})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vincent & Partner — Agentur für Webdesign, Onlinemarketing, SEO & KI · Zürich</title>
@@ -326,16 +326,16 @@
     </div>
     <div class="voices">
       <figure class="vcard reveal">
-        <div class="vhead"><image-slot id="v1" shape="circle" placeholder="" src="assets/img/kunden/soeren-honegger.webp" alt="Porträt Sören Honegger, Baukonstrukt AG — Kundenstimme Webdesign"></image-slot><div class="vn"><b>Sören Honegger</b><span>Baukonstrukt AG</span></div></div>
-        <blockquote style="line-height: 1.35">Absolut geniale Dienstleistung und Betreuung. Unsere Webseiten sprechen Bände! Holzkonstrukt.ch und Baukonstrukt.ch.</blockquote>
+        <div class="vhead"><image-slot id="v3" shape="circle" placeholder="" src="assets/img/kunden/michael-a-porta.webp" alt="Porträt Michael à Porta, wetalkwithyou — Kundenstimme Webdesign"></image-slot><div class="vn"><b>Michael à Porta</b><span>wetalkwithyou</span></div></div>
+        <blockquote style="line-height: 1.35">Ein Feuerwerk an innovativen Ideen — beeindruckend in Kreativität, Innovationskraft und Effizienz. Wir empfehlen Vincent & Partner jederzeit weiter.</blockquote>
       </figure>
       <figure class="vcard reveal">
         <div class="vhead"><image-slot id="v2" shape="circle" placeholder="" src="assets/img/kunden/nadine-hauser.webp" alt="Porträt Nadine Hauser, weareconsultants — Kundenstimme Webdesign und SEO"></image-slot><div class="vn"><b>Nadine Hauser</b><span>weareconsultants</span></div></div>
         <blockquote style="line-height: 1.35">Vincent & Partner ist der Partner unserer Wahl, wenn es um Webdesign und SEO geht. Eine inspirierende Reise — am Ende eine massgeschneiderte, persönliche Kreation.</blockquote>
       </figure>
       <figure class="vcard reveal">
-        <div class="vhead"><image-slot id="v3" shape="circle" placeholder="" src="assets/img/kunden/michael-a-porta.webp" alt="Porträt Michael à Porta, wetalkwithyou — Kundenstimme Webdesign"></image-slot><div class="vn"><b>Michael à Porta</b><span>wetalkwithyou</span></div></div>
-        <blockquote style="line-height: 1.35">Ein Feuerwerk an innovativen Ideen — beeindruckend in Kreativität, Innovationskraft und Effizienz. Wir empfehlen Vincent & Partner jederzeit weiter.</blockquote>
+        <div class="vhead"><image-slot id="v1" shape="circle" placeholder="" src="assets/img/kunden/soeren-honegger.webp" alt="Porträt Sören Honegger, Baukonstrukt AG — Kundenstimme Webdesign"></image-slot><div class="vn"><b>Sören Honegger</b><span>Baukonstrukt AG</span></div></div>
+        <blockquote style="line-height: 1.35">Absolut geniale Dienstleistung und Betreuung. Unsere Webseiten sprechen Bände! Holzkonstrukt.ch und Baukonstrukt.ch.</blockquote>
       </figure>
       <figure class="vcard reveal">
         <div class="vhead"><image-slot id="v4" shape="circle" placeholder="" src="assets/img/kunden/valentina-scarascia.webp" alt="Porträt Valentina Scarascia, Praxis Scarascia — Kundenstimme Webdesign und SEO"></image-slot><div class="vn"><b>Valentina Scarascia</b><span>Praxis Scarascia</span></div></div>
