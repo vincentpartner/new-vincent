@@ -19,7 +19,7 @@
     const lines = t.replace(/\r/g, '').split('\n'); let out = '', list = null;
     const inl = s => esc(s)
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]*|[\w\-]+\.html[^\s)]*)\)/g, (m, a, h) => `<a href="${h}"${/^https?:/.test(h) ? ' target="_blank" rel="noopener"' : ''}>${a}</a>`)
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]*|[\w\-]+(?:\.html)?(?:[?#][^\s)]*)?)\)/g, (m, a, h) => `<a href="${h}"${/^https?:/.test(h) ? ' target="_blank" rel="noopener"' : ''}>${a}</a>`)
       .replace(/(^|[\s(])(https?:\/\/[^\s<)]+?)([.,;:!?]?)(?=\s|$|\))/g, (m, p, h, e) => `${p}<a href="${h}" target="_blank" rel="noopener">${h.replace(/^https?:\/\/(www\.)?/, '')}</a>${e}`);
     const close = () => { if (list) { out += `</${list}>`; list = null; } };
     for (const raw of lines) {
