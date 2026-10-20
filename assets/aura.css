@@ -326,7 +326,7 @@ html[data-mode="Dunkel"] .bigcta.fluidcta[data-fluid="coffee"] canvas { filter: 
 .lets-talk { font-family: var(--font-head); font-weight: var(--weight-head, 700); letter-spacing: var(--track-head); font-size: clamp(64px,10vw,150px); line-height: .82; color: #F4F4F2; }
 .ft-col h4 { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: rgba(244,244,242,.55); margin: 0 0 18px; font-weight: 700; }
 .ft-col a, .ft-col p { display: block; color: #F4F4F2; font-size: 16px; margin: 0 0 9px; }
-.ft-col a:hover { color: var(--accent); }
+.ft-col a:hover { color: #fff; text-decoration: underline; text-underline-offset: .2em; }
 .ft-bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 22px; font-size: 13px; color: rgba(255,255,255,.55); border-top: var(--hair) solid rgba(255,255,255,.2); }
 .ft-bottom a { color: rgba(255,255,255,.55); }
 .ft-bottom a:hover { color: #fff; }

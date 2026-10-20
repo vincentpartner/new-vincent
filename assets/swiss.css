@@ -345,7 +345,7 @@ html { background: var(--bg); }
    pure #000, no blue cast). Light mode = --ink itself; dark mode one step below --bg. */
 .footer { background: #2A2D31; color: #fff; }
 html[data-mode="Dunkel"] .footer { background: #15171A; }
-.footer a:hover { color: var(--accent); }
+.footer a:hover { color: #fff; text-decoration: underline; text-underline-offset: .2em; }
 .footer .rule { border-color: rgba(255,255,255,.25); }
 .footer .ftl { font-size: 12px; margin-bottom: 8px; }
 
