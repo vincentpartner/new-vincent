@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aktuelles — Vincent & Partner</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/swiss.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+<link rel="stylesheet" href="assets/aura.css">
+<link rel="stylesheet" href="assets/mobile.css">
+<style>
+.refgroup-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-top:var(--hair) solid var(--line);padding-top:18px;margin-bottom:clamp(26px,4vh,46px)}
+.refgroup-head h2{margin:0}.refgroup-n{color:var(--muted)}
+.refc .m img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s cubic-bezier(.2,.7,.3,1)}
+.refc:hover .m img{transform:scale(1.045)}
+.refc.soon{pointer-events:none}.refc.soon .m{background:transparent;border-style:dashed}
+.refc.soon h3,.refc.soon .t{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
+    <nav class="nav-links" id="site-nav-links">
+      <a href="About.html">About</a>
+      <a href="Referenzen.html">Work</a>
+      <a href="Webdesign.html">Web</a>
+      <a href="Onlineshops.html">Shops</a>
+      <a href="SEA.html">Marketing</a>
+      <a href="SEO.html">SEO / GEO</a>
+      <a href="KI-Automation.html">KI-Auto</a>
+    </nav>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="above">
+  <section class="ablock first awrap" data-screen-label="Aktuelles Hero">
+    <div class="crumbs"><h1 class="here">Aktuelles aus der Digitalagentur Zürich</h1></div>
+    <p class="ptitle">Aus dem<br>Team.</p>
+    <div class="meta" style="margin-top:clamp(28px,4vh,52px)">
+      <div><span class="lab">Themen</span><span class="v">8 Beiträge</span></div>
+      <div><span class="lab">Inhalt</span><span class="v">Ideen · Experimente · Ergebnisse</span></div>
+      <div><span class="lab">Rhythmus</span><span class="v">Wenn es etwas zu erzählen gibt</span></div>
+    </div>
+  </section>
+
+  <section class="ablock awrap" style="padding-top:0">
+    <div class="refgroup-head"><h2 class="mono"><span class="b">/</span> Themen</h2><span class="mono refgroup-n">08</span></div>
+    <div class="refs">
+      <a class="refc" href="Aktuell-virales-video-schweiz.html"><div class="m"><image-slot id="akt-virales-video" placeholder="Virales Video Schweiz" shape="rect" alt="Virales Video Schweiz erstellen — Aktuelles Vincent &amp; Partner"></image-slot><span class="play">▶</span></div><span class="t">Video · KI · Experiment</span><h3>Virales Video Schweiz erstellen</h3></a>
+      <div class="refc soon"><div class="m"><image-slot id="akt-thema-02" placeholder="Thema 02" shape="rect" alt="Aktuelles Thema 02 — folgt"></image-slot></div><span class="t">Folgt</span><h3>Thema 02</h3></div>
+      <div class="refc soon"><div class="m"><image-slot id="akt-thema-03" placeholder="Thema 03" shape="rect" alt="Aktuelles Thema 03 — folgt"></image-slot></div><span class="t">Folgt</span><h3>Thema 03</h3></div>
+      <div class="refc soon"><div class="m"><image-slot id="akt-thema-04" placeholder="Thema 04" shape="rect" alt="Aktuelles Thema 04 — folgt"></image-slot></div><span class="t">Folgt</span><h3>Thema 04</h3></div>
+      <div class="refc soon"><div class="m"><image-slot id="akt-thema-05" placeholder="Thema 05" shape="rect" alt="Aktuelles Thema 05 — folgt"></image-slot></div><span class="t">Folgt</span><h3>Thema 05</h3></div>
+      <div class="refc soon"><div class="m"><image-slot id="akt-thema-06" placeholder="Thema 06" shape="rect" alt="Aktuelles Thema 06 — folgt"></image-slot></div><span class="t">Folgt</span><h3>Thema 06</h3></div>
+      <div class="refc soon"><div class="m"><image-slot id="akt-thema-07" placeholder="Thema 07" shape="rect" alt="Aktuelles Thema 07 — folgt"></image-slot></div><span class="t">Folgt</span><h3>Thema 07</h3></div>
+      <div class="refc soon"><div class="m"><image-slot id="akt-thema-08" placeholder="Thema 08" shape="rect" alt="Aktuelles Thema 08 — folgt"></image-slot></div><span class="t">Folgt</span><h3>Thema 08</h3></div>
+    </div>
+  </section>
+
+  <div class="bigcta">
+    <a href="Kontakt.html" class="awrap" style="display:block">
+      <div class="row">
+        <div>
+          <div class="mono" style="margin-bottom:21px">Eine Idee im Kopf?</div>
+          <h3>Reden wir<br>darüber.</h3>
+        </div>
+        <span class="go">Let's talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span>
+      </div>
+    </a>
+  </div>
+</main>
+
+<footer class="footer" data-site-footer></footer>
+
+<script src="assets/tweaks.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/image-slot.js"></script>
+<script src="assets/media-edit.js"></script>
+<script src="assets/footer.js"></script>
+</body>
+</html>

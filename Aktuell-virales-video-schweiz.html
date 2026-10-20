@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<script>/* Farbmodus vor dem ersten Zeichnen setzen - verhindert das weisse Aufblitzen beim Seitenwechsel */
+(function(){try{var s=JSON.parse(localStorage.getItem("vp_tweaks_v1")||"{}");var m=(s.mode==="Hell"||s.mode==="Dunkel")?s.mode:"Dunkel";document.documentElement.setAttribute("data-mode",m);}catch(e){document.documentElement.setAttribute("data-mode","Dunkel");}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Virales Video Schweiz erstellen — Aktuelles | Vincent &amp; Partner</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/swiss.css">
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+<link rel="stylesheet" href="assets/aura.css">
+<style>
+.refpage .ptitle{font-size:clamp(44px,7.5vw,118px);margin:0;line-height:.9}
+.rsec{padding-block:0 clamp(89px,9vw,144px)}
+.refpage .crumbs{flex-wrap:wrap;row-gap:6px;margin-bottom:clamp(34px,4.2vw,55px)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.refhead{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(34px,4vw,89px);align-items:end;margin-top:clamp(55px,6vw,89px)}
+.refhead .lead{font-size:clamp(17px,1.35vw,22px);line-height:1.45;color:var(--ink);max-width:56ch;text-wrap:pretty;margin:0}
+.refhead .tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.refhead .tag{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);border:var(--hair) solid var(--line);padding:8px 12px}
+@media(max-width:1024px){.refhead{grid-template-columns:1fr;align-items:start}.refhead .tags{justify-content:flex-start}}
+.refpage .meta{padding-block:clamp(24px,3vh,40px)}
+.refpage .meta .lab{font-size:13px;margin-bottom:10px}
+.refpage .meta .v{font-size:clamp(18px,1.5vw,24px);font-weight:600;line-height:1.25}
+.vsec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-top:var(--hair) solid var(--line);padding-top:21px;margin-bottom:clamp(55px,6vw,89px)}
+.vsec-head h2.mono{margin:0;font-weight:500;font-size:12px;color:var(--ink)}
+.vsec-head .vsec-n{font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:color-mix(in srgb,var(--ink) 72%,var(--bg))}
+.work{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(55px,6vw,144px);align-items:start}
+.work .display{font-family:var(--font-head);font-weight:var(--weight-head,600);letter-spacing:var(--track-head);line-height:.92;font-size:clamp(36px,4.6vw,72px);margin:0;position:sticky;top:120px}
+.story{max-width:62ch;display:grid;gap:clamp(21px,2.4vw,34px)}
+.story p{margin:0;font-size:clamp(17px,1.25vw,20px);line-height:1.55;color:var(--ink);text-wrap:pretty}
+.story .q{font-family:var(--font-head);font-weight:var(--weight-head,600);letter-spacing:var(--track-head);font-size:clamp(26px,2.6vw,40px);line-height:1.08;padding-left:21px;border-left:2px solid var(--accent)}
+.worklist{list-style:none;margin:0;padding:0;display:grid}
+.worklist li{display:grid;grid-template-columns:55px minmax(0,1fr);gap:21px;padding:clamp(21px,2.4vw,34px) 0;border-top:var(--hair) solid var(--line)}
+.worklist li:last-child{border-bottom:var(--hair) solid var(--line)}
+.worklist .n{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;color:color-mix(in srgb,var(--ink) 72%,var(--bg));padding-top:5px}
+.worklist h3{margin:0 0 8px;font-size:clamp(18px,1.5vw,24px);font-weight:600;letter-spacing:-.01em;line-height:1.05}
+.worklist p{margin:0;color:var(--muted);font-size:15px;line-height:1.5;max-width:60ch;text-wrap:pretty}
+@media(max-width:1024px){.work{grid-template-columns:1fr}.work .display{position:static;margin-bottom:8px}}
+.view{margin:0;display:flex;flex-direction:column;gap:21px}
+.vmedia{position:relative;overflow:hidden;width:100%;border-radius:3px;background:var(--paper);box-shadow:0 40px 72px -38px rgba(var(--shadow-rgb,0,0,0),.44),0 8px 20px -12px rgba(var(--shadow-rgb,0,0,0),.2)}
+.vmedia image-slot{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vcap{font-family:var(--font-mono);font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:color-mix(in srgb,var(--ink) 72%,var(--bg))}
+.vidgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,3vw,55px);padding-inline:clamp(0px,3vw,64px)}
+.vidgrid .vmedia{aspect-ratio:16/9}
+@media(max-width:760px){.vidgrid{grid-template-columns:1fr;padding-inline:0}}
+html[data-mode="Dunkel"] .vmedia{background:#1b1d21}html[data-mode="Dunkel"]{--shadow-rgb:255,255,255}
+/* Lieder */
+.songs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(34px,4vw,89px)}
+.song{display:grid;gap:clamp(18px,2vw,28px);align-content:start}
+.song h3{margin:0;font-family:var(--font-head);font-weight:var(--weight-head,600);letter-spacing:var(--track-head);font-size:clamp(26px,2.6vw,40px);line-height:1.05}
+.song p{margin:0;font-size:clamp(16px,1.15vw,18px);line-height:1.55;color:var(--ink);text-wrap:pretty;max-width:58ch}
+.song-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px 21px;border-top:var(--hair) solid var(--line);border-bottom:var(--hair) solid var(--line);padding-block:16px}
+.song-meta .lab{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--ink) 72%,var(--bg));margin-bottom:6px}
+.song-meta .v{font-size:14px;font-weight:600;line-height:1.3}
+@media(max-width:900px){.songs{grid-template-columns:1fr}}
+@media(max-width:600px){.song h3{font-size:27.5px}.song p{font-size:17px;line-height:1.618}.song-meta{grid-template-columns:1fr 1fr}}
+/* Stand / Kommentare */
+.status{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(21px,3vw,55px);border-top:var(--hair) solid var(--line);border-bottom:var(--hair) solid var(--line);padding-block:clamp(24px,3vw,40px)}
+.status .lab{display:block;font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--ink) 72%,var(--bg));margin-bottom:10px}
+.status .v{font-size:clamp(20px,1.8vw,30px);font-weight:600;line-height:1.15}
+.status .v.open{color:var(--accent)}
+@media(max-width:600px){.status{grid-template-columns:1fr;gap:21px}}
+.cform{display:grid;gap:clamp(21px,2.4vw,34px);max-width:62ch}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,22px)}
+@media(max-width:560px){.frow{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column}
+.flabel{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--ink) 72%,var(--bg));margin-bottom:6px}
+.field input,.field textarea{appearance:none;width:100%;font-family:var(--font-body);font-size:16px;color:var(--ink);background:transparent;border:0;border-bottom:var(--hair) solid var(--line);padding:11px 2px;outline:none;border-radius:0}
+.field textarea{resize:vertical;min-height:110px}
+.field input:focus,.field textarea:focus{border-color:var(--accent)}
+.field input::placeholder,.field textarea::placeholder{color:color-mix(in srgb,var(--muted) 85%,transparent)}
+.cbtn{display:inline-flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--bg);padding:16px 22px;border:0;border-radius:2px;cursor:pointer;transition:opacity .2s;justify-self:start;min-height:44px}
+.cbtn:hover{opacity:.82}
+.cnote{font-size:13px;color:var(--muted);margin:0}
+.clist{list-style:none;margin:clamp(34px,4vw,55px) 0 0;padding:0;display:grid;max-width:62ch}
+.clist li{padding:clamp(18px,2vw,28px) 0;border-top:var(--hair) solid var(--line);display:grid;gap:8px}
+.clist li:last-child{border-bottom:var(--hair) solid var(--line)}
+.clist .who{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.clist .who b{font-size:15px}
+.clist .who span{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb,var(--ink) 72%,var(--bg))}
+.clist p{margin:0;font-size:16px;line-height:1.5;text-wrap:pretty}
+.clist .empty{color:var(--muted);font-size:15px;padding:21px 0;border-top:var(--hair) solid var(--line);border-bottom:var(--hair) solid var(--line);margin-top:clamp(34px,4vw,55px);max-width:62ch}
+.bigcta .display{font-family:var(--font-head);font-weight:var(--weight-head,600);letter-spacing:var(--track-head);line-height:.86;text-transform:none;font-size:clamp(40px,7vw,108px);margin:0}
+@media(max-width:600px){
+  .refpage.ablock.first{padding-top:89px}.ablock{padding-block:55px}
+  .refpage .ptitle{font-size:56px}
+  .refhead{gap:21px;margin-top:55px}.refhead .lead{font-size:17px;line-height:1.618}
+  .work{gap:34px}.work .display{font-size:44.5px;line-height:.95}
+  .story .q{font-size:27.5px}
+  .worklist li{grid-template-columns:34px minmax(0,1fr);gap:13px;padding:21px 0}
+  .rsec{padding-bottom:89px}.vsec-head{padding-top:13px;margin-bottom:55px}
+  .cbtn{width:100%;justify-content:center;min-height:55px}
+  .bigcta .display{font-size:44.5px}.bigcta .row{gap:21px;flex-direction:column;align-items:flex-start}
+}
+</style>
+<link rel="stylesheet" href="assets/mobile.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html"><b>Vincent</b><span class="sub"><span class="amp">&amp;</span>Partner</span></a>
+    <nav class="nav-links" id="site-nav-links">
+      <a href="About.html">About</a>
+      <a href="Referenzen.html">Work</a>
+      <a href="Webdesign.html">Web</a>
+      <a href="Onlineshops.html">Shops</a>
+      <a href="SEA.html">Marketing</a>
+      <a href="SEO.html">SEO / GEO</a>
+      <a href="KI-Automation.html">KI-Auto</a>
+    </nav>
+    <a class="nav-cta nav-cta-roll" href="Kontakt.html" aria-label="Kontakt"><span class="roll" aria-hidden="true"><span class="r" style="--i:0"><span>K</span><span>K</span></span><span class="r" style="--i:1"><span>o</span><span>o</span></span><span class="r" style="--i:2"><span>n</span><span>n</span></span><span class="r" style="--i:3"><span>t</span><span>t</span></span><span class="r" style="--i:4"><span>a</span><span>a</span></span><span class="r" style="--i:5"><span>k</span><span>k</span></span><span class="r" style="--i:6"><span>t</span><span>t</span></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></a>
+    <button class="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<main class="above">
+  <section class="ablock first awrap refpage" data-screen-label="Aktuelles Virales Video">
+    <div class="crumbs">
+      <a href="Aktuelles.html"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7 7l-7-7l7-7"/></svg> Aktuelles</a>
+      <span class="sep">/</span>
+      <h1 class="here">Virales Video Schweiz erstellen</h1>
+    </div>
+    <p class="ptitle">Geht das<br>überhaupt?</p>
+    <div class="refhead">
+      <p class="lead">Ein virales Video in der Schweiz erstellen: Wie muss es gemacht sein, damit es wirklich klappt? Wir haben im Team diskutiert, uns Ziele gesetzt und es ausprobiert.</p>
+      <div class="tags"><span class="tag">Video</span><span class="tag">KI</span><span class="tag">Experiment</span></div>
+    </div>
+    <div class="meta" style="margin-top:clamp(55px,6vw,89px)">
+      <div><span class="lab">Ziel Views</span><span class="v">über 2 Mio.</span></div>
+      <div><span class="lab">Ziel Medien</span><span class="v">Nennung in Schweizer Medien</span></div>
+      <div><span class="lab">Lieder</span><span class="v">Froueli · Joggeli</span></div>
+      <div><span class="lab">Idee</span><span class="v">Reto</span></div>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec">
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Die Diskussion: Virales Video Schweiz</h2><span class="vsec-n">01</span></div>
+    <div class="work">
+      <p class="display">Wann ist viral wirklich viral?</p>
+      <div class="story">
+        <p>Alle reden von viralen Videos. Im Team haben wir uns gefragt, wie ein virales Video in der Schweiz erstellt werden müsste, damit es tatsächlich klappt. Der Markt ist klein, die Sprachen sind viele, und was in den USA funktioniert, verpufft hier oft.</p>
+        <p>Damit wir am Ende nicht schönreden, haben wir zwei Messlatten festgelegt. Erstens: über 2 Millionen Views. Erst dann können wir ehrlich sagen, dass etwas viral gegangen ist. Zweitens: Das Video muss in Schweizer Medien genannt werden. Views allein sind Zahlen, eine Erwähnung ist Reichweite ausserhalb der Plattform.</p>
+        <p class="q">Alte Schweizer Lieder und Geschichten mit KI animieren und echte Videos daraus machen.</p>
+        <p>Das war Retos Idee. Stoff, den alle kennen, aber noch nie so gesehen haben. Die Steigerung: dieselben Geschichten und Lieder in die heutige Zeit transferieren. Damit standen schon vier Videos auf dem Plan, zwei Originale und zwei Gegenwartsfassungen.</p>
+        <p>Wir haben uns für «Es wot es Froueli z’Märit gah» und «Dr Joggeli söt go Beerli schötle» entschieden. Gesagt, getan.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec">
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Die zwei Lieder: Herkunft und Alter</h2><span class="vsec-n">02</span></div>
+    <div class="songs">
+      <article class="song">
+        <div class="song-meta"><div><span class="lab">Alter</span><span class="v">Urform 16. Jh.</span></div><div><span class="lab">Herkunft</span><span class="v">Bern / Deutschschweiz</span></div><div><span class="lab">Gattung</span><span class="v">Spottlied</span></div></div>
+        <h3>Es wot es Froueli z’Märit gah</h3>
+        <p>Die Frau geht auf den Markt und lässt den Mann zu Hause. Er soll den Hühnern die Eier abnehmen und auf die Kuchen im Ofen achten. Als sie heimkommt, sind die Kuchen weg, und der Mann schiebt es auf den Güggel, der sein Ei verlegt habe. Es folgt Streit, der Mann flüchtet zum Nachbarn, und dort stellt sich heraus: Dem ist es genauso ergangen.</p>
+        <p>Die Urform wird in einem dreistrophigen Spottlied aus dem 16. Jahrhundert vermutet («Es wollt ein Frau zum Weine gan»); erweitert um den zweiten Pantoffelhelden steht es auch in «Des Knaben Wunderhorn» (1806/08). In der Schweiz wird es in vielen Fassungen und Melodien gesungen, von Bern über Zürich, Luzern, Appenzell bis ins Aargau. Die heute geläufige Berner Version stammt aus der Sammlung «Im Röseligarte».</p>
+      </article>
+      <article class="song">
+        <div class="song-meta"><div><span class="lab">Alter</span><span class="v">Bilderbuch 1908, Stoff «uralt»</span></div><div><span class="lab">Herkunft</span><span class="v">Lisa Wenger, Delémont / Bern</span></div><div><span class="lab">Gattung</span><span class="v">Kettenreim</span></div></div>
+        <h3>Dr Joggeli söt go Beerli schötle</h3>
+        <p>Der Bauer schickt den Joggeli, er soll Birnen schütteln. Joggeli will nicht, die Birnen wollen nicht fallen. Also schickt der Bauer das Hündli, das Joggeli beissen soll, dann das Stäckli, das Fürli, das Wässerli, das Chälbli, den Metzger. Keiner will. Erst als der Meister selbst hinausgeht, kippt die Kette, und alle tun, was sie sollen.</p>
+        <p>Als Bilderbuch stammt die Geschichte von der Künstlerin Lisa Wenger (1858–1941). Sie skizzierte es um 1907 in Delémont in gut zwei Wochen, 1908 druckte es der Verlag A. Francke in Bern; das überlange Querformat ist bis heute erhältlich. Der Stoff selbst ist deutlich älter: Der Kettenreim geht auf das Pessach-Lied «Chad Gadja» zurück, das der Zürcher Pfarrer Johann Caspar Ulrich bereits 1762 in seiner «Sammlung Jüdischer Geschichten» mit dem Zürcher Kinderlied in Verbindung brachte. Verwandt ist auch der deutsche Reim «Der Herr, der schickt den Jockel aus». 1985 vertonte Franz Tischhauser den Text als «Hampeloper».</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec">
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Der Plan: 4 Videos</h2><span class="vsec-n">03</span></div>
+    <div class="work">
+      <p class="display">Zwei Originale, zwei in der Gegenwart.</p>
+      <ol class="worklist">
+        <li><span class="n">01</span><div><h3>Froueli, animiert</h3><p>«Es wot es Froueli z’Märit gah» als KI-animiertes Video, nah am Original.</p></div></li>
+        <li><span class="n">02</span><div><h3>Joggeli, animiert</h3><p>«Dr Joggeli söt go Beerli schötle» mit KI in Bewegung gebracht.</p></div></li>
+        <li><span class="n">03</span><div><h3>Froueli, heute</h3><p>Dasselbe Lied in die Gegenwart transferiert: Ort, Figuren, Alltag von jetzt.</p></div></li>
+        <li><span class="n">04</span><div><h3>Joggeli, heute</h3><p>Dieselbe Kette, neu erzählt in der heutigen Schweiz.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec">
+    <h2 class="sr">Die vier Videos</h2>
+    <div class="vidgrid">
+      <figure class="view"><div class="vmedia" data-frame="akt-viral-v1"><image-slot id="akt-viral-v1" shape="rect" placeholder="Video 1 — Froueli, animiert" alt="Virales Video Schweiz — Video 1, Es wot es Froueli z’Märit gah mit KI animiert"></image-slot></div><figcaption class="vcap">01 · Froueli, animiert</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="akt-viral-v2"><image-slot id="akt-viral-v2" shape="rect" placeholder="Video 2 — Joggeli, animiert" alt="Virales Video Schweiz — Video 2, Dr Joggeli söt go Beerli schötle mit KI animiert"></image-slot></div><figcaption class="vcap">02 · Joggeli, animiert</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="akt-viral-v3"><image-slot id="akt-viral-v3" shape="rect" placeholder="Video 3 — Froueli, heute" alt="Virales Video Schweiz — Video 3, Froueli z’Märit in die Gegenwart transferiert"></image-slot></div><figcaption class="vcap">03 · Froueli, heute</figcaption></figure>
+      <figure class="view"><div class="vmedia" data-frame="akt-viral-v4"><image-slot id="akt-viral-v4" shape="rect" placeholder="Video 4 — Joggeli, heute" alt="Virales Video Schweiz — Video 4, Joggeli in die Gegenwart transferiert"></image-slot></div><figcaption class="vcap">04 · Joggeli, heute</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec" id="stand">
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Und? Hat es funktioniert?</h2><span class="vsec-n">04</span></div>
+    <div class="status">
+      <div><span class="lab">Views bisher</span><span class="v open">Wird gezählt</span></div>
+      <div><span class="lab">Medien</span><span class="v open">Noch keine Nennung</span></div>
+      <div><span class="lab">Stand</span><span class="v">September 2026</span></div>
+    </div>
+  </section>
+
+  <section class="ablock awrap rsec" id="kommentare">
+    <div class="vsec-head"><h2 class="mono"><span class="b">/</span> Kommentare zur Fallstudie virales Video Schweiz</h2><span class="vsec-n">05</span></div>
+    <div class="work">
+      <p class="display">Was meinen Sie?</p>
+      <div>
+        <p class="cnote" style="font-size:clamp(17px,1.3vw,21px);line-height:1.5;max-width:44ch;margin:0">Kommentare sind bald möglich. Bis dahin freuen wir uns über Ihre Rückmeldung an <a href="mailto:info@vincent-partner.ch">info@vincent-partner.ch</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="bigcta"><a href="Aktuelles.html" class="awrap" style="display:block"><div class="row"><div><div class="mono" style="margin-bottom:21px">Weitere Themen · Aktuelles</div><p class="display">Aus dem Team.</p></div><span class="go">Übersicht <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></span></div></a></div>
+</main>
+<footer class="footer" data-site-footer></footer>
+<script src="assets/tweaks.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/image-slot.js"></script>
+<script src="assets/frame-resize.js"></script>
+<script src="assets/media-edit.js"></script>
+<script src="assets/footer.js"></script>
+
+</body>
+</html>
