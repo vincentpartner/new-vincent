@@ -28,10 +28,10 @@
 .ask-thread{display:grid;gap:clamp(40px,6vh,84px);margin-top:clamp(40px,6vh,84px)}
 .ask-thread:empty{display:none}
 .ask-turn{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(18px,2.4vh,28px)}
-@media (min-width:900px){.ask-turn{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,4vw,64px)}}
-.ask-q{font-family:var(--font-head);font-weight:var(--weight-head,600);letter-spacing:-0.01em;font-size:clamp(18px,1.3vw,24px);line-height:1.25;color:var(--muted);text-wrap:pretty}
+@media (min-width:900px){.ask-turn{grid-template-columns:minmax(0,5fr) minmax(0,8fr);gap:clamp(28px,4vw,64px)}}
+.ask-q{font-family:var(--font-head);font-weight:var(--weight-head,600);letter-spacing:-0.01em;font-size:clamp(16px,1.05vw,20px);line-height:1.3;color:var(--muted);text-wrap:pretty}
 .ask-q .k{display:block;font-family:var(--font-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px}
-.ask-a{font-family:var(--font-head);font-weight:var(--weight-head,600);letter-spacing:-0.015em;font-size:clamp(20px,1.7vw,30px);line-height:1.3;color:var(--ink-head,var(--ink));text-wrap:pretty;max-width:26ch}
+.ask-a{font-family:var(--font-head);font-weight:var(--weight-head,600);letter-spacing:-0.015em;font-size:clamp(26px,1.7vw,32px);line-height:1.3;color:var(--ink-head,var(--ink));text-wrap:pretty;max-width:34ch}
 .ask-a p{margin:0 0 .6em}.ask-a p:last-child{margin:0}
 .ask-a ul,.ask-a ol{margin:0 0 .6em;padding-left:1.1em}
 .ask-a li{margin:0 0 .2em}
@@ -48,4 +48,4 @@
 .ask-foot a:hover{color:var(--accent)}
 .ask-reset{appearance:none;background:none;border:0;padding:0;color:var(--ink);font:inherit;text-decoration:underline;text-underline-offset:.15em;cursor:pointer}
 .ask-reset:hover{color:var(--accent)}
-@media (max-width:760px){.ask-tips{grid-template-columns:1fr}.ask-tip{gap:14px;font-size:22px}.ask-head{flex-direction:column;align-items:flex-start;gap:12px}.ask-form textarea{font-size:32px}.ask-a{font-size:26px;max-width:none}}
+@media (max-width:760px){.ask-tips{grid-template-columns:1fr}.ask-tip{gap:14px;font-size:22px}.ask-head{flex-direction:column;align-items:flex-start;gap:12px}.ask-form textarea{font-size:26px}.ask-a{font-size:26px;max-width:none}.ask-q{font-size:16px}}
