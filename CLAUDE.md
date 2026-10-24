@@ -1,29 +1,29 @@
 # Projekt: Vincent & Partner — Website
 
-## Hosting-Setup (WICHTIG — das ist der aktuelle Plan)
-Die Website wird **selbst gehostet auf Hostpoint** (nicht mehr auf Tilda).
-- **Alles unter einer Domain**: Statische Seiten **und** das PHP-Backend liegen auf
-  demselben Hostpoint-Webspace / derselben Domain (z. B. `vincent-partner.ch` und
-  `vincent-partner.ch/kalender/`).
-- **Same-Origin → kein CORS, keine `api.`-Subdomain nötig.** Das Frontend ruft das
-  Backend relativ auf (`/kalender/availability.php`). Der frühere Umweg über
-  `api.vincent-partner.ch` + CORS war nur wegen Tilda nötig und entfällt.
-- **Deployment = einmal hochladen** (ganze Site + `kalender/`-Ordner per FTP/SFTP auf
-  Hostpoint), kein Seite-für-Seite-Einpflegen in einen Tilda-`<head>` mehr.
-- PHP ist auf Hostpoint verfügbar → das Kalender-Backend läuft dort direkt.
+## Hosting-Setup (Stand 2026-10-24 — so ist es tatsächlich umgesetzt)
+Zwei Schweizer Hoster, zwei Domains (nicht mehr Tilda):
+- **Website auf Cyon** (`vincent-partner.ch`, Webroot `public_html/`): statische Seiten,
+  `assets/`, Sidecars. Upload-Anleitung: `README-Golive.md`.
+- **Backends auf Hostpoint** unter `api.vincent-partner.ch`: Kalender (`availability.php`,
+  `book.php` direkt in der Wurzel) und Chat (`chat/`). Diese Ordner liegen **nicht** mehr
+  in diesem Repo (alte `kalender/`-Kopie wurde ins Archiv verschoben, Commit 9b2df58).
+- **Cross-Origin → CORS nötig.** Das Frontend ruft das Backend mit **absoluten URLs** auf;
+  erlaubte Origins in `kalender/config.php` → `origins` bzw. `chat/config.php` →
+  `allowed_hosts` (+ `chat/.htaccess`): `vincent-partner.ch` und `www.vincent-partner.ch`.
 
 ## Terminbuchung: eigenes Google-Kalender-Backend (NICHT Calendly)
-Die Buchung läuft über ein **selbst gehostetes Google-Kalender-Backend** im Ordner
-`kalender/` — **nicht** mehr über Calendly.
-- `kalender/availability.php` → liefert freie 1,5-h-Slots aus dem Google-Kalender
+Die Buchung läuft über ein **selbst gehostetes Google-Kalender-Backend** auf Hostpoint —
+**nicht** über Calendly.
+- `availability.php` → liefert freie 1,5-h-Slots aus dem Google-Kalender
   (via `freeBusy`), Form: `{ "collection": [ { start_time, status } ] }`.
-- `kalender/book.php` → legt den Termin an und lädt beide Seiten ein (inkl.
-  Google-Meet-Link).
-- `kalender/google.php` / `config.php` / `oauth-setup.php` → OAuth + Config;
-  Token/Refresh-Token bleiben **serverseitig geheim** (siehe `.htaccess`).
-- Frontend: `Kontakt.html`, `CONFIG.availUrl` = `/kalender/availability.php`,
-  `CONFIG.bookUrl` = `/kalender/book.php` (relativ, same-origin). Nie wieder auf eine
-  `api.`-Subdomain umstellen.
+- `book.php` → legt den Termin an und lädt beide Seiten ein (inkl. Google-Meet-Link).
+- `google.php` / `config.php` / `oauth-setup.php` → OAuth + Config;
+  Token/Refresh-Token bleiben **serverseitig geheim** (`.htaccess`). `config.php` nie
+  versionieren und beim Update nicht überschreiben.
+- Frontend: `Kontakt.html`, `CONFIG.availUrl` = `https://api.vincent-partner.ch/availability.php`,
+  `CONFIG.bookUrl` = `https://api.vincent-partner.ch/book.php`.
+- Chat «Fragen & Antworten»: `assets/askbot.js` → `BACKEND` auf `api.vincent-partner.ch/chat/…`,
+  eingebunden auf KI-Automation, Kontakt, Onlineshops, SEA, SEO, Webdesign.
 - `calendly/` wurde entfernt (obsolet).
 
 ## Projekt-Regeln (dauerhaft einhalten)
@@ -45,8 +45,9 @@ Die Buchung läuft über ein **selbst gehostetes Google-Kalender-Backend** im Or
 6. **Jede Seite genau ein `<title>`**; keine Verweise auf gelöschte Dateien.
 7. Abschluss jeder Aufräum-/Änderungsrunde: melden, was entfernt/geändert wurde.
 9. **Vor jedem Export** (dauerhaft): `uploads/`, `scraps/`, `export/`, `mobile/`, `.thumbnail` löschen;
-   unverlinkte Seiten und Assets auflisten und entfernen (Ausnahme: die zwei eigenständigen Dokumente);
-   nichts nach `</html>`; keine externen Ressourcen; Kontakt-CONFIG relativ auf `/kalender/`;
+   unverlinkte Seiten und Assets auflisten und entfernen;
+   nichts nach `</html>`; keine externen Ressourcen (Ausnahme: eigene Backend-Aufrufe auf
+   `api.vincent-partner.ch`); Kontakt-CONFIG und askbot-BACKEND zeigen auf `https://api.vincent-partner.ch/`;
    Bild-Editier-Funktionen (media-edit, image-slot, frame-resize, scroll-shot) BEHALTEN — sie werden
    erst im Produktions-Build entfernt. Abschlussprüfung: ein `<title>` pro Seite, keine toten Verweise,
    Liste gelöscht/bereinigt/offen melden.
@@ -62,17 +63,17 @@ Die Buchung läuft über ein **selbst gehostetes Google-Kalender-Backend** im Or
 ## Offene To-dos
 - **Medien-Sidecars materialisieren** (`.image-slots-*.state.json`, `.scroll-shots.state.json`,
   `.media-edits-*.state.json`, `.frames.state.json` → Rahmengrössen als Inline-Style) → echte Dateien unter `assets/img/`, Pfade direkt in die Seiten
-  einbacken. Ohne diesen Schritt fehlen die per Editor ersetzten Bilder auf Hostpoint.
+  einbacken. Ohne diesen Schritt fehlen die per Editor ersetzten Bilder auf Cyon.
   Stand 2026-09-05: image-slot-Bilder bereits als `assets/img/refs/<slot-id>.webp` + `src`-Attribut eingebaut;
   Sidecars sind seither **pro Seite** (`.image-slots-<seite>.state.json`, `.media-edits-<seite>.state.json`; Host erlaubt nur EINEN Punkt vor `.state.json`),
   Host-Limit ~2 MB pro Sidecar. Neue Editor-Uploads periodisch wieder materialisieren (gleiches Skript-Muster).
-  Danach direkt Projekt-Root (ohne Sidecars/CLAUDE.md) + `kalender/` hochladen.
+  Danach Projekt-Root (ohne Sidecars/CLAUDE.md) auf Cyon hochladen (siehe `README-Golive.md`).
 
 ## Tech-Notizen
 - Gemeinsame Assets: assets/swiss.css (Tokens/Typo/Nav/Footer), assets/aura.css (Komponenten),
   assets/tweaks.js (Tweaks-Panel + Hell/Dunkel-Schalter + Akzent/Verlauf + Pinsel),
   assets/site.js, assets/falling-letters.js (Home-Hero), assets/dotgrid.js (SEO-Hero),
-  assets/fluid.js (Webdesign-Swirl), assets/calc.js (Kostenrechner), assets/image-slot.js,
+  assets/fluid.js (Webdesign-Swirl), assets/calc.js (Archiv-Preisrechner, derzeit von keiner Seite geladen), assets/image-slot.js,
   assets/fonts.css (lokale Webfonts, in jedem <head> vor swiss.css), assets/vendor/matter.min.js,
   assets/frame-resize.js (Editor-Griff an [data-frame]-Rahmen: Grösse/Verhältnis, .frames.state.json).
 - Bild/Video ersetzen (alle Seiten): assets/media-edit.js rüstet JEDES inhaltliche
@@ -81,14 +82,18 @@ Die Buchung läuft über ein **selbst gehostetes Google-Kalender-Backend** im Or
   .media-edits.state.json. <image-slot> (Bilder, .image-slots.state.json) und
   <scroll-shot> (Bild/Video, .scroll-shots.state.json) bringen eigene Ersetzen-Logik mit.
 - Deploy: kein separater export/-Ordner mehr. Sidecars in-place materialisieren (siehe To-dos),
-  dann Projekt-Root + kalender/ auf Hostpoint hochladen.
-- Seiten: index, About, Leistungen, Webdesign, Onlineshops, SEO, SEA, KI, KI-Automation,
-  Referenzen, Referenz-* (20 Detailseiten: 12 Webseiten, 4 Onlineshops, 4 Onlinemarketing), Kontakt.
+  dann Projekt-Root auf Cyon hochladen; Backend-Änderungen separat auf Hostpoint
+  (`api.vincent-partner.ch`), Configs dort nicht überschreiben.
+- Seiten (26 HTML): index, About, Leistungen, Webdesign, Onlineshops, SEO, SEA, KI, KI-Automation,
+  Referenzen, Kontakt, Aktuelles, Aktuell-virales-video-schweiz, AGB, Datenschutz, Impressum,
+  Neu-Testseite, Referenz-* (9 Detailseiten: Batinu, Jobmaps, Reklamationszentrale, alpfrieden,
+  baukonstrukt, bulgaria, flexpep, prodorso, wdvs). Onlineshops, Aktuelles und die
+  Shop-/Marketing-Referenzen sind laut `README-Golive.md` derzeit ausgeblendet (nicht im Cyon-Upload).
   Alte Tilda-Referenzseiten (allvisa, en111, pkbasf, pkkfmv, eldur, rigaflex, Brawand) sind gelöscht.
 - Slider auf Webdesign/Onlineshops/SEA und Focus auf index ziehen Kacheln, Bild und Zuschnitt live aus
   Referenzen.html (refslider.js `data-rs-source/-group`, image-slot `data-mirror="referenzen"`,
   gemeinsamer Sidecar `.image-slots-referenzen.state.json`). Reihenfolge = Referenzen.html, neuste oben.
-- kalender/: gehärtet (Header-Encoding, Slot-Validierung, flock-Rate-Limit in kalender/data/,
+- Kalender-Backend (Hostpoint): gehärtet (Header-Encoding, Slot-Validierung, flock-Rate-Limit in data/,
   HTTPS-only CORS, Webhook-Host-Allowlist, Honeypot + Zeitfeld `t`).
-- Eigenständige Dokumente (nicht verlinkt, bewusst behalten): Anleitung-flexpep-freischalten.html
-  (+ doc-page.js), Sommerferien-Laufband.html (Laufband-Snippet).
+- Eigenständige Dokumente: Sommerferien-Laufband.html und Anleitung-flexpep-freischalten.html sind
+  gelöscht; `doc-page.js` im Root wird von keiner Seite mehr geladen.
